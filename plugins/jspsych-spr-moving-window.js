@@ -74,6 +74,7 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
 
         // Caputure as word if it is precisely a word.
         const WORD = '^\\p{L}+$';
+        const NUMBER = '^[0-9]+$';
         const NEWLINE = '\n';
         const WHITE_SPACE = '\\s';
         const CAP_WHITE_SPACE = '(\\s)';
@@ -82,6 +83,7 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
 
         const RE_CAP_WORD = RegExp(CAP_WORD, 'u');
         const RE_WORD = RegExp(WORD, 'u');
+        const RE_NUMBER = RegExp(NUMBER, 'u');
         const RE_NEWLINE = RegExp(NEWLINE, 'u');
         const RE_WHITE_SPACE = RegExp(WHITE_SPACE, 'u');
         const RE_CAP_WHITE_SPACE = RegExp(CAP_WHITE_SPACE, 'u');
@@ -143,6 +145,10 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
 
             isWord() {
                 return this.text.match(RE_WORD) !== null;
+            }
+
+            isNumber() {
+                return this.text.match(RE_NUMBER) !== null;
             }
 
             isWordPlusInterpunction() {
@@ -238,7 +244,7 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
                         current_fragment = current_fragment.slice(1);
                     }
                     let current_word = new TextInfo(current_fragment, pos, ctx, record);
-                    if (current_word.isWord() || current_word.isWordPlusInterpunction())
+                    if (!current_word.isWhiteSpace())
                         words.push(current_word);
                     runningx += current_word.width();
                 }
