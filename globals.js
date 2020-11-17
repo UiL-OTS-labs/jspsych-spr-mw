@@ -23,5 +23,5 @@ const TRUE_BUTTON_TEXT = "true";
 const FALSE_BUTTON_TEXT = "false";
 
 // Duration of the fixation cross.
-const FIX_DUR = 500.0;
+const FIX_DUR = 500;
 

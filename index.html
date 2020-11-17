@@ -62,12 +62,28 @@ function addStimulus(timeline, trial_info) {
         console.error("trial_info.stimulus ain't no string...");
     }
 
+    let fixcross = {
+        type : 'spr-moving-window',
+        stimulus : '+',
+        choices : [],
+        font_family : "Times New Roman",
+        font_size : 36,
+        width : MIN_WIDTH,
+        height : MIN_HEIGHT,
+        trial_duration : FIX_DUR,
+        data : {
+            id : trial_info.id,
+            item_type : trial_info.item_type,
+            uil_save : false
+        }
+    };
+
     let present_text = {
         type : 'spr-moving-window',
         stimulus : trial_info.stimulus,
         background_color : "rgb(230, 230, 230)", // light gray
         font_color : "rgb(0, 0, 0)", // black
-        font_family : "monospace",
+        font_family : "Times New Roman",
         font_size : 36,
         width : MIN_WIDTH,
         height : MIN_HEIGHT,
@@ -79,6 +95,7 @@ function addStimulus(timeline, trial_info) {
         }
     }
 
+    timeline.push(fixcross);
     timeline.push(present_text);
 }
 

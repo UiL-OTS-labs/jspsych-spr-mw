@@ -15,10 +15,19 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
                     description :   'The string to be displayed in' +
                                     'Self paced reading moving window style'
                 },
+                trial_duration : {
+                    type :          jsPsych.plugins.parameterType.FLOAT,
+                    pretty_name :   "The maximum stimulus duration",
+                    default :       -1,
+                    description :   "The maximum amount of time a trial lasts." +
+                                    "if the timer expires, only the recorded words " +
+                                    "will have a valid reactiontime. If the value  " +
+                                    "is no trial terminate timer will be set."
+                },
                 choices : {
                     type :          jsPsych.plugins.parameterType.KEYCODE,
                     pretty_name :   "Choices",
-                    default :       32,
+                    default :       [32],
                     description :   "The keys allowed to advance a word."
                 },
                 background_color : {
@@ -278,7 +287,7 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
             jsPsych.pluginAPI.getKeyboardResponse(
                 {
                     callback_function : afterResponse,
-                    valid_responses : [valid_keys],
+                    valid_responses : valid_keys,
                     rt_method : 'performance',
                     persist : false, // We reinstall the response, because
                                      // otherwise the rt is cumulative.
@@ -323,6 +332,9 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
             if (reactiontimes.length > 9)
                 data.rt10 = reactiontimes[9];
 
+            jsPsych.pluginAPI.clearAllTimeouts();
+            jsPsych.pluginAPI.cancelAllKeyboardResponses();
+
             gelement.innerHTML = old_html;
             jsPsych.finishTrial(data);
         }
@@ -353,7 +365,9 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
             setupVariables(display_element, trial_pars);
             installResponse();
             drawStimulus();
-
+            if (trial_pars.trial_duration >= 0) {
+                jsPsych.pluginAPI.setTimeout(finish, trial_pars.trial_duration);
+            }
         }
         
         /**
