@@ -3,26 +3,15 @@
     <head>
         <title>Self paced reading with moving window</title>
 
-        <!--
         <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/jspsych.js"></script>
         <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
         <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-button-response.js"></script>
-        -->
-        <script src="jsPsych-6.1.0/jspsych.js"></script>
-        <script src="jsPsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-        <script src="jsPsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
 
         <!-- Generic jspsych style sheets -->
-        <!--
         <link href="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"/>
-        -->
-        <link href="jsPsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"/>
 
         <!-- Uil OTS libraries -->
-        <!--
         <script src="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/dev/jspsych-uil-utils.js"></script>
-        -->
-        <script src="./utils/jspsych-uil-utils.js"></script>
 
         <!-- Uil OTS scripts -->
         <script src="globals.js"></script>
@@ -38,6 +27,7 @@ let subject_id = jsPsych.randomization.randomID(8);
 let practice_items = getPracticeItems().table;
 let test_items = stimuli.table;
 let group_name = stimuli.group_name;
+const GQUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
 // data one would like to add to __all__ trials, according to:
 // https://www.jspsych.org/overview/data/
@@ -75,9 +65,17 @@ function addStimulus(timeline, trial_info) {
     let present_text = {
         type : 'spr-moving-window',
         stimulus : trial_info.stimulus,
+        background_color : "rgb(230, 230, 230)", // light gray
+        font_color : "rgb(0, 0, 0)", // black
+        font_family : "monospace",
+        font_size : 36,
+        width : MIN_WIDTH,
+        height : MIN_HEIGHT,
+        post_trial_gap : ISI,
         data : {
             id : trial_info.id,
-            item_type : trial_info.item_type
+            item_type : trial_info.item_type,
+            uil_save : true
         }
     }
 
@@ -99,13 +97,16 @@ function addQuestion(timeline, trial_info)
     let question = {
         type : 'html-button-response',
         stimulus : trial_info.question,
-        choices : [TRUE_BUTTON_TEXT, FALSE_BUTTON_TEXT],
+        choices : GQUESTION_CHOICES,
         data : {
             id : trial_info.id,
-            correct_response : trial_info.qanswer
+            correct_response : trial_info.qanswer,
+            uil_save : true
         },
         on_finish: function (data) {
-            data.correct = data.response == data.correct_response;
+            let choice = GQUESTION_CHOICES[data.button_pressed];
+            data.answer = choice;
+            data.correct = choice == data.correct_response;
         }
     };
 
@@ -138,8 +139,8 @@ if (! uil.isMobileOrTablet()) {
         {
             timeline: timeline,
             exclusions: {
-                min_width: 800,
-                min_height: 600
+                min_width: MIN_WIDTH,
+                min_height: MIN_HEIGHT
             },
             on_finish: function() {
                 // Make sure you have updated your key in globals.js
@@ -152,7 +153,7 @@ if (! uil.isMobileOrTablet()) {
 }
 else { // or bail out.
     let paragraph = document.createElement("p")
-    paragraph.innerHTML = "Please run this experiment on a laptop";
+    paragraph.innerHTML = "Please run this experiment on a pc or laptop";
     document.body.appendChild(paragraph);
 }
     </script>
