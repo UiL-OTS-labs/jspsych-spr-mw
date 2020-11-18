@@ -299,16 +299,21 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
         function finish() {
 
             let data = {
-                rt1 : -1,
-                rt2 : -1,
-                rt3 : -1,
-                rt4 : -1,
-                rt5 : -1,
-                rt6 : -1,
-                rt7 : -1,
-                rt8 : -1,
-                rt9 : -1,
-                rt10: -1,
+                rt1  : -1,
+                rt2  : -1,
+                rt3  : -1,
+                rt4  : -1,
+                rt5  : -1,
+                rt6  : -1,
+                rt7  : -1,
+                rt8  : -1,
+                rt9  : -1,
+                rt10 : -1,
+                rt11 : -1,
+                rt12 : -1,
+                rt13 : -1,
+                rt14 : -1,
+                rt15 : -1,
             }
 
             if (reactiontimes.length > 0)
@@ -331,6 +336,16 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
                 data.rt9 = reactiontimes[8];
             if (reactiontimes.length > 9)
                 data.rt10 = reactiontimes[9];
+            if (reactiontimes.length > 10)
+                data.rt11 = reactiontimes[10];
+            if (reactiontimes.length > 11)
+                data.rt12 = reactiontimes[11];
+            if (reactiontimes.length > 12)
+                data.rt13 = reactiontimes[12];
+            if (reactiontimes.length > 13)
+                data.rt14 = reactiontimes[13];
+            if (reactiontimes.length > 14)
+                data.rt15 = reactiontimes[14];
 
             jsPsych.pluginAPI.clearAllTimeouts();
             jsPsych.pluginAPI.cancelAllKeyboardResponses();
