@@ -77,9 +77,9 @@ const LIST_GROUP1 = [
         stimulus :
             "Op het introductiekamp van hun nieuwe studie\n"            +
             "misten Suzy en Jochem hun partner meer dan ooit.\n"        +
-            "Suzy zoch een brief van haar vrien, en Jochem\n"           +
+            "Suzy zocht een brief van haar vriend, en Jochem\n"         +
             "een foto van zijn vriendin. Gelukkig duurde het\n"         +
-            "kamp maar vijf dagen"                                      ,
+            "kamp maar vijf dagen."                                     ,
         question : "Suzy zocht een foto.",
         qanswer : FALSE_BUTTON_TEXT
     },
@@ -121,9 +121,9 @@ const LIST_GROUP2 = [
         id : 2,
         item_type : UNGRAM,
         stimulus :
-            "Roos en Lisa hadden aangeboden het huis \n"                +
-            "van oma eens flink op te knappen en schoon te \n"          +
-            "maken. Roos schuurde het houtwerk in de gang, \n"          +
+            "Roos en Lisa hadden aangeboden het huis\n"                 +
+            "van oma eens flink op te knappen en schoon te\n"           +
+            "maken. Roos schuurde het houtwerk in de gang,\n"           +
             "#en #Lisa #het #tapijt #in #de #kamer. #Oma #wist\n"       +
             "#niet #wat #ze #zag #en #bedankte de dames met \n"         +
             "een bos bloemen."                                          ,
@@ -137,9 +137,9 @@ const LIST_GROUP2 = [
         stimulus :
             "Op het introductiekamp van hun nieuwe studie\n"            +
             "misten Suzy en Jochem hun partner meer dan ooit.\n"        +
-            "Suzy zoch een brief van haar vrien, en Jochem\n"           +
+            "Suzy zocht een brief van haar vriend, en Jochem\n"         +
             "een foto van zijn vriendin. Gelukkig duurde het\n"         +
-            "kamp maar vijf dagen"                                      ,
+            "kamp maar vijf dagen."                                      ,
         question : "Suzy zocht een foto.",
         qanswer : FALSE_BUTTON_TEXT
     },
