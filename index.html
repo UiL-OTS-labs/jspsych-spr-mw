@@ -21,158 +21,176 @@
     </head>
     <body></body>
     <script>
-    
-let stimuli = pickRandomGroup();
-let subject_id = jsPsych.randomization.randomID(8);
-let practice_items = getPracticeItems().table;
-let test_items = stimuli.table;
-let group_name = stimuli.group_name;
-const GQUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
-// data one would like to add to __all__ trials, according to:
-// https://www.jspsych.org/overview/data/
-jsPsych.data.addProperties (
-    {
-        subject : subject_id,
-        group : group_name,
-    }
-);
+// this function will eventually run the jsPsych timeline
+function kickOffExperiment() {
+    const GQUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
-//////////////// test page flows ///////////////////////////////
+    let stimuli = pickRandomGroup();
+    let subject_id = jsPsych.randomization.randomID(8);
+    let practice_items = getPracticeItems().table;
+    let test_items = stimuli.table;
+    let group_name = stimuli.group_name;
 
-let instruction_screen_practice = {
-    type : 'html-button-response',
-    stimulus : PRE_PRACTICE_INSTRUCTION,
-    choices : [OK_BUTTON_TEXT],
-    response_ends_trial : true
-};    
+    let shuffled = uil.randomization.randomizeStimuli(
+        test_items,
+        max_same_type=2
+    );
+    if (shuffled !== null)
+        test_items = shuffled;
+    else 
+        console.error('Unable to shuffle stimuli according constraints.')
 
-let end_practice_screen = {
-    type : 'html-button-response',
-    stimulus : PRE_TEST_INSTRUCTION,
-    choices : [OK_BUTTON_TEXT],
-    response_ends_trial : true
-};
-
-/**
- * Add a stimulus to a jsPsych timeline.
- */
-function addStimulus(timeline, trial_info) {
-    if (typeof(trial_info.stimulus) !== "string") {
-        console.error("trial_info.stimulus ain't no string...");
-    }
-
-    let fixcross = {
-        type : 'spr-moving-window',
-        stimulus : '+',
-        choices : [],
-        font_family : "Times New Roman",
-        font_size : 36,
-        width : MIN_WIDTH,
-        height : MIN_HEIGHT,
-        trial_duration : FIX_DUR,
-        data : {
-            id : trial_info.id,
-            item_type : trial_info.item_type,
-            uil_save : false
-        }
-    };
-
-    let present_text = {
-        type : 'spr-moving-window',
-        stimulus : trial_info.stimulus,
-        background_color : "rgb(230, 230, 230)", // light gray
-        font_color : "rgb(0, 0, 0)", // black
-        font_family : "Times New Roman",
-        font_size : 36,
-        width : MIN_WIDTH,
-        height : MIN_HEIGHT,
-        post_trial_gap : ISI,
-        data : {
-            id : trial_info.id,
-            item_type : trial_info.item_type,
-            uil_save : true
-        }
-    }
-
-    timeline.push(fixcross);
-    timeline.push(present_text);
-}
-
-/**
- * Add a question to a jsPsych timeline.
- */
-function addQuestion(timeline, trial_info)
-{
-    if (typeof(trial_info.question) !== "string") {
-        console.error("trial_info.question ain't no string...");
-    }
-    if (typeof(trial_info.qanswer) !== "string") {
-        console.error("trial_info.qanswer ain't no string...");
-    }
-
-    let question = {
-        type : 'html-button-response',
-        stimulus : trial_info.question,
-        choices : GQUESTION_CHOICES,
-        data : {
-            id : trial_info.id,
-            correct_response : trial_info.qanswer,
-            uil_save : true
-        },
-        on_finish: function (data) {
-            let choice = GQUESTION_CHOICES[data.button_pressed];
-            data.answer = choice;
-            data.correct = choice == data.correct_response;
-        }
-    };
-
-    timeline.push(question);
-}
-
-function addStimuliToTimeline(timeline, stimuli) {
-    stimuli.forEach (
-        stim_info => {
-            addStimulus(timeline, stim_info);
-            if (stim_info.question !== "") {
-                addQuestion(timeline, stim_info);
-            }
+    // data one would like to add to __all__ trials, according to:
+    // https://www.jspsych.org/overview/data/
+    jsPsych.data.addProperties (
+        {
+            subject : subject_id,
+            group : group_name,
         }
     );
-}
 
-//////////////// timeline /////////////////////////////////
-let timeline = [];
+    //////////////// test page flows ///////////////////////////////
 
-// Add the different parts of the experiment to the timeline
-timeline.push(instruction_screen_practice);
-addStimuliToTimeline(timeline, practice_items);
-timeline.push(end_practice_screen);
-addStimuliToTimeline(timeline, test_items);
+    let instruction_screen_practice = {
+        type : 'html-button-response',
+        stimulus : PRE_PRACTICE_INSTRUCTION,
+        choices : [OK_BUTTON_TEXT],
+        response_ends_trial : true
+    };    
 
-// Start jsPsych when running on a Desktop or Laptop style pc.
-if (! uil.isMobileOrTablet()) {
-    jsPsych.init(
-        {
-            timeline: timeline,
-            exclusions: {
-                min_width: MIN_WIDTH,
-                min_height: MIN_HEIGHT
-            },
-            on_finish: function() {
-                // Make sure you have updated your key in globals.js
-                // If you don't the experiment will not be upload properly
-                // when running the experiment from the server.
-                uil.saveData(ACCESS_KEY);
+    let end_practice_screen = {
+        type : 'html-button-response',
+        stimulus : PRE_TEST_INSTRUCTION,
+        choices : [OK_BUTTON_TEXT],
+        response_ends_trial : true
+    };
+
+    /**
+     * Add a stimulus to a jsPsych timeline.
+     */
+    function addStimulus(timeline, trial_info) {
+        if (typeof(trial_info.stimulus) !== "string") {
+            console.error("trial_info.stimulus ain't no string...");
+        }
+
+        let fixcross = {
+            type : 'spr-moving-window',
+            stimulus : '+',
+            choices : [],
+            font_family : "Times New Roman",
+            font_size : 36,
+            width : MIN_WIDTH,
+            height : MIN_HEIGHT,
+            trial_duration : FIX_DUR,
+            data : {
+                id : trial_info.id,
+                item_type : trial_info.item_type,
+                uil_save : false
+            }
+        };
+
+        let present_text = {
+            type : 'spr-moving-window',
+            stimulus : trial_info.stimulus,
+            background_color : "rgb(230, 230, 230)", // light gray
+            font_color : "rgb(0, 0, 0)", // black
+            font_family : "Times New Roman",
+            font_size : 36,
+            width : MIN_WIDTH,
+            height : MIN_HEIGHT,
+            post_trial_gap : ISI,
+            data : {
+                id : trial_info.id,
+                item_type : trial_info.item_type,
+                uil_save : true
             }
         }
-    )
+
+        timeline.push(fixcross);
+        timeline.push(present_text);
+    }
+
+    /**
+     * Add a question to a jsPsych timeline.
+     */
+    function addQuestion(timeline, trial_info)
+    {
+        if (typeof(trial_info.question) !== "string") {
+            console.error("trial_info.question ain't no string...");
+        }
+        if (typeof(trial_info.qanswer) !== "string") {
+            console.error("trial_info.qanswer ain't no string...");
+        }
+
+        let question = {
+            type : 'html-button-response',
+            stimulus : trial_info.question,
+            choices : GQUESTION_CHOICES,
+            data : {
+                id : trial_info.id,
+                correct_response : trial_info.qanswer,
+                uil_save : true
+            },
+            on_finish: function (data) {
+                let choice = GQUESTION_CHOICES[data.button_pressed];
+                data.answer = choice;
+                data.correct = choice == data.correct_response;
+            }
+        };
+
+        timeline.push(question);
+    }
+
+    function addStimuliToTimeline(timeline, stimuli) {
+        stimuli.forEach (
+            stim_info => {
+                addStimulus(timeline, stim_info);
+                if (stim_info.question !== "") {
+                    addQuestion(timeline, stim_info);
+                }
+            }
+        );
+    }
+
+    //////////////// timeline /////////////////////////////////
+    let timeline = [];
+
+    // Add the different parts of the experiment to the timeline
+    timeline.push(instruction_screen_practice);
+    addStimuliToTimeline(timeline, practice_items);
+    timeline.push(end_practice_screen);
+    addStimuliToTimeline(timeline, test_items);
+
+    // Start jsPsych when running on a Desktop or Laptop style pc.
+    if (! uil.isMobileOrTablet()) {
+        jsPsych.init(
+            {
+                timeline: timeline,
+                exclusions: {
+                    min_width: MIN_WIDTH,
+                    min_height: MIN_HEIGHT
+                },
+                on_finish: function() {
+                    // Make sure you have updated your key in globals.js
+                    // If you don't the experiment will not be upload properly
+                    // when running the experiment from the server.
+                    uil.saveData(ACCESS_KEY);
+                }
+            }
+        )
+    }
+    else { // or bail out.
+        let paragraph = document.createElement("p")
+        paragraph.innerHTML = "Please run this experiment on a pc or laptop";
+        document.body.appendChild(paragraph);
+    };
 }
-else { // or bail out.
-    let paragraph = document.createElement("p")
-    paragraph.innerHTML = "Please run this experiment on a pc or laptop";
-    document.body.appendChild(paragraph);
-}
+
+window.addEventListener(
+    'load',
+    kickOffExperiment
+);
     </script>
 </html>
 
