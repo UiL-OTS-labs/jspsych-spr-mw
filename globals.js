@@ -26,3 +26,6 @@ const FALSE_BUTTON_TEXT = "false";
 // Duration of the fixation cross.
 const FIX_DUR = 500;
 
+// The duration in ms for howlong the finished instruction
+// is on screen.
+const FINISH_TEXT_DUR = 3000;

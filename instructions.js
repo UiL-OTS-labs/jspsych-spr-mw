@@ -33,3 +33,7 @@ const PRE_TEST_INSTRUCTION =
     "<p>"                                                               +
         "<i>Press the ok button to continue</i>"                        + 
     "</p>";
+
+const POST_TEST_INSTRUCTION =
+    "<h1>End of the experimentpart.</h1>"                               +
+    "<h2>many thanks for participating</h2>";

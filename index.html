@@ -66,6 +66,13 @@ function kickOffExperiment() {
         response_ends_trial : true
     };
 
+    let end_experiment = {
+        type : 'html-keyboard-response',
+        stimulus : POST_TEST_INSTRUCTION,
+        choices : [],
+        trial_duration : FINISH_TEXT_DUR;
+    }
+
     /**
      * Add a stimulus to a jsPsych timeline.
      */
