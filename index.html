@@ -70,7 +70,7 @@ function kickOffExperiment() {
         type : 'html-keyboard-response',
         stimulus : POST_TEST_INSTRUCTION,
         choices : [],
-        trial_duration : FINISH_TEXT_DUR;
+        trial_duration : FINISH_TEXT_DUR
     }
 
     /**
@@ -168,6 +168,7 @@ function kickOffExperiment() {
     addStimuliToTimeline(timeline, practice_items);
     timeline.push(end_practice_screen);
     addStimuliToTimeline(timeline, test_items);
+    timeline.push(end_experiment);
 
     // Start jsPsych when running on a Desktop or Laptop style pc.
     if (! uil.isMobileOrTablet()) {
