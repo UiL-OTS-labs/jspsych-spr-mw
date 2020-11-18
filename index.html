@@ -81,6 +81,8 @@ function kickOffExperiment() {
             console.error("trial_info.stimulus ain't no string...");
         }
 
+        let fix_type = "FIX_CROSS";
+
         let fixcross = {
             type : 'spr-moving-window',
             stimulus : '+',
@@ -92,7 +94,7 @@ function kickOffExperiment() {
             trial_duration : FIX_DUR,
             data : {
                 id : trial_info.id,
-                item_type : trial_info.item_type,
+                item_type : fix_type,
                 uil_save : false
             }
         };
