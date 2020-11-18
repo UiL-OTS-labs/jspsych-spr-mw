@@ -36,4 +36,4 @@ const PRE_TEST_INSTRUCTION =
 
 const POST_TEST_INSTRUCTION =
     "<h1>End of the experimentpart.</h1>"                               +
-    "<h2>many thanks for participating</h2>";
+    "<h2>Many thanks for participating</h2>";
