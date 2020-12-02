@@ -2,7 +2,7 @@
 const PRE_PRACTICE_INSTRUCTION =
     "<h1>Dear participant,</h1>"                                        +
     "<h2>"                                                              +
-        "Thank you for participating in this experiment."               +
+        "Welcome in this experiment."                                   +
     "</h2>"                                                             +
     "<p>"                                                               +
         "You are now going to see sentences on the screen, one after "  +
@@ -17,9 +17,12 @@ const PRE_PRACTICE_INSTRUCTION =
         "have to indicate whether the statement is correct or not. "    +
         "Therefore it is important that you really <i>read</i> each "   +
         "sentence."                                                     +
-    "<p>First we will do a short practice.</p>"                         +
     "<p>"                                                               +
-        "<i>Hit any button on the button-box when ready to start.</i>"  +
+        "First you will read some practice sentences. These are not "   +
+        "part of the actual experiment."                                +
+    "</p>"                                                              +
+    "<p>"                                                               +
+        "<i>Hit the spacebar when ready to start.</i>"                  +
     "</p>";
 
 const PRE_TEST_INSTRUCTION = 
@@ -27,11 +30,7 @@ const PRE_TEST_INSTRUCTION =
         "End of the practice part."                                     +
     "</p>"                                                              +
     "<p>"                                                               +
-        "If you have any questions at this moment please ask the "      +
-        "experimenter now."                                             +
-    "</p>"                                                              +
-    "<p>"                                                               +
-        "<i>Press the ok button to continue</i>"                        + 
+        "<i>Press the spacebar to continue.</i>"                        + 
     "</p>";
 
 const POST_TEST_INSTRUCTION =
