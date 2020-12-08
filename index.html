@@ -6,6 +6,8 @@
         <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/jspsych.js"></script>
         <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
         <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-button-response.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-html-form.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
 
         <!-- Generic jspsych style sheets -->
         <link href="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"/>
@@ -17,7 +19,12 @@
         <script src="globals.js"></script>
         <script src="stimuli.js"></script>
         <script src="instructions.js"></script>
+        <script src="survey.js"></script>
+
+        <!--maybe one day this plugin will be put in the mainline jsPsych
+            repository.-->
         <script src="plugins/jspsych-spr-moving-window.js"></script>
+
     </head>
     <body></body>
     <script>
@@ -26,7 +33,7 @@ const KEY_CODE_SPACE = 32;
 
 // this function will eventually run the jsPsych timeline
 function kickOffExperiment() {
-    const GQUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
+    const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
     let stimuli = pickRandomGroup();
     let subject_id = jsPsych.randomization.randomID(8);
@@ -51,8 +58,6 @@ function kickOffExperiment() {
             group : group_name,
         }
     );
-
-    //////////////// test page flows ///////////////////////////////
 
     let instruction_screen_practice = {
         type : 'html-keyboard-response',
@@ -137,14 +142,14 @@ function kickOffExperiment() {
         let question = {
             type : 'html-button-response',
             stimulus : trial_info.question,
-            choices : GQUESTION_CHOICES,
+            choices : G_QUESTION_CHOICES,
             data : {
                 id : trial_info.id,
                 correct_response : trial_info.qanswer,
                 uil_save : true
             },
             on_finish: function (data) {
-                let choice = GQUESTION_CHOICES[data.button_pressed];
+                let choice = G_QUESTION_CHOICES[data.button_pressed];
                 data.answer = choice;
                 data.correct = choice == data.correct_response;
             }
@@ -166,6 +171,9 @@ function kickOffExperiment() {
 
     //////////////// timeline /////////////////////////////////
     let timeline = [];
+
+    timeline.push(survey_1);
+    timeline.push(survey_2);
 
     // Add the different parts of the experiment to the timeline
     timeline.push(instruction_screen_practice);
@@ -199,7 +207,7 @@ function kickOffExperiment() {
     };
 }
 
-window.addEventListener(
+window.addEventListener (
     'load',
     kickOffExperiment
 );
