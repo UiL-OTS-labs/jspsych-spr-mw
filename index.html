@@ -172,15 +172,17 @@ function kickOffExperiment() {
     //////////////// timeline /////////////////////////////////
     let timeline = [];
 
-    timeline.push(survey_1);
-    timeline.push(survey_2);
-
     // Add the different parts of the experiment to the timeline
     timeline.push(instruction_screen_practice);
+
+    // add survey
+    timeline.push(survey_procedure);
+
     addStimuliToTimeline(timeline, practice_items);
     timeline.push(end_practice_screen);
     addStimuliToTimeline(timeline, test_items);
     timeline.push(end_experiment);
+    
 
     // Start jsPsych when running on a Desktop or Laptop style pc.
     if (! uil.isMobileOrTablet()) {
@@ -188,8 +190,8 @@ function kickOffExperiment() {
             {
                 timeline: timeline,
                 exclusions: {
-                    min_width: MIN_WIDTH,
-                    min_height: MIN_HEIGHT
+                    min_width : MIN_WIDTH,
+                    min_height : MIN_HEIGHT
                 },
                 on_finish: function() {
                     // Make sure you have updated your key in globals.js
