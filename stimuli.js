@@ -1,8 +1,15 @@
 // Item types
-const GRAM      = "GRAM";
-const UNGRAM    = "UNGRAM";
+const PASSIVE   = "PASSIVE";
+const ACTIVE    = "ACTIVE";
 const FILLER    = "FILLER";
 const PRAC      = "PRAC";
+
+// experimental, filler and practice items from:
+// Caterina Laura Paolazzi, Nino Grillo, Artemis Alexiadou & Andrea Santi (2019)
+// Passives are not hard to interpret but hard to remember: evidence from
+// online and offline studies, Language, Cognition and Neuroscience,
+// 34:8, 991-1015, DOI: 10.1080/23273798.2019.1602733.
+// Questions made up by Iris Mulders.
 
 const GROUPS = [
     "group1",
@@ -15,27 +22,22 @@ const PRACTICE_ITEMS = [
         id : 1,
         item_type : PRAC,
         stimulus :
-            "In het tuincentrum konden Martine en Marije\n"     + // A '+' adds strings together
-            "genoeg van hun gading vinden. Martine zocht\n"     + // or concatenates them.
-            "een zes appelbomen van een ziekte bestendig\n"     + // A "\n" makes the string
-            "ras uit en Marije twaalf bessenstruiken.\n"        + // jump to the next line.
-            "Gelukkig was het prima weer om hun nieuwe\n"       +
-            "aanwisten meteen te planten.\n"                     , // use a comma here.
-        question : "", // An empty string means no question for this trial.
-        qanswer : undefined // We can't define a answer if there ain't no question.
+            "The teacher took the car instead of the express train\n"   + // The '+' adds strings together or concatenates them.
+            "due to the previously announced public transport\n"        + // A "\n" makes the string jump to the next line.
+            "strike.\n"                                                 , // use a comma here.
+        question : "",                                                    // An empty string means no question for this trial.
+        qanswer : undefined                                               // We can't define a answer if there ain't no question.
     },
     {
         id : 2,
         item_type : PRAC,
         stimulus :
-            "Godelieve en Vincent waren net verhuisd\n"         +
-            "en waren aan het klussen op zolder. Godelieve\n"   +
-            "zaagde een boekenplank van MDF, terwijl\n"         +
-            "Vincent de kozijnen verde. Na een dag\n"           +
-            "hard werken gingen ze tevreden slapen\n"           +
-            "in hun nieuwe huis.\n"                             ,
-        question : "Vincent verfde de kozijnen.",
-        qanswer : TRUE_BUTTON_TEXT // Put a true if the expected answer is true, a false otherwise.
+            "The researcher presented his most recent work\n"           +
+            "to the commission and obtained very positive\n"            +
+            "comments regarding the experimental design.\n"             ,
+        question : "The researcher presented old work.",
+        qanswer : FALSE_BUTTON_TEXT                                       // Use FALSE_BUTTON_TEXT if the answer is true,
+                                                                          // TRUE_BUTTON_TEXT otherwise
     }
 ];
 
@@ -46,28 +48,21 @@ const PRACTICE_ITEMS = [
 const LIST_GROUP1 = [
     {
         id : 1,
-        item_type : UNGRAM,
+        item_type : PASSIVE,
         stimulus :
-            "Jan en Marie zaten na een lange\n"                         + 
-            "werkdag samen te wachten in de\n"                          + 
-            "stationsresauratie in Amsterdam.\n"                        + 
-            "Jan at een broodje met ham\n"                              + 
-            "#en #Marie #een #koffie #met #veel #melk. #De #stemming\n" + 
-            "#was #niet #best, #omdat #de #trein meer dan\n"            + 
-            "30 minuten vertraging had.\n"                              ,
-        question : "Jan at een broodje.",
+            "The guitarist was rejected by #the #attractive #and\n"     + 
+            "#talented #singer #in #the #concert #hall #next #to\n"     + 
+            "#the #Irish #pub.\n"                                       , 
+        question : "The singer was attractive.",
         qanswer : TRUE_BUTTON_TEXT
     },
     {
         id : 2,
-        item_type : GRAM,
+        item_type : ACTIVE,
         stimulus :
-            "Roos en Lisa hadden aangeboden het huis\n"                 +
-            "van oma eens flink op te knappen en schoon te\n"           +
-            "maken. Roos schrobde het houtwerk in de gang\n"            +
-            "#en #Lisa #het #tapijt #in #de #kamer. #Oma #wist\n"       +
-            "#niet #wat #ze #zag #en #bedankte de dames met\n"          +
-            "een bos bloemen\n"                                         ,
+            "The sculptor mugged #the #strange #and\n"                  +
+            "#temperamental #photographer #in #the #art #gallery\n"     +
+            "#next #to #the #book #shop.\n"                             ,
         question : "",
         qanswer : undefined
     },
@@ -75,59 +70,46 @@ const LIST_GROUP1 = [
         id : 3,
         item_type : FILLER,
         stimulus :
-            "Op het introductiekamp van hun nieuwe studie\n"            +
-            "misten Suzy en Jochem hun partner meer dan ooit.\n"        +
-            "Suzy zocht een brief van haar vriend, en Jochem\n"         +
-            "een foto van zijn vriendin. Gelukkig duurde het\n"         +
-            "kamp maar vijf dagen."                                     ,
-        question : "Suzy zocht een foto.",
+            "The beautiful princess married her young and\n"            +
+            "handsome chauffeur and shocked the royal\n"                +
+            "family and the press.\n"                                   ,
+        question : "The chauffeur was an old man.",
         qanswer : FALSE_BUTTON_TEXT
     },
     {
         id : 4,
         item_type : FILLER,
         stimulus :
-            "Martijn en Jessica verwachten samen hun\n"                 +
-            "eerste kindje en vonden het leuk zelf\n"                   +
-            "babyspulletjes te maken. Martijn zaagde\n"                 +
-            "een bedje van hout, terwijl Jessica een\n"                 +
-            "dekentje van zachte wol breide.\n"                         +
-            "Het resultaat was een practige wieg.\n"                    ,
+            "The little girl did not play with her brother\n"           +
+            "in the colourful playground next to their weedy\n"         +
+            "garden.\n"                                                 ,
         question : "",
         qanswer : undefined
     }
 ];
 
 /*
- * In this list there is a stimulus, if a word starts with a '#' it's
+ * In this list there is a stimulus, if a word starts with a '#' its
  * reaction time will be recorded. So don't put any '#" elsewhere...
  */
 const LIST_GROUP2 = [
     {
         id : 1,
-        item_type : GRAM,
+        item_type : ACTIVE,
         stimulus :
-            "Jan en Marie zaten na een lange\n"                         + 
-            "werkdag samen te wachten in de\n"                          + 
-            "stationsrestauratie in Amsterdam.\n"                       + 
-            "Jan at een broodje met ham,\n"                             + 
-            "#en #Marie #een #koffie #met #veel #melk. #De #stemming\n" + 
-            "#Was #niet #best, #omdat #de #trein meer dan\n"            + 
-            "30 minuten vertraging had.\n"                              ,
-        question : "Jan at een broodje.",
+            "The guitarist rejected #the #attractive #and\n"            + 
+            "#talented #singer #in #the #concert# hall #next #to\n"     + 
+            "#the #Irish #pub.\n"                                       , 
+        question : "The singer was attractive.",
         qanswer : TRUE_BUTTON_TEXT
     },
     {
         id : 2,
-        item_type : UNGRAM,
+        item_type : PASSIVE,
         stimulus :
-            "Roos en Lisa hadden aangeboden het huis\n"                 +
-            "van oma eens flink op te knappen en schoon te\n"           +
-            "maken. Roos schuurde het houtwerk in de gang,\n"           +
-            "#en #Lisa #het #tapijt #in #de #kamer. #Oma #wist\n"       +
-            "#niet #wat #ze #zag #en #bedankte de dames met \n"         +
-            "een bos bloemen."                                          ,
-            
+            "The sculptor was mugged by #the #strange #and\n"           +
+            "#temperamental #photographer #in #the #art #gallery\n"     +
+            "#next #to #the #book #shop.\n"                             ,
         question : "",
         qanswer : undefined
     },
@@ -135,31 +117,26 @@ const LIST_GROUP2 = [
         id : 3,
         item_type : FILLER,
         stimulus :
-            "Op het introductiekamp van hun nieuwe studie\n"            +
-            "misten Suzy en Jochem hun partner meer dan ooit.\n"        +
-            "Suzy zocht een brief van haar vriend, en Jochem\n"         +
-            "een foto van zijn vriendin. Gelukkig duurde het\n"         +
-            "kamp maar vijf dagen."                                      ,
-        question : "Suzy zocht een foto.",
+            "The beautiful princess married her young and\n"            +
+            "handsome chauffeur and shocked the royal\n"                +
+            "family and the press.\n"                                   ,
+        question : "The chauffeur was an old man.",
         qanswer : FALSE_BUTTON_TEXT
     },
     {
         id : 4,
         item_type : FILLER,
         stimulus :
-            "Martijn en Jessica verwachten samen hun\n"                 +
-            "eerste kindje en vonden het leuk zelf\n"                   +
-            "babyspulletjes te maken. Martijn zaagde\n"                 +
-            "een bedje van hout, terwijl Jessica een\n"                 +
-            "dekentje van zachte wol breide.\n"                         +
-            "Het resultaat was een practige wieg.\n"                    ,
+            "The little girl did not play with her brother\n"           +
+            "in the colourful playground next to their weedy\n"         +
+            "garden.\n"                                                 ,
         question : "",
         qanswer : undefined
     }
 ];
 
-// Add a second list of stimuli when required.
-// const LIST_GROUP2 = [
+// Add a third list of stimuli when required.
+// const LIST_GROUP3 = [
 // ...
 // ]
 
