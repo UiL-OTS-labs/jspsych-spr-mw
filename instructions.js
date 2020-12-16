@@ -34,5 +34,5 @@ const PRE_TEST_INSTRUCTION =
     "</p>";
 
 const POST_TEST_INSTRUCTION =
-    "<h1>End of the experimentpart.</h1>"                               +
+    "<h1>End of the experiment part.</h1>"                               +
     "<h2>Many thanks for participating</h2>";
