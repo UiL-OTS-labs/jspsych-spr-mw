@@ -181,10 +181,12 @@ let survey_procedure = {
         survey_review
     ],
     loop_function : function () {
-//        if (repeat_survey) {
-//            // clear data (this might clear to much)
-//            jsPsych.data.reset();
-//        }
+        if (repeat_survey) {
+            // clear last trials of the survey
+            let collection = jsPsych.data.get();
+            let trials = collection.values();
+            trials.length = trials.length - this.timeline.length;
+        }
         return repeat_survey;
     }
 };
