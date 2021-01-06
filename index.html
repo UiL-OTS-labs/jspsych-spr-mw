@@ -17,8 +17,9 @@
 
         <!-- Uil OTS scripts -->
         <script src="globals.js"></script>
-        <script src="stimuli.js"></script>
+        <script src="consent.js"></script>
         <script src="instructions.js"></script>
+        <script src="stimuli.js"></script>
         <script src="survey.js"></script>
 
         <!--maybe one day this plugin will be put in the mainline jsPsych
@@ -172,6 +173,9 @@ function kickOffExperiment() {
     //////////////// timeline /////////////////////////////////
     let timeline = [];
 
+    // First obtain informed consent.
+    timeline.push(consent_trial);
+
     // Add the different parts of the experiment to the timeline
     timeline.push(instruction_screen_practice);
 
@@ -194,10 +198,13 @@ function kickOffExperiment() {
                     min_height : MIN_HEIGHT
                 },
                 on_finish: function() {
-                    // Make sure you have updated your key in globals.js
-                    // If you don't the experiment will not be upload properly
-                    // when running the experiment from the server.
-                    uil.saveData(ACCESS_KEY);
+                    if (consent_given) {
+                        // Make sure you have updated your key in globals.js
+                        uil.saveData(ACCESS_KEY);
+                    }
+                    else {
+                        document.body.innerHTML = FINISHED_NO_CONSENT;
+                    }
                 }
             }
         )

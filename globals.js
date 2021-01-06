@@ -19,6 +19,8 @@ const MIN_HEIGHT = 600;
 const ISI = 500; //ms
 
 // Fragments of text to display on buttons
+const YES_BUTTON_TEST = "yes"
+const NO_BUTTON_TEST = "no"
 const OK_BUTTON_TEXT = "OK";
 const TRUE_BUTTON_TEXT = "true";
 const FALSE_BUTTON_TEXT = "false";
