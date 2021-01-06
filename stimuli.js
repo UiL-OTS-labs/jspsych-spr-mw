@@ -11,6 +11,7 @@ const PRAC      = "PRAC";
 // 34:8, 991-1015, DOI: 10.1080/23273798.2019.1602733.
 // Questions made up by Iris Mulders.
 
+// Groups 
 const GROUPS = [
     "group1",
     "group2"
