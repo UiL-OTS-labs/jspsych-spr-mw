@@ -37,6 +37,7 @@ function kickOffExperiment() {
     const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
     let stimuli = pickRandomGroup();
+    console.log("The selected group is %s", stimuli.group_name)
     let subject_id = jsPsych.randomization.randomID(8);
     let practice_items = getPracticeItems().table;
     let test_items = stimuli.table;
@@ -117,6 +118,7 @@ function kickOffExperiment() {
             width : MIN_WIDTH,
             height : MIN_HEIGHT,
             post_trial_gap : ISI,
+            grouping_string : GROUPING_STRING,
             data : {
                 id : trial_info.id,
                 item_type : trial_info.item_type,

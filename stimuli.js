@@ -22,38 +22,45 @@ const PRACTICE_ITEMS = [
     {
         id : 1,
         item_type : PRAC,
-        stimulus :
-            "The teacher took the car instead of the express train\n"   + // The '+' adds strings together or concatenates them.
-            "due to the previously announced public transport\n"        + // A "\n" makes the string jump to the next line.
-            "strike.\n"                                                 , // use a comma here.
-        question : "",                                                    // An empty string means no question for this trial.
-        qanswer : undefined                                               // We can't define a answer if there ain't no question.
+
+        stimulus :                                                            // Single "/" delimit boundaries between words presented
+                                                                              // together, words presented together.
+                                                                              // boundaries must be activated by setting "/" as
+                                                                              // GROUPING_STRING in globals.js. The default is null
+                                                                              // which means every word is a group of in its own.
+                                                                              // If the grouping string isn't set or null,
+                                                                              // the "/" will be displayed instead of used for grouping.
+            "The teacher took /the /car /instead /of /the /express"         + // The '+' adds strings together or concatenates them.
+            "/train \ndue to the previously announced public\n"             + // A "\n" makes the string jump to the next line.
+            "transport strike.\n",                                            // use a comma here.
+        question : "",                                                        // An empty string means no question for this trial.
+        qanswer : undefined                                                   // We can't define a answer if there ain't no question.
     },
     {
         id : 2,
         item_type : PRAC,
         stimulus :
-            "The researcher presented his most recent work\n"           +
-            "to the commission and obtained very positive\n"            +
-            "comments regarding the experimental design.\n"             ,
+            "The researcher presented /his /most /recent /work\n"           +
+            "/to /the /commission and obtained very positive\n"             +
+            "comments regarding the experimental design.\n"                 ,
         question : "The researcher presented old work.",
-        qanswer : FALSE_BUTTON_TEXT                                       // Use FALSE_BUTTON_TEXT if the answer is true,
-                                                                          // TRUE_BUTTON_TEXT otherwise
+        qanswer : FALSE_BUTTON_TEXT                                           // Use FALSE_BUTTON_TEXT if the answer is true,
+                                                                              // TRUE_BUTTON_TEXT otherwise
     }
 ];
 
 /*
- * In this list there is a stimulus, if a word starts with a '#' it's
- * reaction time will be recorded. So don't put any '#" elsewhere...
+ * In this list there is a stimulus, if a word or group of words starts with a
+ * '#' it's reaction time will be recorded. So don't put any '#" elsewhere...
  */
 const LIST_GROUP1 = [
     {
         id : 1,
         item_type : PASSIVE,
         stimulus :
-            "The guitarist was rejected by #the #attractive #and\n"     + 
-            "#talented #singer #in #the #concert #hall #next #to\n"     + 
-            "#the #Irish #pub.\n"                                       , 
+            "The guitarist was rejected by /#the /#attractive /#and\n"      + 
+            "/#talented /#singer /#in /#the /#concert /#hall /#next /#to\n" + 
+            "/#the /#Irish /#pub.\n"                                        , 
         question : "The singer was attractive.",
         qanswer : TRUE_BUTTON_TEXT
     },
@@ -61,9 +68,9 @@ const LIST_GROUP1 = [
         id : 2,
         item_type : ACTIVE,
         stimulus :
-            "The sculptor mugged #the #strange #and\n"                  +
-            "#temperamental #photographer #in #the #art #gallery\n"     +
-            "#next #to #the #book #shop.\n"                             ,
+            "The sculptor mugged /#the /#strange /#and\n"                   +
+            "/#temperamental /#photographer /#in /#the /#art /#gallery\n"   +
+            "/#next /#to /#the /#book /#shop.\n"                            ,
         question : "",
         qanswer : undefined
     },
@@ -98,9 +105,9 @@ const LIST_GROUP2 = [
         id : 1,
         item_type : ACTIVE,
         stimulus :
-            "The guitarist rejected #the #attractive #and\n"            + 
-            "#talented #singer #in #the #concert# hall #next #to\n"     + 
-            "#the #Irish #pub.\n"                                       , 
+            "The guitarist rejected /#the /#attractive /#and\n"             + 
+            "/#talented /#singer /#in /#the /#concert/# hall /#next /#to\n" + 
+            "/#the /#Irish /#pub.\n"                                        , 
         question : "The singer was attractive.",
         qanswer : TRUE_BUTTON_TEXT
     },
@@ -108,9 +115,9 @@ const LIST_GROUP2 = [
         id : 2,
         item_type : PASSIVE,
         stimulus :
-            "The sculptor was mugged by #the #strange #and\n"           +
-            "#temperamental #photographer #in #the #art #gallery\n"     +
-            "#next #to #the #book #shop.\n"                             ,
+            "The sculptor was mugged by /#the /#strange /#and\n"            +
+            "/#temperamental /#photographer /#in /#the /#art /#gallery\n"   +
+            "/#next /#to /#the /#book /#shop.\n"                            ,
         question : "",
         qanswer : undefined
     },
@@ -118,9 +125,9 @@ const LIST_GROUP2 = [
         id : 3,
         item_type : FILLER,
         stimulus :
-            "The beautiful princess married her young and\n"            +
-            "handsome chauffeur and shocked the royal\n"                +
-            "family and the press.\n"                                   ,
+            "The beautiful princess married her young and\n"                +
+            "handsome chauffeur and shocked the royal\n"                    +
+            "family and the press.\n"                                       ,
         question : "The chauffeur was an old man.",
         qanswer : FALSE_BUTTON_TEXT
     },
@@ -128,9 +135,9 @@ const LIST_GROUP2 = [
         id : 4,
         item_type : FILLER,
         stimulus :
-            "The little girl did not play with her brother\n"           +
-            "in the colourful playground next to their weedy\n"         +
-            "garden.\n"                                                 ,
+            "The little girl did not play with her brother\n"               +
+            "in the colourful playground next to their weedy\n"             +
+            "garden.\n"                                                     ,
         question : "",
         qanswer : undefined
     }
@@ -185,3 +192,4 @@ function pickRandomGroup() {
     var retgroup = TEST_ITEMS[shuffled_range[0]];
     return retgroup
 }
+
