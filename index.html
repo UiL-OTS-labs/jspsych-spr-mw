@@ -37,6 +37,7 @@ function kickOffExperiment() {
     const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
     let stimuli = pickRandomGroup();
+    console.log("The selected group is %s", stimuli.group_name)
     let subject_id = jsPsych.randomization.randomID(8);
     let practice_items = getPracticeItems().table;
     let test_items = stimuli.table;
@@ -59,6 +60,13 @@ function kickOffExperiment() {
             group : group_name,
         }
     );
+
+    let welcome_screen = {
+        type : 'html-keyboard-response',
+        stimulus : WELCOME_INSTRUCTION,
+        choices : [KEY_CODE_SPACE],
+        response_ends_trial : true
+    };
 
     let instruction_screen_practice = {
         type : 'html-keyboard-response',
@@ -117,6 +125,7 @@ function kickOffExperiment() {
             width : MIN_WIDTH,
             height : MIN_HEIGHT,
             post_trial_gap : ISI,
+            grouping_string : GROUPING_STRING,
             data : {
                 id : trial_info.id,
                 item_type : trial_info.item_type,
@@ -173,14 +182,18 @@ function kickOffExperiment() {
     //////////////// timeline /////////////////////////////////
     let timeline = [];
 
-    // First obtain informed consent.
-    timeline.push(consent_trial);
+    // Welcome the participant and guide them through the 
+    // consent forms and survey.
+    timeline.push(welcome_screen);
 
-    // Add the different parts of the experiment to the timeline
-    timeline.push(instruction_screen_practice);
+    // Obtain informed consent.
+    timeline.push(consent_trial);
 
     // add survey
     timeline.push(survey_procedure);
+    
+    // Add the different parts of the experiment to the timeline
+    timeline.push(instruction_screen_practice);
 
     addStimuliToTimeline(timeline, practice_items);
     timeline.push(end_practice_screen);

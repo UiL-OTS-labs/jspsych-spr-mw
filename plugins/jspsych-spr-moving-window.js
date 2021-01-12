@@ -67,6 +67,18 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
                     pretty_name :   "height",
                     default :       600,
                     description :   "The height of the canvas in which the spr moving window is presented"
+                },
+                grouping_string : {
+                    type :          jsPsych.plugins.parameterType.STRING,
+                    pretty_name :   "grouping string",
+                    default :       null,
+                    description :   "The string used to split the string in to parts. The parts are "  +
+                                    "presented together. This allows to present multiple words as "    +
+                                    "group if the argument isn't specified every single word is "      +
+                                    "treated as group. You should make sure that the used argument "   +
+                                    "doesn't appear at other locations than at boundaries of groups, " +
+                                    "because the grouping character is removed from the string. a " +
+                                    "'/' can be used quite handy for example."
                 }
             }
         };
@@ -98,6 +110,30 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
         const RE_CAP_WHITE_SPACE = RegExp(CAP_WHITE_SPACE, 'u');
         const RE_INTERPUNCTION = RegExp(INTERPUNCTION, 'u');
         const RE_WORD_INTERPUNCTION= RegExp(WORD_INTERPUNCTION, 'u');
+
+        /**
+         * Creates a range between [start, end).
+         *
+         * @param start The value at which the range starts
+         * @param end   The value before which the range stops.
+         *
+         * @return an array with the range.
+         */
+        function range(start, end, step = 1) {
+            let a = []
+            if (step > 0) {
+                for (let i = start; i < end; i++)
+                    a.push(i);
+            } else if(step < 0) {
+                for (let i =  start; i > end; i++)
+                    a.push(i);
+            } else {
+                throw RangeError(
+                    "Argument 3 (the step) must be larger or smaller than 0."
+                );
+            }
+            return a;
+        }
     
         /**
          * Class to represent the position of a word on a 2d canvas
@@ -123,7 +159,6 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
              * @param {string} txt, the text to draw at ctx
              * @param {Pos} position the position at which to draw text.
              * @param {} ctx the 2d drawing position.
-             * @param {bool} record whether or not to store this text in the output.
              */
             constructor(text, position, ctx, record = false) {
                 if (typeof(text) !== "string")
@@ -132,7 +167,6 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
                     console.error("TextInfo constructor positions was not a Pos");
                 this.text = text;
                 this.pos = position;
-                this.record = record;
                 this.ctx = ctx
                 this.metrics = ctx.measureText(this.text);
             }
@@ -167,12 +201,29 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
             width() {
                 return this.metrics.width;
             }
-        }
+        };
 
+        /**
+         * Class to obtain useful information about words
+         * that should be presented in a group
+         */
+        class GroupInfo {
+            /**
+             * @param indices {Array.<number>} Indices of the words to be
+             *                                 presented in this group
+             * @param record {bool}            A boolean whether or not
+             *                                 the rt of this group
+             *                                 should be recorded.
+             */
+            constructor(indices, record) {
+                this.indices = indices;
+                this.record = record;
+            }
+        };
 
         // private variables
         
-        let word_index = 0;         // the nth_word that should be presented.
+        let group_index = 0;        // the nth_word that should be presented.
         let words = [];             // array of TextInfo.
         let old_html = "";          // the current display html, in order to
                                     // restore it when finished.
@@ -185,13 +236,15 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
         let valid_keys = null;      // the valid keys or choices for a response
         let gelement = null;        // the element we get from jsPsych.
         let reactiontimes = [];     // store for relevant reactiontimes.
+        let groups = [];            // store groups of indices of words
+                                    // to be presented together.
         
         /**
          * Setup the variables for use at the start of a new trial
          */
         function setupVariables(display_element, trial_pars) {
             // reset state.
-            word_index      = 0;
+            group_index     = 0;
             words           = [];
             ctx             = null;
 
@@ -204,11 +257,69 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
             valid_keys = trial_pars.choices;
             gelement = display_element;
             reactiontimes = [];
+            groups = [];
             
             createCanvas(display_element, trial_pars);
             ctx.font = font;
-            let lines = trial_pars.stimulus.split(RE_NEWLINE);
+            let stimulus = trial_pars.stimulus;
+            if (trial_pars.grouping_string) {
+                grouping_re = RegExp(trial_pars.grouping_string, 'ug');
+                groups = createGroups(stimulus, grouping_re);
+                stimulus = stimulus.replace(grouping_re, "");
+            }
+            else {
+                groups = createGroups(stimulus, RE_WHITE_SPACE);
+            }
+            stimulus = stimulus.replace(RegExp("#", 'gu'), "");
+            let lines = stimulus.split(RE_NEWLINE);
             gatherWordInfo(lines, trial_pars);
+        }
+
+        /**
+         * Create groups of words that are presented together
+         * @param {String} stim the stimulus to be presented
+         * @param {RegExp} split_re
+         */
+        function createGroups(stim, split_re) {
+
+            /**
+             * Splits text into tokens and discards empty strings. The
+             * tokens are defined by the regular expression used to
+             * split the string.
+             *
+             * @param {String} text The text to splint into tokens
+             * @param {RegExp} re   The regular expression used to split the string
+             *
+             * @return An array of strings as tokens.
+             */
+            function splitIntoTokens(text, re) {
+                return text.split(re).filter (
+                    function(word) {
+                        return word != "";
+                    }
+                );
+            };
+
+            let nwordstotal = splitIntoTokens(stim, RE_WHITE_SPACE).length;
+            let word_indices = range(0, nwordstotal);
+            let groups = splitIntoTokens(stim, split_re); 
+            let group_indices = [];
+
+            for (let nthgroup = 0; nthgroup < groups.length; nthgroup++) {
+                let record = groups[nthgroup].trim()[0] == "#";
+                let nwordsgroup = splitIntoTokens(
+                    groups[nthgroup],
+                    RE_WHITE_SPACE
+                ).length;
+                let indices = word_indices.slice(0, nwordsgroup);
+                word_indices = word_indices.slice(nwordsgroup);
+                group_indices.push(new GroupInfo(indices, record));
+            }
+            console.assert(
+                word_indices.length == 0,
+                "Oops it was expected that word_indices was empty by now."
+            );
+            return group_indices;
         }
 
         /**
@@ -247,12 +358,7 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
                 for (let fragment = 0; fragment < fragments.length; fragment++) {
                     let current_fragment = fragments[fragment];
                     let pos = new Pos(runningx, liney);
-                    let record = false;
-                    if (current_fragment[0] == "#") {
-                        record = true;
-                        current_fragment = current_fragment.slice(1);
-                    }
-                    let current_word = new TextInfo(current_fragment, pos, ctx, record);
+                    let current_word = new TextInfo(current_fragment, pos, ctx);
                     if (!current_word.isWhiteSpace())
                         words.push(current_word);
                     runningx += current_word.width();
@@ -271,14 +377,16 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
 
             // draw text
             ctx.fillStyle = font_color;
-            for (let i = 0; i < words.length; i++) {
-                let word = words[i];
-                let pos = word.pos;
-                if (i === word_index) {
-                    word.drawText();
-                }
-                else {
-                    word.drawUnderline();
+            for (let i = 0; i < groups.length; i++) {
+                let group = groups[i];
+                for (let j = 0; j < group.indices.length; j++) {
+                    let word = words[group.indices[j]];
+                    if (i === group_index) {
+                        word.drawText();
+                    }
+                    else {
+                        word.drawUnderline();
+                    }
                 }
             }
         }
@@ -358,11 +466,11 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
          * Callback for when the participant presses a valid key.
          */
         function afterResponse(info) {
-            if (words[word_index].record)
+            if (groups[group_index].record)
                 reactiontimes.push(info.rt);
 
-            word_index++;
-            if (word_index >= words.length) {
+            group_index++;
+            if (group_index >= groups.length) {
                 finish();
             }
             else {

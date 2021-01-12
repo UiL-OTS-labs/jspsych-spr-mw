@@ -1,15 +1,30 @@
 
-const PRE_PRACTICE_INSTRUCTION =
+const WELCOME_INSTRUCTION =
     "<h1>Dear participant,</h1>"                                        +
     "<h2>"                                                              +
         "Welcome in this experiment."                                   +
     "</h2>"                                                             +
     "<p>"                                                               +
+        "First we'll ask a you for your consent. "                      + 
+        "Then we ask a few questions, after the questions "             +
+        "you will get some more instructions on what to do. "           +
+        "Notice that when you do not give your consent the "            +
+        "experiment terminates immediately."                            +
+    "</p>"                                                              +
+    "<p>"                                                               +
+        "Press the spacebar to continue."                               +
+    "</p>";
+
+const PRE_PRACTICE_INSTRUCTION =
+    "<h1>"                                                              +
+        "Task instructions"                                            +
+    "</h1>"                                                             +
+    "<p>"                                                               +
         "You are now going to see sentences on the screen, one after "  +
         "the other. Each sentence is broken up into words. You can "    +
         "reveal the sentence word-by-word by repeatedly hitting "       +
         "the spacebar. "                                                +
-        "This way you walk through each sentence. Your task is to "     +
+        "This way you go through each sentence. Your task is to "       +
         "<i>silently</i> read each sentence as quickly as possible."    +
     "</p>"                                                              +
     "<p>"                                                               +
