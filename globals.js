@@ -36,11 +36,10 @@ const FINISH_TEXT_DUR = 3000;
 // every word is a group of its own. And no 
 // Grouping character if none sentences are split on whitespace
 // each word will be a one word group
-// const GROUPING_STRING = null;
-
+const GROUPING_STRING = null;
 // Or create groups based on a splitting string
-// Create groups based on a "/" Notices every occurence
+// Create groups based on a "/" Notice every occurence
 // of a "/" will be used as group and will be removed from
 // the stimulus
- const GROUPING_STRING = "/";
+//const GROUPING_STRING = "/";
 
