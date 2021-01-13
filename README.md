@@ -1,5 +1,5 @@
 # jspsych-spr-mw
-##A self paced reading with moving window experiment using jsPsych
+## A self paced reading with moving window experiment using jsPsych
 
 ## Make your experiment ready for use with the data server
 ### Update access key
@@ -15,9 +15,9 @@ all the '0' have changed. For elaborate info see globals.js.
 ### Adapting stimuli
 In the file stimuli.js are a number of variables you can tweak
 in order to adapt the stimuli the participants sees. There
-are by default 2 groups, each group gets its own 
+are by default 2 groups, each group gets its own
 list of stimuli assigned. This list can be used to implement
-the Latin square. In the boilerplate are sententces in an
+the Latin square. In the boilerplate are sentences in an
 active, passive and filler condition. The two list complement
 each other, so an active stimulus in the first list is complemented
 with a passive stimulus in the second list. Participants
