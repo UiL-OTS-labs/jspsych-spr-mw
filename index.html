@@ -155,13 +155,13 @@ function kickOffExperiment() {
             choices : G_QUESTION_CHOICES,
             data : {
                 id : trial_info.id,
-                correct_response : trial_info.qanswer,
+                expected_answer : trial_info.qanswer,
                 uil_save : true
             },
             on_finish: function (data) {
                 let choice = G_QUESTION_CHOICES[data.button_pressed];
                 data.answer = choice;
-                data.correct = choice == data.correct_response;
+                data.correct = choice == data.expected_answer;
             }
         };
 
