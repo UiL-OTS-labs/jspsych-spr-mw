@@ -5,11 +5,16 @@ const WELCOME_INSTRUCTION =
         "Welcome in this experiment."                                   +
     "</h2>"                                                             +
     "<p>"                                                               +
-        "First we'll ask a you for your consent. "                      + 
-        "Then we ask a few questions, after the questions "             +
-        "you will get some more instructions on what to do. "           +
-        "Notice that when you do not give your consent the "            +
-        "experiment terminates immediately."                            +
+        "First you will see some information about the experiment and " +
+        "what type of data we will be collecting and why. You can "     +
+        "then consent to participate in the experiment (or not, in "    +
+        "which case the experiment will terminate immediately and no "  +
+        "data will be saved)."                                          +
+    "</p>"                                                              +
+    "<p>"                                                               +
+        "Next, you will fill out a short questionnaire. After the "     +
+        "questionnaire you will get some more instructions on what to " +
+        "do."                                                           +
     "</p>"                                                              +
     "<p>"                                                               +
         "Press the spacebar to continue."                               +
@@ -24,14 +29,14 @@ const PRE_PRACTICE_INSTRUCTION =
         "the other. Each sentence is broken up into words. You can "    +
         "reveal the sentence word-by-word by repeatedly hitting "       +
         "the spacebar. "                                                +
-        "This way you go through each sentence. Your task is to "       +
+        "This way you go will through each sentence. Your task is to "  +
         "<i>silently</i> read each sentence as quickly as possible."    +
     "</p>"                                                              +
     "<p>"                                                               +
-        "Sometimes a statement about a sentence comes up. You then "    +
-        "have to indicate whether the statement is correct or not. "    +
-        "Therefore it is important that you really <i>read</i> each "   +
-        "sentence."                                                     +
+        "Sometimes a statement about a sentence will come up. You then "+
+        "will have to indicate whether the statement is correct or "    +
+        "not. Therefore it is important that you really <i>read</i> "   +
+        "each sentence."                                                +
     "<p>"                                                               +
         "First you will read some practice sentences. These are not "   +
         "part of the actual experiment."                                +
