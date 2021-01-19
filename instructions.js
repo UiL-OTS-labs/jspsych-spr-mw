@@ -29,7 +29,7 @@ const PRE_PRACTICE_INSTRUCTION =
         "the other. Each sentence is broken up into words. You can "    +
         "reveal the sentence word-by-word by repeatedly hitting "       +
         "the spacebar. "                                                +
-        "This way you go will through each sentence. Your task is to "  +
+        "This way you will go through each sentence. Your task is to "  +
         "<i>silently</i> read each sentence as quickly as possible."    +
     "</p>"                                                              +
     "<p>"                                                               +
