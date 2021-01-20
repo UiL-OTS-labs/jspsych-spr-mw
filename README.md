@@ -7,15 +7,15 @@ In the file globals.js is a variable:
 ```javascript
 const ACCESS_KEY = '00000000-0000-0000-0000-000000000000';
 ```
-For uploading to the UiL-OTS data server you need to change this
-to the access_key that you have obtained when your experiment has
-been approved. Your personal access key should look identical, but
-all the '0' have changed. For elaborate info see globals.js.
+For uploading to the UiL-OTS data server you will need to change 
+this to the access_key that you obtained when your experiment
+was approved. Your personal access key should look identical, but
+with all the '0' changed. For elaborate info see globals.js.
 
 ### Adapting stimuli
 In the file stimuli.js are a number of variables you can tweak
 in order to adapt the stimuli the participants sees. There
-are by default 2 groups, each group gets its own
+are by default 2 groups. Each group gets its own
 list of stimuli assigned. This list can be used to implement
 the Latin square. In the boilerplate are sentences in an
 active, passive and filler condition. The two list complement
@@ -36,16 +36,17 @@ globals.js is another variable:
 const GROUPING_STRING = null;
 ```
 To enable grouping you must define a useful delimiter between groups.
-A little bit further in the file is a commented version of:
+A little bit further in the file there's a commented version of this:
 ```javascript
 const GROUPING_STRING = "/";
 ```
-So in order to enable grouping comment the first version and uncomment
-the latter. In theory you can fill out any string instead of the `"/"`.
+So in order to enable grouping, comment the first version and uncomment
+the latter. In theory you can fill out any string instead of the `"/"` 
+(useful in case you need to use / in a stimulus).
 Notice the string is turned into a regular expression in order to split
 the stimulus into parts and to remove the `/` in the case described here.
 ```javascript
 re = RegExp(GROUPING_STRING,'gu');
 ```
 So make sure if you are going to be creative, that the expression is valid.
-### Goodluck, hopefully this experiment is usefull to you.
+### Good luck, hopefully this experiment is useful to you.
