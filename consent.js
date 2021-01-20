@@ -2,15 +2,17 @@
 // Replace this text with some custon html of your own. You should
 // end
 const CONSENT_HTML =
-    "<p>"                                                      +
-        "Some small amount of text to display on the screen. " +
-        "If you can read this, you would like to update this " +
-        "in consent.js.<br>"                                   +
-        "Do you consent with the terms above?"                 +
+    "<p>"                                                       +
+        "(This is where the information letter and "            +
+        "declaration of consent should be. If you can read "    +
+        "this, you will want to update consent.js with your "   +
+        "own combined information letter and declaration of "   +
+        "consent.)"
     "</p>";
 
-const POS_CONSENT = "Yes, I consent";
-const NEG_CONSENT = "No, I do not consent";
+const POS_CONSENT = "Yes, I consent for my responses to be "   +
+                    "used for scientific research.";
+const NEG_CONSENT = "No, I do not consent.";
 
 const consent_choices = [POS_CONSENT, NEG_CONSENT];
 

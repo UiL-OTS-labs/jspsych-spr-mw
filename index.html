@@ -26,6 +26,13 @@
             repository.-->
         <script src="plugins/jspsych-spr-moving-window.js"></script>
 
+        <style>
+            .jspsych-survey-multi-choice-text {
+                text-align: left !important;
+            }
+        </style>
+
+
     </head>
     <body></body>
     <script>
@@ -155,13 +162,14 @@ function kickOffExperiment() {
             choices : G_QUESTION_CHOICES,
             data : {
                 id : trial_info.id,
-                correct_response : trial_info.qanswer,
+                item_type : trial_info.item_type,
+                expected_answer : trial_info.qanswer,
                 uil_save : true
             },
             on_finish: function (data) {
                 let choice = G_QUESTION_CHOICES[data.button_pressed];
                 data.answer = choice;
-                data.correct = choice == data.correct_response;
+                data.correct = choice == data.expected_answer;
             }
         };
 
