@@ -11,11 +11,11 @@ const PRAC      = "PRAC";
 // 34:8, 991-1015, DOI: 10.1080/23273798.2019.1602733.
 // Questions made up by Iris Mulders.
 
-// Groups 
-const GROUPS = [
-    "group1",
-    "group2"
-    // "group3"
+// Lists 
+const LISTS = [
+    "list1",
+    "list2"
+    // "list3"
 ];
 
 const PRACTICE_ITEMS = [
@@ -148,37 +148,37 @@ const LIST_GROUP2 = [
 // ...
 // ]
 
-// These groups are not a between subjects variable, but
+// These lists are not a between subjects variable, but
 // define which list a participant gets.
 const TEST_ITEMS = [
-    {group_name: GROUPS[0], table: LIST_GROUP1},
-    {group_name: GROUPS[1], table: LIST_GROUP2}
-    // Add a third group here, put a comma on the
+    {list_name: LISTS[0], table: LIST_GROUP1},
+    {list_name: LISTS[1], table: LIST_GROUP2}
+    // Add a third list here, put a comma on the
     // end of the line above here.
-    // {group_name: GROUPS[1], table: LIST_GROUP3}
+    // {list_name: LISTS[1], table: LIST_GROUP3}
 ];
 
 /**
  * Get the list of practice items
  *
- * Returns an object with a group and a table, the group will always indicate
+ * Returns an object with a list and a table, the list will always indicate
  * "practice" since it are the practice items
  *
- * @returns {object} object with group and table fields
+ * @returns {object} object with list and table fields
  */
 function getPracticeItems() {
-    return {group_name : "practice", table : PRACTICE_ITEMS};
+    return {list_name : "practice", table : PRACTICE_ITEMS};
 }
 
 /**
- * This function will pick a random group from the TEST_ITEMS array.
+ * This function will pick a random list from the TEST_ITEMS array.
  *
- * Returns an object with a group and a table, the group will always indicate
+ * Returns an object with a list and a table, the list will always indicate
  * which list has been chosen for the participant.
  *
- * @returns {object} object with group and table fields
+ * @returns {object} object with list and table fields
  */
-function pickRandomGroup() {
+function pickRandomList() {
     let range = function (n) {
         let empty_array = [];
         let i;
@@ -187,9 +187,9 @@ function pickRandomGroup() {
         }
         return empty_array;
     }
-    let num_groups = TEST_ITEMS.length;
-    var shuffled_range = jsPsych.randomization.repeat(range(num_groups), 1)
-    var retgroup = TEST_ITEMS[shuffled_range[0]];
-    return retgroup
+    let num_lists = TEST_ITEMS.length;
+    var shuffled_range = jsPsych.randomization.repeat(range(num_lists), 1)
+    var retlist = TEST_ITEMS[shuffled_range[0]];
+    return retlist
 }
 

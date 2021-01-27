@@ -43,12 +43,12 @@ const KEY_CODE_SPACE = 32;
 function kickOffExperiment() {
     const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
-    let stimuli = pickRandomGroup();
-    console.log("The selected group is %s", stimuli.group_name)
+    let stimuli = pickRandomList();
+    console.log("The selected list is %s", stimuli.list_name)
     let subject_id = jsPsych.randomization.randomID(8);
     let practice_items = getPracticeItems().table;
     let test_items = stimuli.table;
-    let group_name = stimuli.group_name;
+    let list_name = stimuli.list_name;
 
     let shuffled = uil.randomization.randomizeStimuli(
         test_items,
@@ -64,7 +64,7 @@ function kickOffExperiment() {
     jsPsych.data.addProperties (
         {
             subject : subject_id,
-            group : group_name,
+            list : list_name,
         }
     );
 
