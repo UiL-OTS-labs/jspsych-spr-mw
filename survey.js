@@ -35,7 +35,7 @@ const AGE_HTML = `
 const survey_1 = {
     type :      'survey-html-form',
     data: {
-        useful_data_flag: false,
+        uil_save : true,
         survey_data_flag: true
     },
     preamble :  AGE_PROMPT,
@@ -84,7 +84,7 @@ const HAND_OPTIONS = ["Left", "Right"];
 const survey_2 = {
     type: 'survey-multi-choice',
     data: {
-        useful_data_flag : false,
+        uil_save : true,
         survey_data_flag : true
     },
     questions: [
