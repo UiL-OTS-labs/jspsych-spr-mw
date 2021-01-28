@@ -66,14 +66,14 @@ the SPR.
 ### SPR stimulus
 The boilerplate has support for 15 groups of words. Remember that a group can
 consist of a single word. Groups starting with a `#` in the stimulus list are
-added to the output. Each reaction time is in ms. If less then 15 groups are
-marked with a `#`, the remaining reactiontimes are put to -1 as an indication
-that no response has been given for that word; it makes sure to mark it as
+added to the output. Each reaction time is in ms. If less than 15 groups are
+marked with a `#`, the remaining reactiontimes are set to -1 as an indication
+that no response has been given for that word; this marks it as
 invalid. The variables are listed as **rt1**, **rt2** **..** **rt15** in the output.
 The fixation cross that lures the eyes of the participant to the start of the
-sentence is also implemented using the same spr-moving-window plugin. With the
+sentence is also implemented using the same spr-moving-window plugin, with the
 single group/word '+'. All RTs for this trial will be set to -1.
-In addition to the RTs Three variables are added to the output:
+In addition to the RTsm three variables are added to the output:
 
 1. **id**
 2. **item_type**
@@ -81,21 +81,21 @@ In addition to the RTs Three variables are added to the output:
 
 The **id** (which you assign in `stimulus.js`) of the stimulus identifies 1
 specific stimulus from your list. It is typically 1 to n, where n is the number
-of stimuli in your list.
+of items in your list. 
 
 The **item_type** is added to the output, also defined by you in `stimuli.js`.
 In contrast the item_type of the fixation cross is always ```FIX_CROSS```.
 
-**uil_save** is added to the the output variables to indicate whether the this
-json opbject or one line in the output of the csv is worth saveing, in other
+**uil_save** is added to the output variables to indicate whether this
+json opbject or one line in the output of the csv is worth saving, in other
 words is really mandatory for the analysis of your experiment. If it is defined
-for a trial it is either true or false - a boolean. You can use this boolean in
-order to filter your data. You can first check whether the uil_save is set and
-if it is set, you can examine whether is is true and if not, just throw the
+for a trial it is either true or false - a boolean. You can use this boolean 
+to filter your data. You can first check whether the uil_save is set and
+if it is set, you can examine whether it is true and if not, just throw the
 row-in-the-csv or JSON object away.
 
 ### question stimulus
-The question stimulus is a 'html-button-response' type of stimulus from the
+The question stimulus is a 'html-button-response' type of stimulus. From the
 information of [jspsych output][1] you should be able to figure out what jsPsych
 adds for each trial. In addition to what jsPsych adds, we add the following
 output variables:
@@ -104,7 +104,7 @@ output variables:
 2. **item_type** (similar to the id in the section of the SPR stimulus above)
 3. **expected_answer**: the answer that would be correct.
 4. **uil_save** (similar to the id in the section of the SPR stimulus above)
-5. **Answer** the answer that the participant gave one of [false, true].
+5. **Answer** the answer that the participant gave; one of [false, true].
 6. **correct** whether the given answer was the correct answer.
 
 ## Good luck, hopefully this experiment is useful to you.
