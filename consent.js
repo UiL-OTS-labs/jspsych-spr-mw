@@ -2,6 +2,12 @@
 // Keeps track whether or not consent has been given.
 let consent_given = false;
 
+/*
+ * This fragment of html will be displayed in the beginning of you experiment.
+ * You should fillout the contents of your information letter here.
+ * It is displayed as html, the current html should be replace with
+ * your information letter.
+ */
 const CONSENT_HTML = 
     '<p>' +
         'Insert your information letter here; for more information, see the '  +
@@ -10,6 +16,9 @@ const CONSENT_HTML =
         '</a>'                                                                 +
     '</p>';
 
+/*
+ * Debrieving given when the participant doesn't consent.
+ */
 const DEBRIEF_MESSAGE_NO_CONSENT = 
     "<h1>"                                          +
         "End of the experiment"                     +
@@ -17,9 +26,6 @@ const DEBRIEF_MESSAGE_NO_CONSENT =
     "<h2>"                                          +
         "No consent has been given."                +
     "</h2>";
-
-// Number of ms that the no consent message is displayed.
-const DEBRIEF_MESSAGE_NO_CONSENT_DURATION = 3000;
 
 const CONSENT_STATEMENT = 
     'Yes, I consent to the use of my answers for scientific research.';
