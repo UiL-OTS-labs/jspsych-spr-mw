@@ -52,14 +52,16 @@ function kickOffExperiment() {
     let test_items = stimuli.table;
     let list_name = stimuli.list_name;
 
-    let shuffled = uil.randomization.randomizeStimuli(
-        test_items,
-        max_same_type=2
-    );
-    if (shuffled !== null)
-        test_items = shuffled;
-    else 
-        console.error('Unable to shuffle stimuli according constraints.')
+    if (PSEUDO_RANDOMIZE) {
+        let shuffled = uil.randomization.randomizeStimuli(
+            test_items,
+            max_same_type=MAX_SUCCEEDING_ITEMS_OF_TYPE
+        );
+        if (shuffled !== null)
+            test_items = shuffled;
+        else 
+            console.error('Unable to shuffle stimuli according constraints.')
+    }
 
     // data one would like to add to __all__ trials, according to:
     // https://www.jspsych.org/overview/data/
