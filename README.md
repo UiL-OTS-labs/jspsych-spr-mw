@@ -1,10 +1,14 @@
 # jspsych-spr-mw
+
 ## A self paced reading with moving window experiment using jsPsych
-This is a small boiler plate experiment for Self Paced Reading (SPR) with a
+This is a small boilerplate experiment for Self Paced Reading (SPR) with a
 moving window. Participants read sentences consisting of lines. Single
 words or groups of words are revealed when press a key(space-bar). An occasional
 question is asked to see whether they comprehend the text they have been
 reading.
+
+## Generic documentation
+Please read the [generic documentation](https://github.com/UiL-OTS-labs/jspsych-uil-template-docs) for some context.
 
 ## Make your experiment ready for use with the data server
 
