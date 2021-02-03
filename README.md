@@ -3,7 +3,7 @@
 ## A self paced reading with moving window experiment using jsPsych
 This is a small boilerplate experiment for Self Paced Reading (SPR) with a
 moving window. Participants read sentences consisting of lines. Single
-words or groups of words are revealed when press a key(space-bar). An occasional
+words or groups of words are revealed when participants press a key (space-bar). An occasional
 question is asked to see whether they comprehend the text they have been
 reading.
 
@@ -27,7 +27,7 @@ In the file `stimuli.js` are a number of variables you can tweak
 in order to adapt the stimuli the participants sees. There
 are by default 2 lists. Each list gets its own
 set of stimuli assigned. These lists can be used to implement
-the Latin square. In the boilerplate are sentences in an
+a Latin square design. The boilerplate has sentences in an
 active, passive and filler condition. The two list complement
 each other, so an active stimulus in the first list is complemented
 with a passive stimulus in the second list. Participants get one of these
@@ -61,8 +61,8 @@ So make sure if you are going to be creative, that the expression is valid.
 
 ## Output
 For some general information about understanding the output of jsPsych you
-can visit the `README.md` of our [jspsych output][1] github page. This boiler
-plate creates its own plugin in order to make an SPR stimulus. Currently this
+can visit the `README.md` of our [jspsych output][1] github page. This 
+boilerplate creates its own plugin in order to make an SPR stimulus. Currently this
 stimulus in not listed in [jspsych plugin list][2], because it is not part of
 the official jsPsych source. So here we describe which output is specific for
 the SPR.
