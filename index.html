@@ -46,11 +46,13 @@ function kickOffExperiment() {
     const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
     let stimuli = pickRandomList();
-    console.log("The selected list is %s", stimuli.list_name)
     let subject_id = jsPsych.randomization.randomID(8);
     let practice_items = getPracticeItems().table;
     let test_items = stimuli.table;
     let list_name = stimuli.list_name;
+
+    uil.setAccessKey(ACCESS_KEY);
+    uil.stopIfExperimentclosed();
 
     if (PSEUDO_RANDOMIZE) {
         let shuffled = uil.randomization.randomizeStimuli(
