@@ -1,3 +1,11 @@
 
 # Ignore vim temporary files
 *.sw[po]
+
+# Ignore my custom bash scripts
+mount-web-server.sh
+umount-web-server.sh
+upload-experiment.sh
+
+# Ignore the key used for testing purposes
+key.txt
