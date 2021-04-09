@@ -52,7 +52,7 @@ function kickOffExperiment() {
     let list_name = stimuli.list_name;
 
     uil.setAccessKey(ACCESS_KEY);
-    uil.stopIfExperimentclosed();
+    uil.stopIfExperimentClosed();
 
     if (PSEUDO_RANDOMIZE) {
         let shuffled = uil.randomization.randomizeStimuli(
