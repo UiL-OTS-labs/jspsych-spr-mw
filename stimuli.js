@@ -24,8 +24,7 @@ const PRACTICE_ITEMS = [
         item_type : PRAC,
 
         stimulus :                                                // Single "/" delimit boundaries between words presented
-                                                                  // together, words presented together.
-                                                                  // boundaries must be activated by setting "/" as
+                                                                  // together. Boundaries must be activated by setting "/" as
                                                                   // GROUPING_STRING in globals.js. The default is null
                                                                   // which means every word is a group of in its own.
                                                                   // If the grouping string isn't set or null,
@@ -44,8 +43,8 @@ const PRACTICE_ITEMS = [
             "to the commission and obtained very positive\n"    +
             "comments regarding the experimental design.\n"     ,
         question : "The researcher presented old work.",
-        qanswer : FALSE_BUTTON_TEXT                               // Use FALSE_BUTTON_TEXT if the answer is true,
-                                                                  // TRUE_BUTTON_TEXT otherwise
+        qanswer : FALSE_BUTTON_TEXT                               // Use TRUE_BUTTON_TEXT if the answer is true,
+                                                                  // FALSE_BUTTON_TEXT otherwise
     }
 ];
 
@@ -164,7 +163,7 @@ const TEST_ITEMS = [
  * Returns an object with a list and a table, the list will always indicate
  * "practice" since it are the practice items
  *
- * @returns {object} object with list and table fields
+ * @returns {object} object with list_name and table fields
  */
 function getPracticeItems() {
     return {list_name : "practice", table : PRACTICE_ITEMS};
@@ -176,7 +175,7 @@ function getPracticeItems() {
  * Returns an object with a list and a table, the list will always indicate
  * which list has been chosen for the participant.
  *
- * @returns {object} object with list and table fields
+ * @returns {object} object with list_name and table fields
  */
 function pickRandomList() {
     let range = function (n) {
