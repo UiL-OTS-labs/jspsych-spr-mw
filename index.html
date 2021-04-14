@@ -51,6 +51,7 @@ function kickOffExperiment() {
     let test_items = stimuli.table;
     let list_name = stimuli.list_name;
 
+    // Make sure you have updated your key in globals.js
     uil.setAccessKey(ACCESS_KEY);
     uil.stopIfExperimentClosed();
 
@@ -226,8 +227,7 @@ function kickOffExperiment() {
                 },
                 on_finish: function() {
                     if (consent_given) {
-                        // Make sure you have updated your key in globals.js
-                        uil.saveData(ACCESS_KEY);
+                        uil.saveData();
                     }
                     else {
                         document.body.innerHTML = FINISHED_NO_CONSENT;
