@@ -63,7 +63,7 @@ So make sure if you are going to be creative, that the expression is valid.
 For some general information about understanding the output of jsPsych you
 can visit the `README.md` of our [jspsych output][1] github page. This 
 boilerplate creates its own plugin in order to make an SPR stimulus. Currently this
-stimulus in not listed in [jspsych plugin list][2], because it is not part of
+stimulus is not listed in [jspsych plugin list][2], because it is not part of
 the official jsPsych source. So here we describe which output is specific for
 the SPR.
 
