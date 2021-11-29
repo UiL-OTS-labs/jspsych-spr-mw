@@ -2,7 +2,7 @@
 
 ## A self paced reading with moving window experiment using jsPsych
 This is a small boilerplate experiment for Self Paced Reading (SPR) with a
-moving window. Participants read sentences consisting of lines. Single
+moving window. Participants read sentences formatted in lines. Single
 words or groups of words are revealed when participants press a key (space-bar). An occasional
 question is asked to see whether they comprehend the text they have been
 reading.
@@ -13,7 +13,7 @@ Please read the [generic documentation](https://github.com/UiL-OTS-labs/jspsych-
 ## Make your experiment ready for use with the data server
 
 ### Update access key
-In the file `globals.js` is a variable:
+The file `globals.js` contains a variable:
 ```javascript
 const ACCESS_KEY = '00000000-0000-0000-0000-000000000000';
 ```
@@ -23,12 +23,12 @@ was approved. Your personal access key should look identical, but
 with all the '0' changed. For elaborate info see `globals.js`.
 
 ### Adapting stimuli
-In the file `stimuli.js` are a number of variables you can tweak
+The file `stimuli.js` contains a number of variables you can tweak
 in order to adapt the stimuli the participants sees. There
 are by default 2 lists. Each list gets its own
 set of stimuli assigned. These lists can be used to implement
 a Latin square design. The boilerplate has sentences in an
-active, passive and filler condition. The two list complement
+active, passive and filler condition. The two lists complement
 each other, so an active stimulus in the first list is complemented
 with a passive stimulus in the second list. Participants get one of these
 lists assigned randomly. You can add additional lists if your experiment
@@ -39,8 +39,8 @@ to implement the Latin square.
 The boilerplate experiment treats every word in the stimuli as a
 group of its own containing one word. Sometimes it is handy to group
 multiple words together, to shorten the time it takes to complete the
-experiment for example. This is possible, but must be enabled. In the file
-`globals.js` is another variable:
+experiment for example. This is possible, but must be enabled. The file
+`globals.js` contains another variable:
 ```javascript
 const GROUPING_STRING = null;
 ```
@@ -108,7 +108,7 @@ output variables:
 2. **item_type** (similar to the id in the section of the SPR stimulus above)
 3. **expected_answer**: the answer that would be correct.
 4. **uil_save** (similar to the id in the section of the SPR stimulus above)
-5. **Answer** the answer that the participant gave; one of [false, true].
+5. **answer** the answer that the participant gave; one of [false, true].
 6. **correct** whether the given answer was the correct answer.
 
 ## Good luck, hopefully this experiment is useful to you.
