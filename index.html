@@ -177,6 +177,7 @@ function kickOffExperiment() {
                 let choice = G_QUESTION_CHOICES[data.button_pressed];
                 data.answer = choice;
                 data.correct = choice == data.expected_answer;
+                data.integer_correct = data.correct ? 1 : 0;
             }
         };
 
