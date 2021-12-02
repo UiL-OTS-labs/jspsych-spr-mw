@@ -109,7 +109,8 @@ output variables:
 3. **expected_answer**: the answer that would be correct.
 4. **uil_save** (similar to the id in the section of the SPR stimulus above)
 5. **answer** the answer that the participant gave; one of [false, true].
-6. **correct** whether the given answer was the correct answer.
+6. **correct** whether the given answer was the correct answer; one of [false, true].
+7. **integer_correct** whether the given answer was the correct answer; one of [0, 1].
 
 ## Good luck, hopefully this experiment is useful to you.
 
