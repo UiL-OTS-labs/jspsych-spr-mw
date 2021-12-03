@@ -79,28 +79,40 @@ function kickOffExperiment() {
         type : 'html-keyboard-response',
         stimulus : WELCOME_INSTRUCTION,
         choices : [KEY_CODE_SPACE],
-        response_ends_trial : true
+        response_ends_trial : true,
+        on_finish: function (data) {
+            data.rt = Math.round(data.rt);
+        }
     };
 
     let instruction_screen_practice = {
         type : 'html-keyboard-response',
         stimulus : PRE_PRACTICE_INSTRUCTION,
         choices : [KEY_CODE_SPACE],
-        response_ends_trial : true
+        response_ends_trial : true,
+        on_finish: function (data) {
+            data.rt = Math.round(data.rt);
+        }
     };    
 
     let end_practice_screen = {
         type : 'html-keyboard-response',
         stimulus : PRE_TEST_INSTRUCTION,
         choices : [KEY_CODE_SPACE],
-        response_ends_trial : true
+        response_ends_trial : true,
+        on_finish: function (data) {
+            data.rt = Math.round(data.rt);
+        }
     };
 
     let end_experiment = {
         type : 'html-keyboard-response',
         stimulus : POST_TEST_INSTRUCTION,
         choices : [],
-        trial_duration : FINISH_TEXT_DUR
+        trial_duration : FINISH_TEXT_DUR,
+        on_finish: function (data) {
+            data.rt = Math.round(data.rt);
+        }
     }
 
     /**
@@ -178,6 +190,7 @@ function kickOffExperiment() {
                 data.answer = choice;
                 data.correct = choice == data.expected_answer;
                 data.integer_correct = data.correct ? 1 : 0;
+                data.rt = Math.round(data.rt);
             }
         };
 

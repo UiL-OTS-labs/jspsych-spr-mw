@@ -43,6 +43,7 @@ const survey_1 = {
     // flatten json output
     on_finish : function(data) {
         let responses = JSON.parse(data.responses);
+        data.rt = Math.round(data.rt);
         Object.keys(responses).forEach(
             function (key) {
                 if (key in data) {
@@ -119,6 +120,7 @@ const survey_2 = {
 
     on_finish: function(data){
         let responses = JSON.parse(data.responses);
+        data.rt = Math.round(data.rt);
         Object.keys(responses).forEach(
             function (key) {
                 if (key in data) {
@@ -170,6 +172,7 @@ let survey_review = {
     on_finish: function(data){
         // Repeat the survey if true (0) was not pressed
         repeat_survey = data.button_pressed != 0;
+        data.rt = Math.round(data.rt);
     }
 };
 
