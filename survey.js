@@ -25,8 +25,7 @@ const AGE_HTML = `
     <br>
 
     <label for="native_language">What is your native language?</label>
-    <input type="text" id="native_language" name="native_language"
-        pattern="^\s*[a-zA-Z]+([ ,&/\\]+\[a-zA-Z]+)*\s*$" placeholder="Dutch" required>
+    <input type="text" id="native_language" name="native_language" placeholder="Dutch" required>
     <span class="validity"></span>
     <br> 
     <br> 
