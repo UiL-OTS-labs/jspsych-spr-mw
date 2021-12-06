@@ -40,19 +40,8 @@ const survey_1 = {
     preamble :  AGE_PROMPT,
     html :      AGE_HTML,
 
-    // flatten json output
     on_finish : function(data) {
-        let responses = JSON.parse(data.responses);
         data.rt = Math.round(data.rt);
-        Object.keys(responses).forEach(
-            function (key) {
-                if (key in data) {
-                    console.warn("Oops overwriting existing key in data");
-                }
-                data[key] = responses[key];
-            }
-        );
-        delete data.responses;
     }
 };
 
@@ -119,17 +108,7 @@ const survey_2 = {
     ],
 
     on_finish: function(data){
-        let responses = JSON.parse(data.responses);
         data.rt = Math.round(data.rt);
-        Object.keys(responses).forEach(
-            function (key) {
-                if (key in data) {
-                    console.warn("Oops overwriting existing key in data");
-                }
-                data[key] = responses[key];
-            }
-        );
-        delete data.responses;
     }
 };
 
