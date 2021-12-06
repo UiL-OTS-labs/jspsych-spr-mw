@@ -176,7 +176,8 @@ let consent_block = {
         }
     ],
     on_finish: function(data){
-        let consent_choice = data.responses;   
+        let consent_choice = data.responses;
+        data.rt = Math.round(data.rt);
         data.consent_choice_response = consent_choice;
     }
 };
@@ -202,6 +203,7 @@ let no_consent_end_screen = {
     trial_duration: FINISH_TEXT_DUR,
     on_finish: function (data){
         jsPsych.endExperiment()
+        data.rt = Math.round(data.rt);
     }
 };
 

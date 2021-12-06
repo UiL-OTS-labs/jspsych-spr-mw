@@ -25,8 +25,7 @@ const AGE_HTML = `
     <br>
 
     <label for="native_language">What is your native language?</label>
-    <input type="text" id="native_language" name="native_language"
-        pattern="^\s*[a-zA-Z]+([ ,&/\\]+\[a-zA-Z]+)*\s*$" placeholder="Dutch" required>
+    <input type="text" id="native_language" name="native_language" placeholder="Dutch" required>
     <span class="validity"></span>
     <br> 
     <br> 
@@ -41,18 +40,8 @@ const survey_1 = {
     preamble :  AGE_PROMPT,
     html :      AGE_HTML,
 
-    // flatten json output
     on_finish : function(data) {
-        let responses = JSON.parse(data.responses);
-        Object.keys(responses).forEach(
-            function (key) {
-                if (key in data) {
-                    console.warn("Oops overwriting existing key in data");
-                }
-                data[key] = responses[key];
-            }
-        );
-        delete data.responses;
+        data.rt = Math.round(data.rt);
     }
 };
 
@@ -119,16 +108,7 @@ const survey_2 = {
     ],
 
     on_finish: function(data){
-        let responses = JSON.parse(data.responses);
-        Object.keys(responses).forEach(
-            function (key) {
-                if (key in data) {
-                    console.warn("Oops overwriting existing key in data");
-                }
-                data[key] = responses[key];
-            }
-        );
-        delete data.responses;
+        data.rt = Math.round(data.rt);
     }
 };
 
@@ -171,6 +151,7 @@ let survey_review = {
     on_finish: function(data){
         // Repeat the survey if true (0) was not pressed
         repeat_survey = data.button_pressed != 0;
+        data.rt = Math.round(data.rt);
     }
 };
 

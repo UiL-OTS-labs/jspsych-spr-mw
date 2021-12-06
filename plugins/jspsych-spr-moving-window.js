@@ -425,35 +425,35 @@ jsPsych.plugins[SPR_MW_PLUGIN_NAME] = (
             }
 
             if (reactiontimes.length > 0)
-                data.rt1 = reactiontimes[0];
+                data.rt1 = Math.round(reactiontimes[0]);
             if (reactiontimes.length > 1)
-                data.rt2 = reactiontimes[1];
+                data.rt2 = Math.round(reactiontimes[1]);
             if (reactiontimes.length > 2)
-                data.rt3 = reactiontimes[2];
+                data.rt3 = Math.round(reactiontimes[2]);
             if (reactiontimes.length > 3)
-                data.rt4 = reactiontimes[3];
+                data.rt4 = Math.round(reactiontimes[3]);
             if (reactiontimes.length > 4)
-                data.rt5 = reactiontimes[4];
+                data.rt5 = Math.round(reactiontimes[4]);
             if (reactiontimes.length > 5)
-                data.rt6 = reactiontimes[5];
+                data.rt6 = Math.round(reactiontimes[5]);
             if (reactiontimes.length > 6)
-                data.rt7 = reactiontimes[6];
+                data.rt7 = Math.round(reactiontimes[6]);
             if (reactiontimes.length > 7)
-                data.rt8 = reactiontimes[7];
+                data.rt8 = Math.round(reactiontimes[7]);
             if (reactiontimes.length > 8)
-                data.rt9 = reactiontimes[8];
+                data.rt9 = Math.round(reactiontimes[8]);
             if (reactiontimes.length > 9)
-                data.rt10 = reactiontimes[9];
+                data.rt10 = Math.round(reactiontimes[9]);
             if (reactiontimes.length > 10)
-                data.rt11 = reactiontimes[10];
+                data.rt11 = Math.round(reactiontimes[10]);
             if (reactiontimes.length > 11)
-                data.rt12 = reactiontimes[11];
+                data.rt12 = Math.round(reactiontimes[11]);
             if (reactiontimes.length > 12)
-                data.rt13 = reactiontimes[12];
+                data.rt13 = Math.round(reactiontimes[12]);
             if (reactiontimes.length > 13)
-                data.rt14 = reactiontimes[13];
+                data.rt14 = Math.round(reactiontimes[13]);
             if (reactiontimes.length > 14)
-                data.rt15 = reactiontimes[14];
+                data.rt15 = Math.round(reactiontimes[14]);
 
             jsPsych.pluginAPI.clearAllTimeouts();
             jsPsych.pluginAPI.cancelAllKeyboardResponses();
