@@ -44,11 +44,11 @@
 const KEY_CODE_SPACE = 32;
 
 // this function will eventually run the jsPsych timeline
-function kickOffExperiment() {
+function kickOffExperiment(stimuli) {
     const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
-    let stimuli = pickRandomList();
-    let subject_id = jsPsych.randomization.randomID(8);
+    let subject_id = uil.session.isActive() ?
+            uil.session.subjectId() : jsPsych.randomization.randomID(8);
     let practice_items = getPracticeItems().table;
     let test_items = stimuli.table;
     let list_name = stimuli.list_name;
@@ -190,7 +190,7 @@ function kickOffExperiment() {
             on_finish: function (data) {
                 let choice = G_QUESTION_CHOICES[data.button_pressed];
                 data.answer = choice;
-                data.correct = choice == data.expected_answer;
+                data.correct = choice === data.expected_answer;
                 data.integer_correct = data.correct ? 1 : 0;
                 data.rt = Math.round(data.rt);
             }
@@ -256,12 +256,74 @@ function kickOffExperiment() {
         let paragraph = document.createElement("p")
         paragraph.innerHTML = "Please run this experiment on a pc or laptop";
         document.body.appendChild(paragraph);
-    };
+    }
+}
+
+/**
+ * Get the list of practice items
+ *
+ * Returns an object with a list and a table, the list will always indicate
+ * "practice" since it are the practice items
+ *
+ * @returns {object} object with list_name and table fields
+ */
+function getPracticeItems() {
+    return {list_name : "practice", table : PRACTICE_ITEMS};
+}
+
+/**
+ * This function will pick a random list from the TEST_ITEMS array.
+ *
+ * Returns an object with a list and a table, the list will always indicate
+ * which list has been chosen for the participant.
+ *
+ * @returns {object} object with list_name and table fields
+ */
+function pickRandomList() {
+    let range = function (n) {
+        let empty_array = [];
+        let i;
+        for (i = 0; i < n; i++) {
+            empty_array.push(i);
+        }
+        return empty_array;
+    }
+    let num_lists = TEST_ITEMS.length;
+    var shuffled_range = jsPsych.randomization.repeat(range(num_lists), 1)
+    var retlist = TEST_ITEMS[shuffled_range[0]];
+    return retlist
+}
+
+function findList(name) {
+    let list = TEST_ITEMS.find((entry) => entry.list_name === name);
+    if (!list) {
+        let found = TEST_ITEMS.map((entry) => `"${entry.list_name}"`).join(', ');
+        console.error(
+           `List not found "${name}".\n` +
+           'This name was configured on the UiL datastore server.\n' +
+           `The following lists exist in stimuli.js: \n${found}`)
+    }
+    return list;
+}
+
+function main() {
+
+    // Option 1: client side randomization:
+    let stimuli = pickRandomList();
+    kickOffExperiment(stimuli);
+
+    // Option 2: server side balancing:
+    // Make sure you have matched your groups on the dataserver with the
+    // This experiment uses groups/lists list1, and list2 by default.
+    // uil.session.start(ACCESS_KEY, (group_name) => {
+    //     let stimuli = findList(group_name);
+    //     kickOffExperiment(stimuli);
+    // });
 }
 
 window.addEventListener (
     'load',
-    kickOffExperiment
+    main
 );
     </script>
 </html>

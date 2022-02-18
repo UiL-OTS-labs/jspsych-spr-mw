@@ -117,10 +117,10 @@ let survey_review = {
     stimulus: function(data){
 
         let survey_1_data= 
-            jsPsych.data.get().last(2).values()[0]; //former
+            JSON.parse(jsPsych.data.get().last(2).values()[0].responses);
         
         let survey_2_data = 
-            jsPsych.data.get().last(1).values()[0];
+            JSON.parse(jsPsych.data.get().last(1).values()[0].responses);
         
         let b_year = survey_1_data.birth_year;
         let b_month = survey_1_data.birth_month;
@@ -132,7 +132,7 @@ let survey_review = {
         let hand_pref = survey_2_data.HandPreference;
 
         return `
-            <h1>Your data</h1>
+            <h1>Your responses</h1>
 
             <div><strong>Birth year</strong>: ${b_year} </div>
             <div><strong>Birth month</strong>: ${b_month} </div>

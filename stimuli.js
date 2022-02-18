@@ -157,38 +157,4 @@ const TEST_ITEMS = [
     // {list_name: LISTS[1], table: LIST_GROUP3}
 ];
 
-/**
- * Get the list of practice items
- *
- * Returns an object with a list and a table, the list will always indicate
- * "practice" since it are the practice items
- *
- * @returns {object} object with list_name and table fields
- */
-function getPracticeItems() {
-    return {list_name : "practice", table : PRACTICE_ITEMS};
-}
-
-/**
- * This function will pick a random list from the TEST_ITEMS array.
- *
- * Returns an object with a list and a table, the list will always indicate
- * which list has been chosen for the participant.
- *
- * @returns {object} object with list_name and table fields
- */
-function pickRandomList() {
-    let range = function (n) {
-        let empty_array = [];
-        let i;
-        for (i = 0; i < n; i++) {
-            empty_array.push(i);
-        }
-        return empty_array;
-    }
-    let num_lists = TEST_ITEMS.length;
-    var shuffled_range = jsPsych.randomization.repeat(range(num_lists), 1)
-    var retlist = TEST_ITEMS[shuffled_range[0]];
-    return retlist
-}
 
