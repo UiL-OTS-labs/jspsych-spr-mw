@@ -39,6 +39,7 @@ const survey_1 = {
     },
     preamble :  AGE_PROMPT,
     html :      AGE_HTML,
+    button_label : CONTINUE_BUTTON_TEXT,
 
     on_finish : function(data) {
         data.rt = Math.round(data.rt);
@@ -72,6 +73,7 @@ const HAND_OPTIONS = ["Left", "Right"];
 
 const survey_2 = {
     type: 'survey-multi-choice',
+    button_label: CONTINUE_BUTTON_TEXT,
     data: {
         uil_save : true,
         survey_data_flag : true
