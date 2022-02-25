@@ -165,6 +165,7 @@ let consent_block = {
     data : {uil_save : true},
     preamble: CONSENT_HTML_STYLE_UU + CONSENT_HTML,
     required_message: IF_REQUIRED_FEEDBACK_MESSAGE,
+    button_label: CONTINUE_BUTTON_TEXT,
     questions: [
         {
             prompt: "", 
