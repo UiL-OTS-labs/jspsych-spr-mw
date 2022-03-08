@@ -164,8 +164,3 @@ function main() {
     //     kickOffExperiment(stimuli, getTimeline(stimuli));
     // });
 }
-
-window.addEventListener (
-    'load',
-    main
-);
