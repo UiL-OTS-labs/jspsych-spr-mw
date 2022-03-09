@@ -118,22 +118,20 @@ let survey_review = {
     type: jsPsychHtmlButtonResponse,
     stimulus: function(data){
 
-        let survey_html =
+        let survey_1 =
             jsPsych.data.get().last(2).values()[0].response;
 
-        let survey_multi =
+        let survey_2 =
             jsPsych.data.get().last(1).values()[0].response;
 
-        let jsHTML = survey_html;
-        let b_year = jsHTML.birth_year;
-        let b_month = jsHTML.birth_month;
-        let n_lang = jsHTML.native_language;
+        let b_year = survey_1.birth_year;
+        let b_month = survey_1.birth_month;
+        let n_lang = survey_1.native_language;
 
-        let jsMulti = survey_multi;
-        let bilingual = jsMulti.Multilingual;
-        let dyslexic = jsMulti.Dyslexic;
-        let sex = jsMulti.Sex;
-        let hand_pref = jsMulti.HandPreference;
+        let bilingual = survey_2.Multilingual;
+        let dyslexic = survey_2.Dyslexic;
+        let sex = survey_2.Sex;
+        let hand_pref = survey_2.HandPreference;
 
         return `
             <h1>Your responses</h1>
@@ -154,7 +152,7 @@ let survey_review = {
     response_ends_trial: true,
     on_finish: function(data){
         // Repeat the survey if true (0) was not pressed
-        repeat_survey = data.response != 0;
+        repeat_survey = data.response !== 0;
         data.rt = Math.round(data.rt);
     }
 };
