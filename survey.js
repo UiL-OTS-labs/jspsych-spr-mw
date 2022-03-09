@@ -136,8 +136,7 @@ let survey_review = {
         let hand_pref = jsMulti.HandPreference;
 
         return `
-            <h1>Your data</h1>
-            <div class='survey'>
+            <h1>Your responses</h1>
 
             <div><strong>Birth year</strong>: ${b_year} </div>
             <div><strong>Birth month</strong>: ${b_month} </div>
@@ -146,10 +145,9 @@ let survey_review = {
             <div><strong>Dyslexic</strong>: ${dyslexic} </div>
             <div><strong>Sex</strong>: ${sex} </div>
             <div><strong>Hand preference</strong>: ${hand_pref} </div>
-            <br><br>
 
+            <br><br>
             <p>Is this information correct?</p>
-            </div>
             `;
     },
     choices: [TRUE_BUTTON_TEXT, FALSE_BUTTON_TEXT],
