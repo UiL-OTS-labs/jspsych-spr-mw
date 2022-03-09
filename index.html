@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Self paced reading with moving window</title>
+    <head>
+        <title>Self paced reading with moving window</title>
 
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
 
-    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/jspsych.js"></script>
-    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-button-response.js"></script>
-    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-html-form.js"></script>
-    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
-    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-multi-select.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/jspsych.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-button-response.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-html-form.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-survey-multi-select.js"></script>
 
-    <!-- Generic jspsych style sheets -->
-    <link href="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"/>
+        <!-- Generic jspsych style sheets -->
+        <link href="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"/>
 
-    <!-- Uil OTS libraries -->
-    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/0.0/jspsych-uil-utils.js"></script>
-    <link href="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/0.0/fonts.css" rel="stylesheet" type="text/css"/>
+        <!-- Uil OTS libraries -->
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/0.0/jspsych-uil-utils.js"></script>
+        <link href="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/0.0/fonts.css" rel="stylesheet" type="text/css"/>
 
-    <!-- Uil OTS scripts -->
-    <script src="globals.js"></script>
-    <script src="consent.js"></script>
-    <script src="instructions.js"></script>
-    <script src="stimuli.js"></script>
-    <script src="survey.js"></script>
-    <script src="main.js"></script>
+        <!-- Uil OTS scripts -->
+        <script src="globals.js"></script>
+        <script src="consent.js"></script>
+        <script src="instructions.js"></script>
+        <script src="stimuli.js"></script>
+        <script src="survey.js"></script>
+        <script src="main.js"></script>
 
-    <!--maybe one day this plugin will be put in the mainline jsPsych
-         repository.-->
-    <script src="plugins/jspsych-spr-moving-window.js"></script>
+        <!--maybe one day this plugin will be put in the mainline jsPsych
+             repository.-->
+        <script src="plugins/jspsych-spr-moving-window.js"></script>
 
-    <style>
-     .jspsych-survey-multi-choice-text {
-         text-align: left !important;
-     }
-    </style>
+        <style>
+         .jspsych-survey-multi-choice-text {
+             text-align: left !important;
+         }
+        </style>
 
 
-  </head>
-  <body></body>
-  <script>
-   // see main.js for the main function and experiment timeline
-   window.addEventListener('load', main);
-  </script>
+    </head>
+    <body></body>
+    <script>
+     // see main.js for the main function and experiment timeline
+     window.addEventListener('load', main);
+    </script>
 </html>
