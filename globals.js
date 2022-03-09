@@ -36,7 +36,7 @@ const CONTINUE_BUTTON_TEXT = "continue";
 // Duration of the fixation cross.
 const FIX_DUR = -1;
 // The buttons to terminate presentation of the fix cross
-const FIX_CHOICES = [32]; // 32 == " " a spacebar to continue
+const FIX_CHOICES = [' ']; // 32 == " " a spacebar to continue
 
 // The duration in ms for how long the finished instruction
 // is on screen.
@@ -51,4 +51,3 @@ const GROUPING_STRING = null;
 // of a "/" will lead to presentation as a word group and the a "/" itself
 // will not be displayed in the stimulus
 //const GROUPING_STRING = "/";
-
