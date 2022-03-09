@@ -123,16 +123,16 @@ function getTimeline(stimuli) {
 
     // Welcome the participant and guide them through the
     // consent forms and survey.
-    // timeline.push(welcome_screen);
+    timeline.push(welcome_screen);
 
     // Obtain informed consent.
-    // timeline.push(consent_procedure);
+    timeline.push(consent_procedure);
 
     // add survey
-    // timeline.push(survey_procedure);
+    timeline.push(survey_procedure);
 
     // Add the different parts of the experiment to the timeline
-    // timeline.push(instruction_screen_practice);
+    timeline.push(instruction_screen_practice);
 
     let practice = {
         timeline: [
