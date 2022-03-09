@@ -27,7 +27,7 @@
         <script src="survey.js"></script>
 
         <!--maybe one day this plugin will be put in the mainline jsPsych
-            repository.-->
+             repository.-->
         <script src="plugins/jspsych-spr-moving-window.js"></script>
 
         <script src="main.js"></script>
@@ -41,88 +41,7 @@
     </head>
     <body></body>
     <script>
-
-// this function will eventually run the jsPsych timeline
-function kickOffExperiment(stimuli, timeline) {
-
-    let subject_id = uil.session.isActive() ?
-            uil.session.subjectId() : jsPsych.randomization.randomID(8);
-    let test_items = stimuli.table;
-    let list_name = stimuli.list_name;
-
-    // Make sure you have updated your key in globals.js
-    uil.setAccessKey(ACCESS_KEY);
-    uil.stopIfExperimentClosed();
-
-    if (PSEUDO_RANDOMIZE) {
-        let shuffled = uil.randomization.randomizeStimuli(
-            test_items,
-            max_same_type=MAX_SUCCEEDING_ITEMS_OF_TYPE
-        );
-        if (shuffled !== null)
-            test_items = shuffled;
-        else
-            console.error('Unable to shuffle stimuli according constraints.')
-    }
-
-    // data one would like to add to __all__ trials, according to:
-    // https://www.jspsych.org/overview/data/
-    jsPsych.data.addProperties (
-        {
-            subject : subject_id,
-            list : list_name,
-        }
-    );
-
-    // Start jsPsych when running on a Desktop or Laptop style pc.
-    if (! uil.isMobileOrTablet()) {
-        jsPsych.run(timeline);
-    }
-    else { // or bail out.
-        let paragraph = document.createElement("p")
-        paragraph.innerHTML = "Please run this experiment on a pc or laptop";
-        document.body.appendChild(paragraph);
-    }
-}
-
-/**
- * This function will pick a random list from the TEST_ITEMS array.
- *
- * Returns an object with a list and a table, the list will always indicate
- * which list has been chosen for the participant.
- *
- * @returns {object} object with list_name and table fields
- */
-function pickRandomList() {
-    let range = function (n) {
-        let empty_array = [];
-        let i;
-        for (i = 0; i < n; i++) {
-            empty_array.push(i);
-        }
-        return empty_array;
-    }
-    let num_lists = TEST_ITEMS.length;
-    var shuffled_range = jsPsych.randomization.repeat(range(num_lists), 1)
-    var retlist = TEST_ITEMS[shuffled_range[0]];
-    return retlist
-}
-
-function findList(name) {
-    let list = TEST_ITEMS.find((entry) => entry.list_name === name);
-    if (!list) {
-        let found = TEST_ITEMS.map((entry) => `"${entry.list_name}"`).join(', ');
-        console.error(
-           `List not found "${name}".\n` +
-           'This name was configured on the UiL datastore server.\n' +
-           `The following lists exist in stimuli.js: \n${found}`)
-    }
-    return list;
-}
-
-window.addEventListener (
-    'load',
-    main
-);
+        // see main.js for the main function and experiment timeline
+        window.addEventListener('load', main);
     </script>
 </html>
