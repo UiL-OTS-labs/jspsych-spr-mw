@@ -215,14 +215,8 @@ function kickOffExperiment(stimuli, timeline) {
     );
 
     // Start jsPsych when running on a Desktop or Laptop style pc.
-    if (! uil.isMobileOrTablet()) {
-        jsPsych.run(timeline);
-    }
-    else { // or bail out.
-        let paragraph = document.createElement("p")
-        paragraph.innerHTML = "Please run this experiment on a pc or laptop";
-        document.body.appendChild(paragraph);
-    }
+    uil.browser.rejectMobileOrTablet();
+    jsPsych.run(timeline);
 }
 
 /**
