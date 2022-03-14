@@ -9,7 +9,7 @@ let repeat_survey = false;
 const AGE_PROMPT = "<p>Please fill out the forms below</p>";
 const AGE_HTML = `
     <label for="birth_year">In what year were you born? </label>
-    <input type="number" id="birth_year" 
+    <input type="number" id="birth_year"
         name="birth_year" placeholder=1999 min=1919 max=2019 required>
     <span class="validity"></span>
 
@@ -17,7 +17,7 @@ const AGE_HTML = `
     <br>
 
     <label for="birth_month">In what month were you born? </label>
-    <input type="number" id="birth_month" name="birth_month" 
+    <input type="number" id="birth_month" name="birth_month"
         placeholder=7 min=1 max=12 required>
     <span class="validity"></span>
 
@@ -27,12 +27,12 @@ const AGE_HTML = `
     <label for="native_language">What is your native language?</label>
     <input type="text" id="native_language" name="native_language" placeholder="Dutch" required>
     <span class="validity"></span>
-    <br> 
-    <br> 
+    <br>
+    <br>
     `;
 
 const survey_1 = {
-    type :      'survey-html-form',
+    type :      jsPsychSurveyHtmlForm,
     data: {
         uil_save : true,
         survey_data_flag: true
@@ -50,14 +50,14 @@ const survey_1 = {
 // 2nd survey question
 
 const BILINGUAL_QUESTION = `
-    Were you born and raised in a  
+    Were you born and raised in a
     <a href="https://en.wikipedia.org/wiki/Multilingualism" target="_blank">multilingual</a>
     environment?
     `;
 
 const BILINGUAL_OPTIONS = ["No","Yes"];
 
-const DYSLEXIC_QUESTION = `Are you 
+const DYSLEXIC_QUESTION = `Are you
     <a href="https://en.wikipedia.org/wiki/Dyslexia" target="_blank">dyslexic</a>?
     `;
 const DYSLEXIC_OPTIONS = ["No", "Yes"];
@@ -72,7 +72,7 @@ const HAND_QUESTION = 'Which hand do you prefer to write with?';
 const HAND_OPTIONS = ["Left", "Right"];
 
 const survey_2 = {
-    type: 'survey-multi-choice',
+    type: jsPsychSurveyMultiChoice,
     button_label: CONTINUE_BUTTON_TEXT,
     data: {
         uil_save : true,
@@ -115,23 +115,23 @@ const survey_2 = {
 };
 
 let survey_review = {
-    type: "html-button-response",
+    type: jsPsychHtmlButtonResponse,
     stimulus: function(data){
 
-        let survey_1_data= 
-            JSON.parse(jsPsych.data.get().last(2).values()[0].responses);
-        
-        let survey_2_data = 
-            JSON.parse(jsPsych.data.get().last(1).values()[0].responses);
-        
-        let b_year = survey_1_data.birth_year;
-        let b_month = survey_1_data.birth_month;
-        let n_lang = survey_1_data.native_language;
+        let survey_1 =
+            jsPsych.data.get().last(2).values()[0].response;
 
-        let bilingual = survey_2_data.Multilingual;
-        let dyslexic = survey_2_data.Dyslexic;
-        let sex = survey_2_data.Sex;
-        let hand_pref = survey_2_data.HandPreference;
+        let survey_2 =
+            jsPsych.data.get().last(1).values()[0].response;
+
+        let b_year = survey_1.birth_year;
+        let b_month = survey_1.birth_month;
+        let n_lang = survey_1.native_language;
+
+        let bilingual = survey_2.Multilingual;
+        let dyslexic = survey_2.Dyslexic;
+        let sex = survey_2.Sex;
+        let hand_pref = survey_2.HandPreference;
 
         return `
             <h1>Your responses</h1>
@@ -144,7 +144,7 @@ let survey_review = {
             <div><strong>Sex</strong>: ${sex} </div>
             <div><strong>Hand preference</strong>: ${hand_pref} </div>
 
-            <BR><BR>
+            <br><br>
             <p>Is this information correct?</p>
             `;
     },
@@ -152,7 +152,7 @@ let survey_review = {
     response_ends_trial: true,
     on_finish: function(data){
         // Repeat the survey if true (0) was not pressed
-        repeat_survey = data.button_pressed != 0;
+        repeat_survey = data.response !== 0;
         data.rt = Math.round(data.rt);
     }
 };
@@ -173,4 +173,3 @@ let survey_procedure = {
         return repeat_survey;
     }
 };
-

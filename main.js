@@ -1,8 +1,23 @@
-const KEY_CODE_SPACE = 32;
+let jsPsych = initJsPsych({
+    exclusions: {
+        min_width : MIN_WIDTH,
+        min_height : MIN_HEIGHT
+    },
+    on_finish: function() {
+        if (consent_given) {
+            uil.saveData();
+        }
+        else {
+            document.body.innerHTML = FINISHED_NO_CONSENT;
+        }
+    }
+});
+
+const KEY_CODE_SPACE = ' ';
 const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
 let welcome_screen = {
-    type : 'html-keyboard-response',
+    type : jsPsychHtmlKeyboardResponse,
     stimulus : WELCOME_INSTRUCTION,
     choices : [KEY_CODE_SPACE],
     response_ends_trial : true,
@@ -12,7 +27,7 @@ let welcome_screen = {
 };
 
 let instruction_screen_practice = {
-    type : 'html-keyboard-response',
+    type : jsPsychHtmlKeyboardResponse,
     stimulus : PRE_PRACTICE_INSTRUCTION,
     choices : [KEY_CODE_SPACE],
     response_ends_trial : true,
@@ -22,7 +37,7 @@ let instruction_screen_practice = {
 };
 
 let fixcross = {
-    type : 'spr-moving-window',
+    type : sprMovingWindow,
     stimulus : '+',
     choices : FIX_CHOICES,
     font_family : "Times New Roman",
@@ -38,7 +53,7 @@ let fixcross = {
 };
 
 let present_text = {
-    type : 'spr-moving-window',
+    type : sprMovingWindow,
     stimulus : jsPsych.timelineVariable('stimulus'),
     background_color : "rgb(230, 230, 230)", // light gray
     font_color : "rgb(0, 0, 0)", // black
@@ -56,7 +71,7 @@ let present_text = {
 }
 
 let question = {
-    type : 'html-button-response',
+    type : jsPsychHtmlButtonResponse,
     stimulus : jsPsych.timelineVariable('question'),
     choices : G_QUESTION_CHOICES,
     data : {
@@ -77,13 +92,13 @@ let question = {
 let maybe_question = {
     timeline: [ question ],
     conditional_function: function() {
-        let q = jsPsych.timelineVariable('question')();
+        let q = jsPsych.timelineVariable('question');
         return typeof(q) !== 'undefined' && q.length > 0;
     }
 };
 
 let end_practice_screen = {
-    type : 'html-keyboard-response',
+    type : jsPsychHtmlKeyboardResponse,
     stimulus : PRE_TEST_INSTRUCTION,
     choices : [KEY_CODE_SPACE],
     response_ends_trial : true,
@@ -93,7 +108,7 @@ let end_practice_screen = {
 };
 
 let end_experiment = {
-    type : 'html-keyboard-response',
+    type : jsPsychHtmlKeyboardResponse,
     stimulus : POST_TEST_INSTRUCTION,
     choices : [],
     trial_duration : FINISH_TEXT_DUR,
@@ -201,23 +216,7 @@ function kickOffExperiment(stimuli, timeline) {
 
     // Start jsPsych when running on a Desktop or Laptop style pc.
     if (! uil.isMobileOrTablet()) {
-        jsPsych.init(
-            {
-                timeline: timeline,
-                exclusions: {
-                    min_width : MIN_WIDTH,
-                    min_height : MIN_HEIGHT
-                },
-                on_finish: function() {
-                    if (consent_given) {
-                        uil.saveData();
-                    }
-                    else {
-                        document.body.innerHTML = FINISHED_NO_CONSENT;
-                    }
-                }
-            }
-        )
+        jsPsych.run(timeline);
     }
     else { // or bail out.
         let paragraph = document.createElement("p")

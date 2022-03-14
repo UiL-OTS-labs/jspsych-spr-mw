@@ -8,7 +8,7 @@ let consent_given = false;
  * It is displayed as html, the current html should be replace with
  * your information letter.
  */
-const CONSENT_HTML = 
+const CONSENT_HTML =
     '<p>' +
         'Insert your information letter here; for more information, see the '  +
         '<a href="https://fetc-gw.wp.hum.uu.nl/en/" target="_blank"> '         +
@@ -19,7 +19,7 @@ const CONSENT_HTML =
 /*
  * Debrieving given when the participant doesn't consent.
  */
-const DEBRIEF_MESSAGE_NO_CONSENT = 
+const DEBRIEF_MESSAGE_NO_CONSENT =
     "<h1>"                                          +
         "End of the experiment"                     +
     "</h1>"                                         +
@@ -27,11 +27,11 @@ const DEBRIEF_MESSAGE_NO_CONSENT =
         "No consent has been given."                +
     "</h2>";
 
-const CONSENT_STATEMENT = 
+const CONSENT_STATEMENT =
     'Yes, I consent to the use of my answers for scientific research.';
 
 const CONSENT_REFERENCE_NAME = 'consent';
-const IF_REQUIRED_FEEDBACK_MESSAGE = 
+const IF_REQUIRED_FEEDBACK_MESSAGE =
     "You must check the box next to " + CONSENT_STATEMENT +
     "in order to proceed to the experiment.";
 
@@ -161,25 +161,24 @@ const CONSENT_HTML_STYLE_UU = `<style>
 
 // displays the informed consent page
 let consent_block = {
-    type: 'survey-multi-select',
+    type: jsPsychSurveyMultiSelect,
     data : {uil_save : true},
     preamble: CONSENT_HTML_STYLE_UU + CONSENT_HTML,
     required_message: IF_REQUIRED_FEEDBACK_MESSAGE,
     button_label: CONTINUE_BUTTON_TEXT,
     questions: [
         {
-            prompt: "", 
-            options: [CONSENT_STATEMENT], 
+            prompt: "",
+            options: [CONSENT_STATEMENT],
             horizontal: true,
-            required: false,  
+            required: false,
             button_label: CONTINUE_BUTTON_TEXT,
             name: CONSENT_REFERENCE_NAME
         }
     ],
     on_finish: function(data){
-        let consent_choice = data.responses;
+        data.consent_choice_response = data.response.consent[0];
         data.rt = Math.round(data.rt);
-        data.consent_choice_response = consent_choice;
     }
 };
 
@@ -191,14 +190,12 @@ let consent_block = {
 function getConsentData()
 {
     let data = jsPsych.data.get().select('consent_choice_response');
-    console.log(data);
-    let consent_trial_data = JSON.parse(data.values[0]);
-    return consent_trial_data.consent;
+    return data.values[0];
 }
 
 // Is displayed when no consent has been given.
 let no_consent_end_screen = {
-    type: 'html-button-response',
+    type: jsPsychHtmlButtonResponse,
     stimulus: DEBRIEF_MESSAGE_NO_CONSENT,
     choices: [],
     trial_duration: FINISH_TEXT_DUR,
@@ -228,4 +225,3 @@ let if_node_consent = {
 let consent_procedure = {
     timeline: [consent_block, if_node_consent]
 }
-
