@@ -162,6 +162,9 @@ function getTimeline(stimuli) {
 
 
 function main() {
+    // Make sure you have updated your key in globals.js
+    uil.setAccessKey(ACCESS_KEY);
+    uil.stopIfExperimentClosed();
 
     // Option 1: client side randomization:
     let stimuli = pickRandomList();
@@ -189,10 +192,6 @@ function kickOffExperiment(stimuli, timeline) {
         uil.session.subjectId() : jsPsych.randomization.randomID(8);
     let test_items = stimuli.table;
     let list_name = stimuli.list_name;
-
-    // Make sure you have updated your key in globals.js
-    uil.setAccessKey(ACCESS_KEY);
-    uil.stopIfExperimentClosed();
 
     if (PSEUDO_RANDOMIZE) {
         let shuffled = uil.randomization.randomizeStimuli(
