@@ -2,14 +2,6 @@ let jsPsych = initJsPsych({
     exclusions: {
         min_width : MIN_WIDTH,
         min_height : MIN_HEIGHT
-    },
-    on_finish: function() {
-        if (consent_given) {
-            uil.saveData();
-        }
-        else {
-            document.body.innerHTML = FINISHED_NO_CONSENT;
-        }
     }
 });
 
@@ -111,9 +103,13 @@ let end_experiment = {
     type : jsPsychHtmlKeyboardResponse,
     stimulus : POST_TEST_INSTRUCTION,
     choices : [],
-    trial_duration : FINISH_TEXT_DUR,
-    on_finish: function (data) {
-        data.rt = Math.round(data.rt);
+    on_load: function() {
+        if (consent_given) {
+            uil.saveData();
+        }
+        else {
+            document.body.innerHTML = FINISHED_NO_CONSENT;
+        }
     }
 }
 
