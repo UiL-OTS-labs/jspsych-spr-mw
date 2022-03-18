@@ -68,7 +68,7 @@ let question = {
     choices : G_QUESTION_CHOICES,
     data : {
         id : jsPsych.timelineVariable('id'),
-        item_type : "Q" + jsPsych.timelineVariable('item_type'),
+        item_type : ()  => 'Q' + jsPsych.timelineVariable('item_type'),
         expected_answer : jsPsych.timelineVariable('qanswer'),
         uil_save : true
     },
