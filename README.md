@@ -17,7 +17,7 @@ The file `globals.js` contains a variable:
 ```javascript
 const ACCESS_KEY = '00000000-0000-0000-0000-000000000000';
 ```
-For uploading to the UiL-OTS data server you will need to change
+For uploading to the ILS data server you will need to change
 this to the access_key that you obtained when your experiment
 was approved. Your personal access key should look identical, but
 with all the '0' changed. For elaborate info see `globals.js`.
