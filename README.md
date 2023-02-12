@@ -32,8 +32,8 @@ active, passive and filler condition. The two lists complement
 each other, so an active stimulus in the first list is complemented
 with a passive stimulus in the second list. Participants get one of these
 lists assigned randomly. You can add additional lists if your experiment
-requires this. This would make it more difficult
-to implement the Latin square.
+requires this. For instance, to implement a Latin square design for four 
+conditions, you'd need to create four lists.
 
 ### Presenting multiple words as one group
 The boilerplate experiment treats every word in the stimuli as a
@@ -85,7 +85,9 @@ In addition to the RTsm three variables are added to the output:
 
 The **id** (which you assign in `stimulus.js`) of the stimulus identifies 1
 specific stimulus from your list. It is typically 1 to n, where n is the number
-of items in your list. 
+of items in your list. (Note that an item will appear in several conditions, 
+or item types. For instance in the template, the item with id 1 appears in the passive
+condition in list 1, and in the passive condition in list 2).
 
 The **item_type** is added to the output, also defined by you in `stimuli.js`.
 In contrast the item_type of the fixation cross is always ```FIX_CROSS```.
