@@ -81,7 +81,7 @@ let question = {
         uil_save : true
     },
     on_finish: function (data) {
-        let choice = G_QUESTION_CHOICES[data.button_pressed];
+        let choice = G_QUESTION_CHOICES[data.response];
         data.answer = choice;
         data.correct = choice === data.expected_answer;
         data.integer_correct = data.correct ? 1 : 0;
