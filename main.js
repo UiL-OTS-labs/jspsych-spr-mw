@@ -5,6 +5,14 @@ let jsPsych = initJsPsych({
     }
 });
 
+ // I liked RandomError too :-)
+class SprRandomizationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = SprRandomizationError;
+    }
+}
+
 const KEY_CODE_SPACE = ' ';
 const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
@@ -113,7 +121,31 @@ let end_experiment = {
     }
 }
 
-function getTimeline(stimuli) {
+/**
+ * Randomize a table of stimuli
+ */
+function randomizeStimuli(table) {
+    let shuffled = uil.randomization.randomizeStimuli(
+        table,
+        max_same_type=MAX_SUCCEEDING_ITEMS_OF_TYPE
+    );
+
+    if (shuffled !== null)
+        table = shuffled;
+    else {
+            console.error('Unable to shuffle stimuli according constraints.');
+            let msg = "Unable to shuffle the stimuli, perhaps loosen the " +
+                      "constraints, or check the item_types on the stimuli.";
+            throw new SprRandomizationError(msg);
+    }
+
+    return table; // shuffled table if possible original otherwise
+}
+
+/**
+ * Get the timeline for a table of stimuli
+ */
+function getTimeline(table) {
     //////////////// timeline /////////////////////////////////
     let timeline = [];
 
@@ -142,13 +174,17 @@ function getTimeline(stimuli) {
     timeline.push(practice);
     timeline.push(end_practice_screen);
 
+    if (PSEUDO_RANDOMIZE) {
+        table = randomizeStimuli(table);
+    }
+
     let test = {
         timeline: [
             fixcross,
             present_text,
             maybe_question
         ],
-        timeline_variables: stimuli.table
+        timeline_variables: table
     }
 
     timeline.push(test);
@@ -164,7 +200,7 @@ function main() {
 
     // Option 1: client side randomization:
     let stimuli = pickRandomList();
-    kickOffExperiment(stimuli, getTimeline(stimuli));
+    kickOffExperiment(getTimeline(stimuli.table), stimuli.list_name);
 
     // Option 2: server side balancing:
     // Make sure you have matched your groups on the dataserver with the
@@ -175,30 +211,17 @@ function main() {
     // groups there.
     // uil.session.start(ACCESS_KEY, (group_name) => {
     //     let stimuli = findList(group_name);
-    //     kickOffExperiment(stimuli, getTimeline(stimuli));
+    //     kickOffExperiment(getTimeline(stimuli));
     // });
 }
 
 
 
 // this function will eventually run the jsPsych timeline
-function kickOffExperiment(stimuli, timeline) {
+function kickOffExperiment(timeline, list_name) {
 
     let subject_id = uil.session.isActive() ?
         uil.session.subjectId() : jsPsych.randomization.randomID(8);
-    let test_items = stimuli.table;
-    let list_name = stimuli.list_name;
-
-    if (PSEUDO_RANDOMIZE) {
-        let shuffled = uil.randomization.randomizeStimuli(
-            test_items,
-            max_same_type=MAX_SUCCEEDING_ITEMS_OF_TYPE
-        );
-        if (shuffled !== null)
-            test_items = shuffled;
-        else
-            console.error('Unable to shuffle stimuli according constraints.')
-    }
 
     // data one would like to add to __all__ trials, according to:
     // https://www.jspsych.org/overview/data/
