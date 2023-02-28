@@ -5,6 +5,14 @@ let jsPsych = initJsPsych({
     }
 });
 
+ // I liked RandomError too :-)
+class SprRandomizationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = SprRandomizationError;
+    }
+}
+
 const KEY_CODE_SPACE = ' ';
 const G_QUESTION_CHOICES = [FALSE_BUTTON_TEXT, TRUE_BUTTON_TEXT];
 
@@ -121,10 +129,15 @@ function randomizeStimuli(table) {
         table,
         max_same_type=MAX_SUCCEEDING_ITEMS_OF_TYPE
     );
+
     if (shuffled !== null)
         table = shuffled;
-    else
-        console.error('Unable to shuffle stimuli according constraints.');
+    else {
+            console.error('Unable to shuffle stimuli according constraints.');
+            let msg = "Unable to shuffle the stimuli, perhaps loosen the " +
+                      "constraints, or check the item_types on the stimuli.";
+            throw new SprRandomizationError(msg);
+    }
 
     return table; // shuffled table if possible original otherwise
 }
