@@ -107,6 +107,14 @@ let end_practice_screen = {
     }
 };
 
+let feedback_screen = {
+    type: jsPsychSurveyText,
+    preamble: FEEDBACK_PREAMBLE,
+    questions: [
+	{prompt: FEEDBACK_PROMPT, rows: 5},
+    ]
+};
+
 let end_experiment = {
     type : jsPsychHtmlKeyboardResponse,
     stimulus : POST_TEST_INSTRUCTION,
@@ -188,6 +196,7 @@ function getTimeline(table) {
     }
 
     timeline.push(test);
+    timeline.push(feedback_screen);
     timeline.push(end_experiment);
     return timeline;
 }
