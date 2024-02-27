@@ -220,7 +220,7 @@ function main() {
     // groups there.
     // uil.session.start(ACCESS_KEY, (group_name) => {
     //     let stimuli = findList(group_name);
-    //     kickOffExperiment(getTimeline(stimuli));
+    //     kickOffExperiment(getTimeline(stimuli.table));
     // });
 }
 
