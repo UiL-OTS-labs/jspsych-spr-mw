@@ -6,170 +6,153 @@ let repeat_survey = false;
 
 // 1th survey question
 
-const AGE_PROMPT = "<p>Please fill out the forms below</p>";
-const AGE_HTML = `
-    <label for="birth_year">In what year were you born? </label>
-    <input type="number" id="birth_year"
-        name="birth_year" placeholder=1999 min=1919 max=2019 required>
-    <span class="validity"></span>
-
-    <br>
-    <br>
-
-    <label for="birth_month">In what month were you born? </label>
-    <input type="number" id="birth_month" name="birth_month"
-        placeholder=7 min=1 max=12 required>
-    <span class="validity"></span>
-
-    <br>
-    <br>
-
-    <label for="native_language">What is your native language?</label>
-    <input type="text" id="native_language" name="native_language" placeholder="Dutch" required>
-    <span class="validity"></span>
-    <br>
-    <br>
-    `;
 
 const survey_1 = {
-    type :      jsPsychSurveyHtmlForm,
-    data: {
-        uil_save : true,
-        survey_data_flag: true
+    type: IlsSurveyPlugin,
+    fields: {
+        birth_year: {label: 'Birth year'},
+        birth_month: {label: 'Month'},
+        native_language: {label: 'Native language'},
     },
-    preamble :  AGE_PROMPT,
-    html :      AGE_HTML,
-    button_label : CONTINUE_BUTTON_TEXT,
+    html: `
+    <h4>Please answer some questions</h4>
+    <div style="text-align: left">
+	<p>In what year were you born?</p>
+	<div>
+            <input type="number" name="birth_year" required>
+	</div>
+	<p>In what month were you born?</p>
+	<div>
+            <input type="number" name="birth_month" required>
+	</div>
+	<p>What is your native language?</p>
+	<div>
+            <input type="text" name="native_language" required>
+	</div>
+    </div>
+    <div style="margin: 20px">
+        <button class="jspsych-btn">Continue</button>
+    </div>
+    `,
+    exclusion: function(data) {
+        // return true when participant should be excluded
 
-    on_finish : function(data) {
-        data.rt = Math.round(data.rt);
-    }
+        let currentYear = (new Date()).getFullYear();
+        let age = currentYear - parseInt(data.birth_year, 10);
+
+        // reject participants younger than 18
+        if (age < 18) {
+            return true;
+        }
+
+        // reject participants older than 80
+        if (age > 80) {
+            return true;
+        }
+
+        // accept participant otherwise
+        return false
+    },
 };
-
 
 // 2nd survey question
 
-const BILINGUAL_QUESTION = `
-    Were you born and raised in a
-    <a href="https://en.wikipedia.org/wiki/Multilingualism" target="_blank">multilingual</a>
-    environment?
-    `;
-
-const BILINGUAL_OPTIONS = ["No","Yes"];
-
-const DYSLEXIC_QUESTION = `Are you
-    <a href="https://en.wikipedia.org/wiki/Dyslexia" target="_blank">dyslexic</a>?
-    `;
-const DYSLEXIC_OPTIONS = ["No", "Yes"];
-
-const SEX_QUESTION = `
-    What is your
-    <a href="https://en.wikipedia.org/wiki/Sex" target="_blank">biological sex</a>?
-    `;
-const SEX_OPTIONS = ["Female", "Male", "Other", "Prefer not to say"];
-
-const HAND_QUESTION = 'Which hand do you prefer to write with?';
-const HAND_OPTIONS = ["Left", "Right"];
-
 const survey_2 = {
-    type: jsPsychSurveyMultiChoice,
-    button_label: CONTINUE_BUTTON_TEXT,
-    data: {
-        uil_save : true,
-        survey_data_flag : true
+    type: IlsSurveyPlugin,
+    fields: {
+        multilingual: {
+            label: 'Multilingual environment',
+            options: {
+                yes: "Yes",
+                no: "No"}
+        },
+        dyslexia: {
+            label: 'Dyslexia',
+            options: {
+                yes: "Yes",
+                no: "No"}
+        },
+        handedness: {
+            label: 'Handedness',
+            options: {
+                right: "Right",
+                left: "Left"}
+        },
+        sex: {
+            label: 'Biological sex',
+            options: {
+                male: "Male",
+                female: "Female",
+                other: "Other",
+                unspecified: "Unspecified"}
+        },
     },
-    questions: [
-        {
-            prompt : BILINGUAL_QUESTION,
-            name : 'Multilingual',
-            options : BILINGUAL_OPTIONS,
-            required :true,
-            horizontal : true
-        },
-        {
-            prompt : DYSLEXIC_QUESTION,
-            name : 'Dyslexic',
-            options : DYSLEXIC_OPTIONS,
-            required : true,
-            horizontal : true
-        },
-        {
-            prompt : SEX_QUESTION,
-            name : 'Sex',
-            options : SEX_OPTIONS,
-            required : true,
-            horizontal : true
-        },
-        {
-            prompt : HAND_QUESTION,
-            name : 'HandPreference',
-            options : HAND_OPTIONS,
-            required : true,
-            horizontal : true
+    exclusion: function(data) {
+        // return true when participant should be excluded
+        if (data.dyslexia == 'yes') {
+            return true;
         }
-    ],
-
-    on_finish: function(data){
-        data.rt = Math.round(data.rt);
-    }
-};
-
-let survey_review = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: function(data){
-
-        let survey_1 =
-            jsPsych.data.get().last(2).values()[0].response;
-
-        let survey_2 =
-            jsPsych.data.get().last(1).values()[0].response;
-
-        let b_year = survey_1.birth_year;
-        let b_month = survey_1.birth_month;
-        let n_lang = survey_1.native_language;
-
-        let bilingual = survey_2.Multilingual;
-        let dyslexic = survey_2.Dyslexic;
-        let sex = survey_2.Sex;
-        let hand_pref = survey_2.HandPreference;
-
-        return `
-            <h1>Your responses</h1>
-
-            <div><strong>Birth year</strong>: ${b_year} </div>
-            <div><strong>Birth month</strong>: ${b_month} </div>
-            <div><strong>Native language</strong>: ${n_lang} </div>
-            <div><strong>Multilingual</strong>: ${bilingual} </div>
-            <div><strong>Dyslexic</strong>: ${dyslexic} </div>
-            <div><strong>Sex</strong>: ${sex} </div>
-            <div><strong>Hand preference</strong>: ${hand_pref} </div>
-
-            <br><br>
-            <p>Is this information correct?</p>
-            `;
+        // accept participant otherwise
+        return false
     },
-    choices: [TRUE_BUTTON_TEXT, FALSE_BUTTON_TEXT],
-    response_ends_trial: true,
-    on_finish: function(data){
-        // Repeat the survey if true (0) was not pressed
-        repeat_survey = data.response !== 0;
-        data.rt = Math.round(data.rt);
-    }
+    html: `
+    <div style="text-align: left">
+        <p>Were you born and raised in a multilingual environment?</p>
+        <label><input type="radio" name="multilingual" value="yes" required/>Yes</label>
+        <label><input type="radio" name="multilingual" value="no" required/>No</label>
+
+    <p>Which hand do you prefer to write with?
+            <span class="info-toggle"></span>
+            <span class="info">
+                We ask this because left or right handedness (the hand you primarily write with) is associated with
+                differences in the brain, which could also influence how the brain handles language. Most studies therefore
+                report at the group level how many left and right-handed people participated in a study. Sometimes the
+                results are also analyzed per group. For tasks measuring reaction time, we may also ask you to give a
+                certain response with your dominant hand.
+            </span>
+        </p>
+    <div>
+        <label><input type="radio" name="handedness" value="right" required/>Right</label>
+        <label><input type="radio" name="handedness" value="left" required/>Left</label>
+    </div>
+
+        <p>What is your biological sex?
+            <span class="info-toggle"></span>
+            <span class="info">
+                We ask this because sex hormones influence the development and functioning of the brain, and may also
+                influence how the brain deals with language. Most studies therefore report at the group level how many
+                biological males and how many biological females participated. Sometimes the results are also analyzed
+                per group. You do not have to share your biological sex with us, but it is useful for our reports if you
+                do.
+            </span>
+        </p>
+    <div>
+        <label><input type="radio" name="sex" value="male" required/>Male</label>
+        <label><input type="radio" name="sex" value="female" required/>Female</label>
+        <label><input type="radio" name="sex" value="other" required/>Other</label>
+        <label><input type="radio" name="sex" value="unspecified" required/>Prefer not to say</label>
+    </div>
+
+    <p>Are you dyslexic?
+            <span class="info-toggle"></span>
+        <span class="info">
+        We ask this because dyslexia affects how the brain processes language (including spoken language).
+        </span>
+    </p>
+    <div>
+        <label><input type="radio" name="dyslexia" value="yes" required/>Yes</label>
+        <label><input type="radio" name="dyslexia" value="no" required/>No</label>
+    </div>
+    </div>
+    <div style="margin: 20px">
+        <button class="jspsych-btn">Continue</button>
+    </div>
+    `
 };
 
 let survey_procedure = {
     timeline : [
         survey_1,
         survey_2,
-        survey_review
-    ],
-    loop_function : function () {
-        if (repeat_survey) {
-            // clear last trials of the survey
-            let collection = jsPsych.data.get();
-            let trials = collection.values();
-            trials.length = trials.length - this.timeline.length;
-        }
-        return repeat_survey;
-    }
+    ]
 };
