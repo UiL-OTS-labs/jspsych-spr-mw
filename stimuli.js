@@ -11,7 +11,8 @@ const PRAC      = "PRAC";
 // 34:8, 991-1015, DOI: 10.1080/23273798.2019.1602733.
 // Questions made up by Iris Mulders.
 
-// Lists 
+// Lists if you use server side balancing make sure they match the lists
+// in the target groups, this is case sensitive.
 const LISTS = [
     "list1",
     "list2"
