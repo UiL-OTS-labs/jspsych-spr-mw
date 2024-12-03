@@ -163,13 +163,16 @@ var sprMovingWindow = (function(jspsych) {
         /**
          * @param {string} txt, the text to draw at ctx
          * @param {Pos} position the position at which to draw text.
-         * @param {} ctx the 2d drawing position.
+         * @param {CanvasRenderingContext2D} ctx the 2d drawing position.
          */
-        constructor(text, position, ctx, record = false) {
+        constructor(text, position, ctx) {
             if (typeof(text) !== "string")
                 console.error("TextInfo constructor text was not a String");
-            if (typeof(record) !== "boolean")
-                console.error("TextInfo constructor positions was not a Pos");
+            if (!position instanceof Pos)
+                console.error("TextInfo constructor position was not a Pos");
+            if (!ctx instanceof CanvasRenderingContext2D)
+                console.error("TextInfo constructor cts was not a valid "+
+                              "CanvasRenderingContext2D");
             this.text = text;
             this.pos = position;
             this.ctx = ctx
