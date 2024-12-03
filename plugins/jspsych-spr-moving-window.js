@@ -74,9 +74,18 @@ var sprMovingWindow = (function(jspsych) {
                     "group if the argument isn't specified every single word is "      +
                     "treated as group. You should make sure that the used argument "   +
                     "doesn't appear at other locations than at boundaries of groups, " +
-                    "because the grouping character is removed from the string. a " +
+                    "because the grouping character is removed from the string. a "    +
                     "'/' can be used quite handy for example."
-            }
+            },
+            line_height_multiplier : {
+                type :          jspsych.ParameterType.FLOAT,
+                pretty_name :   "line_height_multiplier",
+                default:        1.5,
+                description :   "You can increase/decrease the vertical line distance between " +
+                                "consecutive lines. When it is one, the line more or less touch " +
+                                "each other."
+
+            },
         }
     };
     // Reused names
@@ -222,7 +231,7 @@ var sprMovingWindow = (function(jspsych) {
     let group_index = 0;        // the nth_word that should be presented.
     let words = [];             // array of TextInfo.
     let old_html = "";          // the current display html, in order to
-    // restore it when finished.
+                                // restore it when finished.
     let font = "";              // family of the font with px size
     let background_color = "";  // the color of the paper of the text.
     let font_color = "";        // the color of the text.
@@ -339,12 +348,15 @@ var sprMovingWindow = (function(jspsych) {
      */
     function gatherWordInfo(lines, trial_pars) {
 
-        let delta_y = determineLineHeight(trial_pars.font_family, trial_pars.font_size);
+        let delta_y = determineLineHeight(
+            trial_pars.font_family,
+            trial_pars.font_size,
+        ) * trial_pars.line_height_multiplier;
         // We could add this to the trial_pars.
-        let y = delta_y * 1.5;
+        let y = delta_y;
         let word = 0;
-        const BASE_Y = delta_y * 1.5; // The height on which lines begin.
-        const BASE_X = BASE_Y;
+        const BASE_Y = delta_y; // The height on which lines begin.
+        const BASE_X = determineLineHeight(trial_pars.font_family, trial_pars.font_size);
 
         for (let line = 0; line < lines.length; line++) {
             liney = BASE_Y + line * delta_y;
