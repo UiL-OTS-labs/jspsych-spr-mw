@@ -164,8 +164,9 @@ var sprMovingWindow = (function(jspsych) {
          * @param {string} txt, the text to draw at ctx
          * @param {Pos} position the position at which to draw text.
          * @param {CanvasRenderingContext2D} ctx the 2d drawing position.
+         * @param {string} font_family, the family of the font
          */
-        constructor(text, position, ctx) {
+        constructor(text, position, ctx, font_family, font_size) {
             if (typeof(text) !== "string")
                 console.error("TextInfo constructor text was not a String");
             if (!position instanceof Pos)
@@ -173,14 +174,51 @@ var sprMovingWindow = (function(jspsych) {
             if (!ctx instanceof CanvasRenderingContext2D)
                 console.error("TextInfo constructor cts was not a valid "+
                               "CanvasRenderingContext2D");
-            this.text = text;
+            if (typeof(font_family) !== "string")
+                console.error("TextInfo constructor font_family was not a String");
+            this.bold = false;
+            this.italic = false;
             this.pos = position;
             this.ctx = ctx
-            this.metrics = ctx.measureText(this.text);
+            this.font_family = font_family;
+            this.font_size = font_size;
+            this.text = this.parseFontSpecials(text);
+            this.metrics = this.getTextMetrics();
         }
 
         drawText() {
+            this.ctx.font = this.getFontDescription();
             this.ctx.fillText(this.text, this.pos.x, this.pos.y);
+        }
+
+        getTextMetrics() {
+            this.ctx.font = this.getFontDescription();
+            return this.ctx.measureText(this.text);
+        }
+
+        getFontDescription() {
+            let font_desc = "";
+            if (this.italic)
+                font_desc += "italic "
+            if (this.bold)
+                font_desc += "bold "
+            font_desc += (this.font_size + "px ");
+            font_desc += this.font_family;
+            return font_desc;
+        }
+
+        parseFontSpecials(text) {
+            let m = text.match(/^<b>(.+?)<\/b>$/)
+            if (m) { // capture bold string
+                this.bold = true
+                return this.parseFontSpecials(m[1]);
+            }
+            m = text.match(/^<i>(.+?)<\/i>$/)
+            if (m) { // capture italic string
+                this.italic = true
+                return this.parseFontSpecials(m[1]);
+            }
+            return text;
         }
 
         drawUnderline() {
@@ -369,7 +407,13 @@ var sprMovingWindow = (function(jspsych) {
             for (let fragment = 0; fragment < fragments.length; fragment++) {
                 let current_fragment = fragments[fragment];
                 let pos = new Pos(runningx, liney);
-                let current_word = new TextInfo(current_fragment, pos, ctx);
+                let current_word = new TextInfo(
+                    current_fragment,
+                    pos,
+                    ctx,
+                    trial_pars.font_family,
+                    trial_pars.font_size
+                );
                 if (!current_word.isWhiteSpace())
                     words.push(current_word);
                 runningx += current_word.width();
