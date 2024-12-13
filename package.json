@@ -1,0 +1,17 @@
+{
+  "name": "jspsych-spr-mw",
+  "version": "1.0.0",
+  "description": "## A self paced reading with moving window experiment using jsPsych",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./build.bash"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moo": "^0.5.2",
+    "nearley": "^2.20.1"
+  }
+}
