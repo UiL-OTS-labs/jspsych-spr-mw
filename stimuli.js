@@ -158,4 +158,18 @@ const TEST_ITEMS = [
     // {list_name: LISTS[1], table: LIST_GROUP3}
 ];
 
-
+/**
+ * 
+ * @param {Array.<object>} trials is a list of trials
+ * @param {Array.<object>.stimulus} stimulus a stimulus for this trial
+ * 
+ */
+function checkStimuliSyntax(list )
+{
+    list.forEach(trial => {
+        const parser = new nearley.Parser(nearley.Grammar.fromCompiled(spr_grammar))
+        parser.feed(trial.stimulus)
+        tree = parser.results
+        console.log()
+    });
+}

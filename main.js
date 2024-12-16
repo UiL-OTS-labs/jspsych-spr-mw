@@ -209,6 +209,7 @@ function main() {
 
     // Option 1: client side randomization:
     let stimuli = pickRandomList();
+    checkStimuliSyntax(stimuli.table);
     kickOffExperiment(getTimeline(stimuli.table), stimuli.list_name);
 
     // Option 2: server side balancing:
