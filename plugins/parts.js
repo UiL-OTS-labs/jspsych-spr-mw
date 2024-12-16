@@ -49,7 +49,7 @@ export class GrammarPart {
      * @param {PositionInfo} text_position Where is the constinuent in the parsed string
      */
     constructor(type_name, text_position) {
-        if (typeof typename !== "string") {
+        if (typeof type_name !== "string") {
             throw new TypeError("type_name should be a string");
         }
         if (typeof text_position !== "object") {
@@ -103,7 +103,7 @@ export class SentenceList extends GrammarPart {
         this.parts.forEach(
             function(value) {
                 if (value.grammar_type_name == "Word") {
-                    wordval.mark_bold();
+                    value.mark_bold();
                 }
             }
         );
@@ -113,7 +113,7 @@ export class SentenceList extends GrammarPart {
         this.parts.forEach(
             function(value) {
                 if (value.grammar_type_name == "Word") {
-                    value.mark_italian();
+                    value.mark_italic();
                 }
             }
         );

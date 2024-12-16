@@ -1,6 +1,8 @@
 
+import * as spr_grammar from "./grammar.js";
+import * as nearley from "nearley";
 
-var sprMovingWindow = (function(jspsych) {
+export var sprMovingWindow = (function(jspsych) {
 
     const SPR_MW_PLUGIN_NAME = 'spr-moving-window';
 
@@ -171,9 +173,9 @@ var sprMovingWindow = (function(jspsych) {
         constructor(text, position, ctx, font_family, font_size) {
             if (typeof(text) !== "string")
                 console.error("TextInfo constructor text was not a String");
-            if (!position instanceof Pos)
+            if (!(position instanceof Pos))
                 console.error("TextInfo constructor position was not a Pos");
-            if (!ctx instanceof CanvasRenderingContext2D)
+            if (!(ctx instanceof CanvasRenderingContext2D))
                 console.error("TextInfo constructor cts was not a valid "+
                               "CanvasRenderingContext2D");
             if (typeof(font_family) !== "string")
@@ -583,3 +585,20 @@ var sprMovingWindow = (function(jspsych) {
     return SprMovingWindowPlugin;
 
 })(jsPsychModule);
+
+
+/**
+ * 
+ * @param {Array.<object>} trials is a list of trials
+ * @param {Array.<object>.stimulus} stimulus a stimulus for this trial
+ * 
+ */
+export function checkStimuliSyntax(list)
+{
+    list.forEach(trial => {
+        const parser = new nearley.Parser(nearley.Grammar.fromCompiled(spr_grammar))
+        parser.feed(trial.stimulus)
+        tree = parser.results
+        console.log()
+    });
+}

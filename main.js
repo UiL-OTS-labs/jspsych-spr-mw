@@ -1,3 +1,8 @@
+import {
+    sprMovingWindow,
+    checkStimuliSyntax
+} from './dist/jspsych-spr-moving-window.js'
+
 let jsPsych = initJsPsych({
     exclusions: {
         min_width : MIN_WIDTH,
@@ -281,3 +286,6 @@ function findList(name) {
     }
     return list;
 }
+
+// start the experiment
+window.addEventListener('load', main);
