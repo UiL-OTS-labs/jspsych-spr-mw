@@ -9,3 +9,9 @@ upload-experiment.sh
 
 # Ignore the key used for testing purposes
 key.txt
+
+# node
+node_modules
+
+#vs code
+.vscode

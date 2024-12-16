@@ -1,0 +1,3 @@
+
+# ignore grammar.js as it is generated from grammar.ne using nearley
+grammar.js

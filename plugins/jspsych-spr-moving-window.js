@@ -1,3 +1,5 @@
+
+
 var sprMovingWindow = (function(jspsych) {
 
     const SPR_MW_PLUGIN_NAME = 'spr-moving-window';

@@ -1,8 +1,9 @@
 
 @{%
-    import * as parts from "./parts";
 
-    import * as moo from 'moo';
+    const parts = require("./parts.js");
+    const moo = require("moo");
+//    import * as moo from "moo";
 
     const lexer = moo.compile({
         rec_group_start : "{{#"                 ,
@@ -57,30 +58,24 @@ sentence ->
 
 	| sentence Word                 {%
                                         function(data) {
-                                            let sentence: parts.SentenceList;
-                                            sentence = data[0];
+                                            let sentence = data[0];
                                             sentence.push(data[1]);
                                             return sentence;
                                         }
                                     %}
     | sentence WS                   {%
                                         function(data) {
-                                            let sentence: parts.SentenceList;
-                                            sentence = data[0];
+                                            let sentence = data[0];
                                             sentence.push(data[1]);
                                             return sentence;
                                         }
                                     %}
     | sentence special_sentence     {%
                                         function(data) {
-                                            let sentence: parts.SentenceList;
-                                            let special_sentence: parts.SentenceList;
+                                            let sentence = data[0];
+                                            let special_sentence = data[1];
 
-                                            sentence = data[0];
-                                            special_sentence = data[1];
-
-                                            function append_to_sentence(
-                                                    part: parts.SentencePart)
+                                            function append_to_sentence(part)
                                             {
                                                 sentence.parts.push(part);
                                             }
@@ -100,8 +95,7 @@ bold_sentence -> %bold_start sentence %bold_end {%
                                         // drop italic_start and italic_end, return
                                         // the sentence with all word marked italic.
                                         function(data) {
-                                            let sentence_fragment: parts.SentenceList
-                                            sentence_fragment = data[1];
+                                            let sentence_fragment = data[1];
                                             sentence_fragment.mark_bold();
                                             return data[1]; // strip start and end
                                         }
@@ -111,8 +105,7 @@ italic_sentence -> %italic_start sentence %italic_end {%
                                         // drop italic_start and italic_end, return
                                         // the sentence with all word marked italic.
                                         function(data) {
-                                            let sentence_fragment: parts.SentenceList
-                                            sentence_fragment = data[1];
+                                            let sentence_fragment = data[1];
                                             sentence_fragment.mark_italian();
                                             return data[1]; // strip start and end
                                         }
