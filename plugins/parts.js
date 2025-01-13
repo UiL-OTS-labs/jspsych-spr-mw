@@ -109,7 +109,7 @@ export class SentenceList extends GrammarPart {
         );
     }
     
-    mark_italian() {
+    mark_italic() {
         this.parts.forEach(
             function(value) {
                 if (value.grammar_type_name == "Word") {
@@ -143,7 +143,7 @@ export class SentencePart extends GrammarPart {
 export class Word extends SentencePart {
 
     bold = false;
-    italian = false;
+    italic = false;
 
     /**
      * 

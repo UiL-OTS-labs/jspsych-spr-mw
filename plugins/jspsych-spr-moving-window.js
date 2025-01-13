@@ -404,8 +404,8 @@ export var sprMovingWindow = (function(jspsych) {
         const BASE_X = determineLineHeight(trial_pars.font_family, trial_pars.font_size);
 
         for (let line = 0; line < lines.length; line++) {
-            liney = BASE_Y + line * delta_y;
-            fragments = lines[line].split(RE_CAP_WHITE_SPACE);
+            let liney = BASE_Y + line * delta_y;
+            let fragments = lines[line].split(RE_CAP_WHITE_SPACE);
             fragments = fragments.filter( word => {return word != "";});
             let runningx = BASE_X;
             for (let fragment = 0; fragment < fragments.length; fragment++) {
@@ -598,7 +598,12 @@ export function checkStimuliSyntax(list)
     list.forEach(trial => {
         const parser = new nearley.Parser(nearley.Grammar.fromCompiled(spr_grammar))
         parser.feed(trial.stimulus)
-        tree = parser.results
-        console.log()
+        let tree = parser.results
+        if (tree.length > 1) {
+            console.log("Oops, grammar is ambiguous.");
+        }
+        else {
+            console.log(JSON.stringify(tree, null, "  "));
+        }
     });
 }

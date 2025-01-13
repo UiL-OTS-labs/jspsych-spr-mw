@@ -1,9 +1,7 @@
 
 @{%
-
     const parts = require("./parts.js");
     const moo = require("moo");
-//    import * as moo from "moo";
 
     const lexer = moo.compile({
         rec_group_start : "{{#"                 ,
@@ -13,7 +11,7 @@
         bold_end        : /<[ ]*[/]b[ ]*>/u     ,
         italic_start    : /<[ ]*i[ ]*>/u        ,
         italic_end      : /<[ ]*[/]i[ ]*>/u     ,
-        word            : /\p{L}+/u             ,
+        word            : /\p{L}+|\p{P}+/u      ,
         ws              : /[ \r\t]+/u           ,
         newline         : {match : "\n", lineBreaks: true},
     })
@@ -24,15 +22,51 @@
 # We parse a number of groups to present to the user.
 group_list ->
       group                 # a single group can be a group_list
+            {%
+                function (data) {
+                    let list = new parts.GroupList(data[0].text_position)
+                    list.push(data[0])
+                    return list;
+                }
+            %}
     | group_list group      # a group may be a group followed by more groups
+            {%
+                function (data) {
+                    data[0].push(data[1])
+                    return data[0];
+                }
+            %}
     | group_list WS group   # allow white space between groups
+            {%
+                function (data) {
+                    data[0].push(data[2])
+                    return data[0];
+                }
+            %}
     | group_list WS         # allow trailing white space
+            {%
+                function (data) { // Just ignore the whitespace
+                    return data[0];
+                }
+            %}
 
 # A group starts with {{ or {{# and ends with a}} we don't allow empty groups
 # {{}} or {{#}}
 group ->
 	  %group_start sentence %group_end
+        {%
+            function (data) {
+                let group = new parts.Group(data[0], false, data[1]);
+                return group;
+            }
+        %}
 	| %rec_group_start sentence %group_end
+        {%
+            function(data) {
+                let group = new parts.Group(data[0], true, data[1]);
+                return group;
+            }
+        %}
 
 
 sentence ->
@@ -106,7 +140,7 @@ italic_sentence -> %italic_start sentence %italic_end {%
                                         // the sentence with all word marked italic.
                                         function(data) {
                                             let sentence_fragment = data[1];
-                                            sentence_fragment.mark_italian();
+                                            sentence_fragment.mark_italic();
                                             return data[1]; // strip start and end
                                         }
                                     %}
