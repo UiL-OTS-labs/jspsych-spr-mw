@@ -1,6 +1,7 @@
 
 import * as spr_grammar from "./grammar.js";
 import * as nearley from "nearley";
+import * as parts from "./parts.js"
 
 export var sprMovingWindow = (function(jspsych) {
 
@@ -95,31 +96,6 @@ export var sprMovingWindow = (function(jspsych) {
     // Reused names
     const SPR_CANVAS = "SprCanvas";
 
-    // Reused regular expressions.
-    //
-    // \p{} is for a unicode property
-    // \p{L} matches a "alfabetic" character throughout languages.
-    // see https://javascript.info/regexp-unicode
-    const CAP_WORD = '(\\p{L}+)';
-
-    // Caputure as word if it is precisely a word.
-    const WORD = '^\\p{L}+$';
-    const NUMBER = '^[0-9]+$';
-    const NEWLINE = '\n';
-    const WHITE_SPACE = '\\s';
-    const CAP_WHITE_SPACE = '(\\s)';
-    const INTERPUNCTION = "\\p{P}";
-    const WORD_INTERPUNCTION= "^\\p{L}+\\p{P}$";
-
-    const RE_CAP_WORD = RegExp(CAP_WORD, 'u');
-    const RE_WORD = RegExp(WORD, 'u');
-    const RE_NUMBER = RegExp(NUMBER, 'u');
-    const RE_NEWLINE = RegExp(NEWLINE, 'u');
-    const RE_WHITE_SPACE = RegExp(WHITE_SPACE, 'u');
-    const RE_CAP_WHITE_SPACE = RegExp(CAP_WHITE_SPACE, 'u');
-    const RE_INTERPUNCTION = RegExp(INTERPUNCTION, 'u');
-    const RE_WORD_INTERPUNCTION= RegExp(WORD_INTERPUNCTION, 'u');
-
     /**
      * Creates a range between [start, end).
      *
@@ -165,14 +141,14 @@ export var sprMovingWindow = (function(jspsych) {
     class TextInfo {
 
         /**
-         * @param {string} txt, the text to draw at ctx
+         * @param {parts.SentencePart} text, the text to draw at ctx
          * @param {Pos} position the position at which to draw text.
          * @param {CanvasRenderingContext2D} ctx the 2d drawing position.
          * @param {string} font_family, the family of the font
          */
         constructor(text, position, ctx, font_family, font_size) {
-            if (typeof(text) !== "string")
-                console.error("TextInfo constructor text was not a String");
+            if (!(text instanceof parts.SentencePart))
+                console.error("TextInfo constructor text was not a parts.SentencePart");
             if (!(position instanceof Pos))
                 console.error("TextInfo constructor position was not a Pos");
             if (!(ctx instanceof CanvasRenderingContext2D))
@@ -180,13 +156,13 @@ export var sprMovingWindow = (function(jspsych) {
                               "CanvasRenderingContext2D");
             if (typeof(font_family) !== "string")
                 console.error("TextInfo constructor font_family was not a String");
-            this.bold = false;
-            this.italic = false;
+            this.bold = text.bold;
+            this.italic = text.italic;
             this.pos = position;
             this.ctx = ctx
             this.font_family = font_family;
             this.font_size = font_size;
-            this.text = this.parseFontSpecials(text);
+            this.text = text.get_content();
             this.metrics = this.getTextMetrics();
         }
 
@@ -211,41 +187,11 @@ export var sprMovingWindow = (function(jspsych) {
             return font_desc;
         }
 
-        parseFontSpecials(text) {
-            let m = text.match(/^<b>(.+?)<\/b>$/)
-            if (m) { // capture bold string
-                this.bold = true
-                return this.parseFontSpecials(m[1]);
-            }
-            m = text.match(/^<i>(.+?)<\/i>$/)
-            if (m) { // capture italic string
-                this.italic = true
-                return this.parseFontSpecials(m[1]);
-            }
-            return text;
-        }
-
         drawUnderline() {
             this.ctx.beginPath();
             this.ctx.moveTo(this.pos.x, this.pos.y);
             this.ctx.lineTo(this.pos.x + this.metrics.width, this.pos.y);
             this.ctx.stroke();
-        }
-
-        isWhiteSpace() {
-            return this.text.match(/^\s+$/u) !== null;
-        }
-
-        isWord() {
-            return this.text.match(RE_WORD) !== null;
-        }
-
-        isNumber() {
-            return this.text.match(RE_NUMBER) !== null;
-        }
-
-        isWordPlusInterpunction() {
-            return this.text.match(RE_WORD_INTERPUNCTION) !== null;
         }
 
         width() {
@@ -273,7 +219,7 @@ export var sprMovingWindow = (function(jspsych) {
 
     // private variables
 
-    let group_index = 0;        // the nth_word that should be presented.
+    let group_index = 0;        // the nth group of words that should be presented.
     let words = [];             // array of TextInfo.
     let old_html = "";          // the current display html, in order to
                                 // restore it when finished.
@@ -312,65 +258,45 @@ export var sprMovingWindow = (function(jspsych) {
         createCanvas(display_element, trial_pars);
         ctx.font = font;
         let stimulus = trial_pars.stimulus;
-        if (trial_pars.grouping_string) {
-            grouping_re = RegExp(trial_pars.grouping_string, 'ug');
-            groups = createGroups(stimulus, grouping_re);
-            stimulus = stimulus.replace(grouping_re, "");
-        }
-        else {
-            groups = createGroups(stimulus, RE_WHITE_SPACE);
-        }
-        stimulus = stimulus.replace(RegExp("#", 'gu'), "");
-        let lines = stimulus.split(RE_NEWLINE);
-        gatherWordInfo(lines, trial_pars);
+        let parsed_stimulus = parseSpr(stimulus);
+        groups = createGroups(parsed_stimulus);
+        console.log(groups);
+        gatherWordInfo(parsed_stimulus, trial_pars);
     }
 
     /**
-     * Create groups of words that are presented together
-     * @param {String} stim the stimulus to be presented
-     * @param {RegExp} split_re
+     * @param {<Array>.<parts.GroupList>} parsed_stim
+     *
+     * @returns {GroupInfo[]}
      */
-    function createGroups(stim, split_re) {
+    function createGroups(parsed_stim) {
+        let groups = parsed_stim.groups;
 
-        /**
-         * Splits text into tokens and discards empty strings. The
-         * tokens are defined by the regular expression used to
-         * split the string.
-         *
-         * @param {String} text The text to splint into tokens
-         * @param {RegExp} re   The regular expression used to split the string
-         *
-         * @return An array of strings as tokens.
-         */
-        function splitIntoTokens(text, re) {
-            return text.split(re).filter (
-                function(word) {
-                    return word != "";
-                }
-            );
+        let context = {
+            groups : [],
+            index : 0
         };
 
-        let nwordstotal = splitIntoTokens(stim, RE_WHITE_SPACE).length;
-        let word_indices = range(0, nwordstotal);
-        let groups = splitIntoTokens(stim, split_re);
-        let group_indices = [];
+        groups.forEach(
+            function (group) {
+                let group_indices = [];
+                let record = group.record;
+                let sentence_parts = group.sentence_parts.parts;
+                sentence_parts.forEach(
+                    function(part) {
+                        if (part.get_type() == "Word") {
+                            group_indices.push(context.index);
+                            context.index++;
+                        }
+                    }
+                );
 
-        for (let nthgroup = 0; nthgroup < groups.length; nthgroup++) {
-            let record = groups[nthgroup].trim()[0] == "#";
-            let nwordsgroup = splitIntoTokens(
-                groups[nthgroup],
-                RE_WHITE_SPACE
-            ).length;
-            let indices = word_indices.slice(0, nwordsgroup);
-            word_indices = word_indices.slice(nwordsgroup);
-            group_indices.push(new GroupInfo(indices, record));
-        }
-        console.assert(
-            word_indices.length == 0,
-            "Oops it was expected that word_indices was empty by now."
+                context.groups.push(new GroupInfo(group_indices, record));
+            }
         );
-        return group_indices;
+        return context.groups
     }
+
 
     /**
      * Setup the canvas for use with this plugin
@@ -391,7 +317,7 @@ export var sprMovingWindow = (function(jspsych) {
      * Processes the lines, it "measures" where each word should be.
      * the output is stored in the global plugin variable words.
      */
-    function gatherWordInfo(lines, trial_pars) {
+    function gatherWordInfo(parsed_stimulus, trial_pars) {
 
         let delta_y = determineLineHeight(
             trial_pars.font_family,
@@ -403,26 +329,76 @@ export var sprMovingWindow = (function(jspsych) {
         const BASE_Y = delta_y; // The height on which lines begin.
         const BASE_X = determineLineHeight(trial_pars.font_family, trial_pars.font_size);
 
-        for (let line = 0; line < lines.length; line++) {
-            let liney = BASE_Y + line * delta_y;
-            let fragments = lines[line].split(RE_CAP_WHITE_SPACE);
-            fragments = fragments.filter( word => {return word != "";});
-            let runningx = BASE_X;
-            for (let fragment = 0; fragment < fragments.length; fragment++) {
-                let current_fragment = fragments[fragment];
-                let pos = new Pos(runningx, liney);
-                let current_word = new TextInfo(
-                    current_fragment,
-                    pos,
+        let context = {
+            pos : new Pos(BASE_X, BASE_Y),
+        };
+
+        function advanceWhiteSpace(context, ws) {
+            if (ws.get_content() == "\n") {
+                context.pos.x = BASE_X;
+                context.pos.y = context.pos.y + delta_y;
+            }
+            else {
+                let info = new TextInfo(
+                    ws,
+                    new Pos(context.pos.x, context.pos.y),
                     ctx,
                     trial_pars.font_family,
-                    trial_pars.font_size
+                    trial_pars.font_size,
                 );
-                if (!current_word.isWhiteSpace())
-                    words.push(current_word);
-                runningx += current_word.width();
+                context.pos.x += info.width();
             }
         }
+
+        function advanceWord(context, word) {
+            let info = new TextInfo(
+                word,
+                new Pos(context.pos.x, context.pos.y),
+                ctx,
+                trial_pars.font_family,
+                trial_pars.font_size
+            );
+            words.push(info)
+            context.pos.x += info.width();
+        }
+
+        let groups = parsed_stimulus.groups;
+        groups.forEach(
+            group => {
+                let parts = group.sentence_parts.parts;
+                parts.forEach(
+                    part => {
+                        if (part.get_type() == "WhiteSpace") {
+                            advanceWhiteSpace(context, part);
+                        }
+                        else if (part.get_type() == "Word") {
+                            advanceWord(context, part);
+                        }
+                    }
+                );
+            }
+        );
+
+//        for (let line = 0; line < lines.length; line++) {
+//            let liney = BASE_Y + line * delta_y;
+//            let fragments = lines[line].split(RE_CAP_WHITE_SPACE);
+//            fragments = fragments.filter( word => {return word != "";});
+//            let runningx = BASE_X;
+//            for (let fragment = 0; fragment < fragments.length; fragment++) {
+//                let current_fragment = fragments[fragment];
+//                let pos = new Pos(runningx, liney);
+//                let current_word = new TextInfo(
+//                    current_fragment,
+//                    pos,
+//                    ctx,
+//                    trial_pars.font_family,
+//                    trial_pars.font_size
+//                );
+//                if (!current_word.isWhiteSpace())
+//                    words.push(current_word);
+//                runningx += current_word.width();
+//            }
+//        }
     }
 
     /**
@@ -586,6 +562,24 @@ export var sprMovingWindow = (function(jspsych) {
 
 })(jsPsychModule);
 
+/**
+ * Parses a stimulus and returns a GroupList that contains the
+ * groups of words that should be presented simultaneously in the spr.
+ *
+ */
+function parseSpr(stimulus) {
+    const parser = new nearley.Parser(nearley.Grammar.fromCompiled(spr_grammar))
+    parser.feed(stimulus)
+    let tree = parser.results
+    if (tree.length > 1) {
+        console.error("The grammar is ambigious for this stimulus");
+    }
+    else if (tree.length == 0) {
+        console.log("stimulus: \"" + stimulus +
+            "\"seems incomplete, parsing didn't finish");
+    }
+    return tree[0];
+}
 
 /**
  * 
@@ -600,10 +594,11 @@ export function checkStimuliSyntax(list)
         parser.feed(trial.stimulus)
         let tree = parser.results
         if (tree.length > 1) {
-            console.log("Oops, grammar is ambiguous.");
+            console.error("Oops, grammar is ambiguous.");
         }
-        else {
-            console.log(JSON.stringify(tree, null, "  "));
+        else if (tree.length == 0) {
+            console.error("Oops parsing didn't complete: " + trial +
+                "did you feed an entire string?\n");
         }
     });
 }

@@ -11,7 +11,7 @@
         bold_end        : /<[ ]*[/]b[ ]*>/u     ,
         italic_start    : /<[ ]*i[ ]*>/u        ,
         italic_end      : /<[ ]*[/]i[ ]*>/u     ,
-        word            : /\p{L}+|\p{P}+/u      ,
+        word            : /\p{L}+|\p{P}|\p{S}+/u ,
         ws              : /[ \r\t]+/u           ,
         newline         : {match : "\n", lineBreaks: true},
     })
@@ -127,7 +127,7 @@ special_sentence ->  # sentences in bold/italics
 
 bold_sentence -> %bold_start sentence %bold_end {%
                                         // drop italic_start and italic_end, return
-                                        // the sentence with all word marked italic.
+                                        // the sentence with all word marked bold.
                                         function(data) {
                                             let sentence_fragment = data[1];
                                             sentence_fragment.mark_bold();
@@ -167,10 +167,10 @@ WS ->
                                     %}
     | %newline                      {%
                                         function(data, pos) {
-                                            let ws = new parts.WhiteSpace(
+                                            let nl = new parts.WhiteSpace(
                                                 data[0],
                                                 data[0].toString()
                                             );
-                                            return ws;
+                                            return nl;
                                         }
                                     %}

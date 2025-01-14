@@ -44,7 +44,7 @@ export class PositionInfo {
 export class GrammarPart {
 
     /**
-     * 
+     * @constructor
      * @param {string} type_name What constinuent of the grammar this object is
      * @param {PositionInfo} text_position Where is the constinuent in the parsed string
      */
@@ -80,7 +80,7 @@ export class GrammarPart {
 export class SentenceList extends GrammarPart {
 
     /**
-     * 
+     * @constructor
      * @param {PositionInfo} position 
      */
     constructor(position) {
@@ -102,9 +102,7 @@ export class SentenceList extends GrammarPart {
     mark_bold() {
         this.parts.forEach(
             function(value) {
-                if (value.grammar_type_name == "Word") {
-                    value.mark_bold();
-                }
+                value.mark_bold();
             }
         );
     }
@@ -112,15 +110,16 @@ export class SentenceList extends GrammarPart {
     mark_italic() {
         this.parts.forEach(
             function(value) {
-                if (value.grammar_type_name == "Word") {
-                    value.mark_italic();
-                }
+                value.mark_italic();
             }
         );
     }
 }
 
 export class SentencePart extends GrammarPart {
+
+    bold = false;
+    italic = false;
 
     /**
      * 
@@ -133,43 +132,54 @@ export class SentencePart extends GrammarPart {
         if (typeof(content) !== "string")
             throw TypeError("text is not a string.");
         this.content = content;
+        this.bold = false;
+        this.italic = false
     }
 
     get_content() {
         return this.content;
     }
+    
+    mark_bold() {this.bold = true;}
+    mark_italic() {this.italic = true;}
 }
 
+
+// Words are different from WhiteSpace in terms of
+// how they are used by the self paced reading.
+// That explains the code duplication.
 export class Word extends SentencePart {
 
-    bold = false;
-    italic = false;
-
     /**
-     * 
      * @param {PositionInfo} position 
      * @param {string} text 
      */
-
     constructor (position, text) {
         super("Word", position, text);
-        this.bold = false;
-        this.italic = false
     }
 
-    mark_bold() {this.bold = true;}
-    mark_italic() {this.italic = true;}
 }
 
 export class WhiteSpace extends SentencePart {
 
     /**
-     * 
+     * @constructor
      * @param {PositionInfo} position 
      * @param {string} text 
      */
     constructor (position, text) {
         super("WhiteSpace", position, text);
+    }
+};
+
+export class NewLine extends SentencePart {
+    /**
+     * @constructor
+     * @param {PositionInfo} position
+     * @param {string} text
+     */
+    constructor (position, text) {
+        super("NewLine", position, text);
     }
 };
 
