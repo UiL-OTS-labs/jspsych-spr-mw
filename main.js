@@ -10,6 +10,10 @@ let jsPsych = initJsPsych({
     }
 });
 
+// export jsPsych globally because this is a module now...
+// or export jsPsych and import it from the other files.
+window.jsPsych = jsPsych
+
  // I liked RandomError too :-)
 class SprRandomizationError extends Error {
     constructor(message) {
@@ -43,7 +47,7 @@ let instruction_screen_practice = {
 
 let fixcross = {
     type : sprMovingWindow,
-    stimulus : '+',
+    stimulus : '{{+}}',
     choices : FIX_CHOICES,
     font_family : "Times New Roman",
     font_size : 36,
@@ -140,16 +144,16 @@ let end_experiment = {
 function randomizeStimuli(table) {
     let shuffled = uil.randomization.randomizeStimuli(
         table,
-        max_same_type=MAX_SUCCEEDING_ITEMS_OF_TYPE
+        MAX_SUCCEEDING_ITEMS_OF_TYPE
     );
 
     if (shuffled !== null)
         table = shuffled;
     else {
-            console.error('Unable to shuffle stimuli according constraints.');
-            let msg = "Unable to shuffle the stimuli, perhaps loosen the " +
-                      "constraints, or check the item_types on the stimuli.";
-            throw new SprRandomizationError(msg);
+        console.error('Unable to shuffle stimuli according constraints.');
+        let msg = "Unable to shuffle the stimuli, perhaps loosen the " +
+                  "constraints, or check the item_types on the stimuli.";
+        throw new SprRandomizationError(msg);
     }
 
     return table; // shuffled table if possible original otherwise
@@ -214,6 +218,7 @@ function main() {
 
     // Option 1: client side randomization:
     let stimuli = pickRandomList();
+    checkStimuliSyntax(PRACTICE_ITEMS);
     checkStimuliSyntax(stimuli.table);
     kickOffExperiment(getTimeline(stimuli.table), stimuli.list_name);
 
