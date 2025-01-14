@@ -38,7 +38,7 @@ const PRACTICE_ITEMS = [
         //inside the bold tag. Open a new tag when the overlap partially.
         //<b><i>but</i></b><i>this is</i> valid.
         stimulus :
-            "{{The <b>teacher took <i>the car</i></b><i> instead</i> of }}{{the }}{{express }}"    + // string1
+            "{{The <b>teacher took <i>the car</i></b><i> instead</i> of}} {{the }}{{express }}"    + // string1
             "{{train\n}}{{due to the previously announced public\n"                                 + // string2
             "transport strike.}}", // use a comma here on the final line of your stimulus.             // final string
         question : "",                                            // An empty string means no question for this trial.

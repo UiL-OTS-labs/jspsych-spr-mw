@@ -20,6 +20,9 @@
 @lexer lexer
 
 # We parse a number of groups to present to the user.
+# We allow white space between the groups. The white space is
+# now made significant. So you don't have to embed the whitespace inside
+# the groups in order to have them "rendered"/appear.
 group_list ->
       group                 # a single group can be a group_list
             {%
@@ -29,23 +32,25 @@ group_list ->
                     return list;
                 }
             %}
-    | group_list group      # a group may be a group followed by more groups
+    | WS                    # white space is part of the group list.
+                            # as this makes writing the stimuli easier.
+            {%
+                function (data) {
+                    let list = new parts.GroupList(data[0].text_position);
+                    list.push(data[0]);
+                }
+            %}
+    | group_list group      # a group list may be followed by more groups
             {%
                 function (data) {
                     data[0].push(data[1])
                     return data[0];
                 }
             %}
-    | group_list WS group   # allow white space between groups
+    | group_list WS         # allow white space between groups
             {%
                 function (data) {
-                    data[0].push(data[2])
-                    return data[0];
-                }
-            %}
-    | group_list WS         # allow trailing white space
-            {%
-                function (data) { // Just ignore the whitespace
+                    data[0].push(data[1])
                     return data[0];
                 }
             %}

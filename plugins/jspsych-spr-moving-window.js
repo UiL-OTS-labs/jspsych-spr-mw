@@ -260,7 +260,6 @@ export var sprMovingWindow = (function(jspsych) {
         let stimulus = trial_pars.stimulus;
         let parsed_stimulus = parseSpr(stimulus);
         groups = createGroups(parsed_stimulus);
-        console.log(groups);
         gatherWordInfo(parsed_stimulus, trial_pars);
     }
 
@@ -278,7 +277,9 @@ export var sprMovingWindow = (function(jspsych) {
         };
 
         groups.forEach(
-            function (group) {
+            function (group) { // A group might be WhiteSpace here
+                if (group.get_type() == "WhiteSpace")
+                    return;
                 let group_indices = [];
                 let record = group.record;
                 let sentence_parts = group.sentence_parts.parts;
@@ -363,19 +364,25 @@ export var sprMovingWindow = (function(jspsych) {
         }
 
         let groups = parsed_stimulus.groups;
-        groups.forEach(
+        groups.forEach( // A group can be a whitespace
             group => {
-                let parts = group.sentence_parts.parts;
-                parts.forEach(
-                    part => {
-                        if (part.get_type() == "WhiteSpace") {
-                            advanceWhiteSpace(context, part);
+                let type = group.get_type();
+                if (type == "WhiteSpace") {
+                    advanceWhiteSpace(context, group);
+                }
+                else if (type == "Group") {
+                    let parts = group.sentence_parts.parts;
+                    parts.forEach(
+                        part => {
+                            if (part.get_type() == "WhiteSpace") {
+                                advanceWhiteSpace(context, part);
+                            }
+                            else if (part.get_type() == "Word") {
+                                advanceWord(context, part);
+                            }
                         }
-                        else if (part.get_type() == "Word") {
-                            advanceWord(context, part);
-                        }
-                    }
-                );
+                    );
+                }
             }
         );
 
