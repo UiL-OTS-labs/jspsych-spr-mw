@@ -71,7 +71,7 @@ as that might be more readable than e.g.
 {{double }}{{curly }}{{braces}}
 ```
 
-In this example the spaces are embedded inside the groups, both method are
+In this example the spaces are embedded inside the groups, both methods are
 fine, but the author finds the first method better readable. If you put
 none white space characters outside of a group it will be considered a syntax error.
 
