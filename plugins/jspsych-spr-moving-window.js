@@ -70,18 +70,6 @@ export var sprMovingWindow = (function(jspsych) {
                 default :       600,
                 description :   "The height of the canvas in which the spr moving window is presented"
             },
-            grouping_string : {
-                type :          jspsych.ParameterType.STRING,
-                pretty_name :   "grouping string",
-                default :       null,
-                description :   "The string used to split the string in to parts. The parts are "  +
-                    "presented together. This allows to present multiple words as "    +
-                    "group if the argument isn't specified every single word is "      +
-                    "treated as group. You should make sure that the used argument "   +
-                    "doesn't appear at other locations than at boundaries of groups, " +
-                    "because the grouping character is removed from the string. a "    +
-                    "'/' can be used quite handy for example."
-            },
             line_height_multiplier : {
                 type :          jspsych.ParameterType.FLOAT,
                 pretty_name :   "line_height_multiplier",

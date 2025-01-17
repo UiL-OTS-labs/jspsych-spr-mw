@@ -71,7 +71,6 @@ let present_text = {
     width : MIN_WIDTH,
     height : MIN_HEIGHT,
     post_trial_gap : ISI,
-    grouping_string : GROUPING_STRING,
     data : {
         id : jsPsych.timelineVariable('id'),
         item_type : jsPsych.timelineVariable('item_type'),
