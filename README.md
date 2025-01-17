@@ -45,58 +45,66 @@ conditions, you'd need to create four lists.
 
 ### Presenting multiple words as one group
 
-By defaut, the boilerplate experiment treats every word in the stimuli as a
-group of its own containing one word. Note, in some papers, the terminology for
-a group is a segment. Sometimes it is handy to group multiple words together,
-to shorten the time it takes to complete the experiment for example. This is
-possible, but must be enabled. The file `globals.js` contains another variable:
+Previously, when the spr was presenting multiple words as one group/simultaneous, you
+needed to separate them by inserting e.g. a `/`, as of now, you have to
+specifically create groups yourself and grouping of words is always on. On
+the. There are two kinds of groups `{{A group of words that is not recorded}}`
+`{{#A group of words that is NOT recorded.}}`. Recorded means that the
+RT of this group is logged. Of course it is fine to have just one `{{word}}`
+in a {{#group}}. the curly braces and # are stripped from the rendered
+output. You should not put word letters etc outside of a group.
 
-```javascript
-const GROUPING_STRING = null;
+All the words of your spr need to be enclosed in **{{**double curly braces**}}**
+so the phrase "double curly braces" is presented together. If you want the to
+be presented individually, you'll need to make three groups such as
+
+```
+{{double}} {{curly}} {{braces}}
 ```
 
-To enable grouping you must define a useful delimiter between groups.
-A little bit further in the file there's a commented version of this:
+#### White space issues
 
-```javascript
-const GROUPING_STRING = "/";
+In the example with three groups above, the " " are put outside of the group
+as that might be more readable than e.g.
+
+```
+{{double }}{{curly }}{{braces}}
 ```
 
-So in order to enable grouping, comment the first version and uncomment
-the latter. In theory you can fill out any string instead of the `"/"`
-(useful in case you need to use / in a stimulus).
-Notice the string is turned into a regular expression in order to split
-the stimulus into parts and to remove the `/` in the case described here.
+In this example the spaces are embedded inside the groups, both method are
+fine, but the author finds the first method better readable. If you put
+none white space characters outside of a group it will be considered a syntax error.
 
-```javascript
-re = RegExp(GROUPING_STRING,'gu');
+#### Presenting **bold** and *italic* words or ***both***
+
+Like HTML you can render words in bold or italic like this:
+
+```
+{{a word in <b>bold</b> or some words <i>in italic</i>}}
 ```
 
-So make sure if you are going to be creative, that the expression is valid.
+or even both.
 
-### Warning the grouping string is going to be removed as it shouldn't be displayed
-
-In the stimulus file you should take care that the grouping string is removed
-from the stimulus. So you should take in mind how the stimulus would appear
-after the grouping string is removed.
-
-#### Example
-
-```javascript
-{
-    stimulus : "This is/my fantasic stimlus./Don't you think!"
-}
+```
+{{<b><i>Bold and italic</i></b>}}
 ```
 
-The "/" will be removed, essentially gluing "is" and "my" together, just like
-"stimulus." and "Word".
+However, the syntax for this is more strict than HTML, forgetting to close a bold
+or italic tag will result in an error. The bold or you'll have to close the
+innermost group first and then the outermost group. So the following are errors:
 
-#### Example improved
+1.
 
-```javascript
-{
-    stimulus : "This is/ my fantasic stimlus./ Don't you think"
-}
+        {{<b><i>Oops close i first</b></i>}}
+
+2.
+
+        {{<b>Oops forgot to close b}}
+
+If you want then to be partially overlapping you should open a new group
+
+```
+{{<b>Bold <i> and italic</i></b> <i>, only italic</i>
 ```
 
 ## Output
