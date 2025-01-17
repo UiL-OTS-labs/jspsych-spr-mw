@@ -38,8 +38,8 @@ const PRACTICE_ITEMS = [
         //inside the bold tag. Open a new tag when the overlap partially.
         //<b><i>but</i></b><i>this is</i> valid.
         stimulus :
-            "{{The <b>teacher took <i>the car</i></b><i> instead</i> of}} {{the }}{{express }}"    + // string1
-            "{{train\n}}{{due to the previously announced public\n"                                 + // string2
+            "{{The <b>teacher took <i>the car</i></b><i> instead</i> of}} {{the}} {{express}} {{train}}\n"    + // string1
+            "{{due to the previously announced public\n"                                                      + // string2
             "transport strike.}}", // use a comma here on the final line of your stimulus.             // final string
         question : "",                                            // An empty string means no question for this trial.
         qanswer : undefined                                       // We can't define a answer if there ain't no question.
@@ -48,8 +48,8 @@ const PRACTICE_ITEMS = [
         id : 2,
         item_type : PRAC,
         stimulus :
-            "{{The researcher presented his most recent work\n}}"   +
-            "{{to }}{{the }}{{commission }}{{and obtained very positive\n"    +
+            "{{The researcher presented his most recent work}}\n"   +
+            "{{to}} {{the}} {{commission}} {{and obtained very positive\n"    + // Line endings inside a group are fine
             "comments regarding the experimental design.}}"     ,
         question : "The researcher presented old work.",
         qanswer : FALSE_BUTTON_TEXT                               // Use TRUE_BUTTON_TEXT if the answer is true,
@@ -59,16 +59,18 @@ const PRACTICE_ITEMS = [
 
 /*
  * In this list there is a stimulus, if a group of words starts with a
- * '{{#' it's reaction time will be recorded.
+ * '{{#' it's reaction time will be recorded. In the list for group 1
+ * the space is moved outside of a group. I think this make it easier to
+ * read the stimulus.
  */
 const LIST_GROUP1 = [
     {
         id : 1,
         item_type : PASSIVE,
         stimulus :
-            "{{The guitarist was rejected by }}{{#the }}{{#attractive }}{{#and\n}}"                 +
-            "{{#talented }}{{#singer }}{{#in }}{{#the }}{{#concert }}{{#hall }}{{#next }}{{#to\n}}" +
-            "{{#the }}{{#Irish }}{{#pub.\n}}",
+            "{{The guitarist was rejected by}} {{#the}} {{#attractive}} {{#and}}\n"                 +
+            "{{#talented}} {{#singer}} {{#in}} {{#the}} {{#concert}} {{#hall}} {{#next}} {{#to}}\n" +
+            "{{#the}} {{#Irish}} {{#pub.}}\n",
         question : "The singer was attractive.",
         qanswer : TRUE_BUTTON_TEXT
     },
@@ -76,9 +78,9 @@ const LIST_GROUP1 = [
         id : 2,
         item_type : ACTIVE,
         stimulus :
-            "{{The sculptor mugged }}{{#the }}{{#strange }}{{#and\n}}"                      +
-            "{{#temperamental }}{{#photographer }}{{#in }}{{#the }}{{#art }}{{#gallery\n}}" +
-            "{{#next }}{{#to }}{{#the }}{{#book }}{{#shop.\n}}"                             ,
+            "{{The sculptor mugged}} {{#the}} {{#strange}} {{#and}}\n"                      +
+            "{{#temperamental}} {{#photographer}} {{#in}} {{#the}} {{#art}} {{#gallery}}\n" +
+            "{{#next}} {{#to}} {{#the}} {{#book}} {{#shop.}}"                               ,
         question : "",
         qanswer : undefined
     },
@@ -86,9 +88,9 @@ const LIST_GROUP1 = [
         id : 3,
         item_type : FILLER,
         stimulus :
-            "{{The beautiful princess married her young and\n}}"                +
-            "{{handsome }}{{chauffeur }}{{and }}{{shocked }}{{the royal\n"      +
-            "family and the press.\n}}",
+            "{{The beautiful princess married her young and}}\n"                +
+            "{{handsome}} {{chauffeur}} {{and}} {{shocked}} {{the royal\n"      +
+            "family and the press.}}",
         question : "The chauffeur was an old man.",
         qanswer : FALSE_BUTTON_TEXT
     },
@@ -96,17 +98,19 @@ const LIST_GROUP1 = [
         id : 4,
         item_type : FILLER,
         stimulus :
-            "{{The little girl did not play with her brother\n}}"                               +
-            "{{in }}{{the }}{{colourful }}{{playground }}{{next }}{{to }}{{their }}{{weedy\n}}" +
-            "{{garden.\n}}",
+            "{{The little girl did not play with her brother}}\n"                               +
+            "{{in}} {{the}} {{colourful}} {{playground}} {{next}} {{to}} {{their}} {{weedy}}\n" +
+            "{{garden.}}",
         question : "",
         qanswer : undefined
     }
 ];
 
 /*
- * In this list there is a stimulus, if a word starts with a '#' its
- * reaction time will be recorded. So don't put any '#" elsewhere...
+ * In this list puts all the white space inside of a group, this is also possbile
+ * but I find it less readable. You are allowed to mix it, where necessary. If
+ * you want a group of words that spans multiple lines, it's fine to put a \n
+ * inside the group.
  */
 const LIST_GROUP2 = [
     {
