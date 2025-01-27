@@ -4,16 +4,18 @@
     const moo = require("moo");
 
     const lexer = moo.compile({
-        rec_group_start : "{{#"                 ,
-        group_start     : "{{"                  ,
-        group_end       : "}}"                  ,
-        bold_start      : /<[ ]*b[ ]*>/u        ,
-        bold_end        : /<[ ]*[/]b[ ]*>/u     ,
-        italic_start    : /<[ ]*i[ ]*>/u        ,
-        italic_end      : /<[ ]*[/]i[ ]*>/u     ,
-        word            : /\p{L}+|\p{P}|\p{S}+/u ,
-        ws              : /[ \r\t]+/u           ,
-        newline         : {match : "\n", lineBreaks: true},
+        rec_group_start : "{{#"             ,
+        group_start     : "{{"              ,
+        group_end       : "}}"              ,
+        bold_start      : /<[ ]*b[ ]*>/     ,
+        bold_end        : /<[ ]*[/]b[ ]*>/  ,
+        italic_start    : /<[ ]*i[ ]*>/     ,
+        italic_end      : /<[ ]*[/]i[ ]*>/  ,
+        // A word is a sequence of non white space characters
+        // It's non-greedy as e.g. }} must not be seen as end of a word.
+        word            : /[^ \r\n\t]+?/    ,
+        ws              : /[ \r\t]+/        ,
+        newline         : {match : "\n"     , lineBreaks: true},
     })
 %}
 
