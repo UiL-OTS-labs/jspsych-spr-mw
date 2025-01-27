@@ -47,15 +47,15 @@ conditions, you'd need to create four lists.
 
 Previously, when the spr was presenting multiple words as one group/simultaneous, you
 needed to separate them by inserting e.g. a `/`, as of now, you have to
-specifically create groups yourself and grouping of words is always on. On
-the. There are two kinds of groups `{{A group of words that is not recorded}}`
-`{{#A group of words that is NOT recorded.}}`. Recorded means that the
+specifically create groups yourself and grouping of words is always turned on.
+There are two kinds of groups `{{A group of words that is NOT recorded}}`
+`{{#A group of words that IS recorded.}}`. Recorded means that the
 RT of this group is logged. Of course it is fine to have just one `{{word}}`
-in a {{#group}}. the curly braces and # are stripped from the rendered
+in a {{#group}}. The curly braces and # are stripped from the rendered
 output. You should not put word letters etc outside of a group.
 
 All the words of your spr need to be enclosed in **{{**double curly braces**}}**
-so the phrase "double curly braces" is presented together. If you want the to
+so the phrase "double curly braces" is presented together. If you want them to
 be presented individually, you'll need to make three groups such as
 
 ```
@@ -64,14 +64,15 @@ be presented individually, you'll need to make three groups such as
 
 #### White space issues
 
-In the example with three groups above, the " " are put outside of the group
-as that might be more readable than e.g.
+In the example with three groups above, the spaces are put outside of the group
+as that might be more readable than e.g. the example below where the spaces are
+put inside the group.
 
 ```
 {{double }}{{curly }}{{braces}}
 ```
 
-In this example the spaces are embedded inside the groups, both methods are
+In the example above the spaces are embedded inside the groups, both methods are
 fine, but the author finds the first method better readable. If you put
 none white space characters outside of a group it will be considered a syntax error.
 
@@ -90,7 +91,7 @@ or even both.
 ```
 
 However, the syntax for this is more strict than HTML, forgetting to close a bold
-or italic tag will result in an error. The bold or you'll have to close the
+or italic tag will result in an error. You'll have to close the
 innermost group first and then the outermost group. So the following are errors:
 
 1.
