@@ -149,7 +149,7 @@ function randomizeStimuli(table) {
     if (shuffled !== null)
         table = shuffled;
     else {
-        console.error('Unable to shuffle stimuli according constraints.');
+        console.error('Unable to shuffle stimuli according to the set constraints.');
         let msg = "Unable to shuffle the stimuli, perhaps loosen the " +
                   "constraints, or check the item_types on the stimuli.";
         throw new SprRandomizationError(msg);

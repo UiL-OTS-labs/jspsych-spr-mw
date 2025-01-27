@@ -23,19 +23,20 @@ const PRACTICE_ITEMS = [
     {
         id : 1,
         item_type : PRAC,
-        //Every word, space "enter" between a pair of {{ and }} is presented
+        //Every word, space or "enter" between a pair of {{ and }} is presented
         //together as one group of words. If a group starts with a {{#, the reaction
         //will be recorded. Don't put any characters outside of the {{}}} characters
         //as the grammar for shaping the self paced reading doesn't like that.
         //
-        //You can go to the next line in this file by adding (+) to strings
+        //You can go to the next line in this file by adding (+) two strings
         //together.
         //
         //You are allowed to present words in html style bold and italic tags
-        //You can use bold and italic together, but an entire
+        //You can use bold and italic together, but if you use them together
+        //the innermost must be terminated before the outermost.
         //<b>this is <i>correct</i></b>,
         //<b><i>but<b/> this isn't</i> as the entire italic phrase must be captured
-        //inside the bold tag. Open a new tag when the overlap partially.
+        //inside the bold tag. Open a new tag when they overlap partially.
         //<b><i>but</i></b><i>this is</i> valid.
         stimulus :
             "{{The <b>teacher took <i>the car</i></b><i> instead</i> of}} {{the}} {{express}} {{train}}\n"    + // string1
