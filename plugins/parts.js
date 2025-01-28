@@ -158,6 +158,9 @@ export class Word extends SentencePart {
         super("Word", position, text);
     }
 
+    push_word_char(c) {
+        this.content += c;
+    }
 }
 
 export class WhiteSpace extends SentencePart {
