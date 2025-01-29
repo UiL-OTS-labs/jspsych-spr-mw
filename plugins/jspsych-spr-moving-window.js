@@ -351,49 +351,32 @@ export var sprMovingWindow = (function(jspsych) {
             context.pos.x += info.width();
         }
 
+        function advanceGroup(group) {
+            let parts = group.sentence_parts.parts;
+            parts.forEach(
+                part => {
+                    if (part.get_type() == "WhiteSpace") {
+                        advanceWhiteSpace(context, part);
+                    }
+                    else if (part.get_type() == "Word") {
+                        advanceWord(context, part);
+                    }
+                }
+            );
+        }
+
         let groups = parsed_stimulus.groups;
-        groups.forEach( // A group can be a whitespace
+        groups.forEach(
             group => {
                 let type = group.get_type();
-                if (type == "WhiteSpace") {
+                if (type == "WhiteSpace") { // A group can be a whitespace, so "render" it.
                     advanceWhiteSpace(context, group);
                 }
                 else if (type == "Group") {
-                    let parts = group.sentence_parts.parts;
-                    parts.forEach(
-                        part => {
-                            if (part.get_type() == "WhiteSpace") {
-                                advanceWhiteSpace(context, part);
-                            }
-                            else if (part.get_type() == "Word") {
-                                advanceWord(context, part);
-                            }
-                        }
-                    );
+                    advanceGroup(group);
                 }
             }
         );
-
-//        for (let line = 0; line < lines.length; line++) {
-//            let liney = BASE_Y + line * delta_y;
-//            let fragments = lines[line].split(RE_CAP_WHITE_SPACE);
-//            fragments = fragments.filter( word => {return word != "";});
-//            let runningx = BASE_X;
-//            for (let fragment = 0; fragment < fragments.length; fragment++) {
-//                let current_fragment = fragments[fragment];
-//                let pos = new Pos(runningx, liney);
-//                let current_word = new TextInfo(
-//                    current_fragment,
-//                    pos,
-//                    ctx,
-//                    trial_pars.font_family,
-//                    trial_pars.font_size
-//                );
-//                if (!current_word.isWhiteSpace())
-//                    words.push(current_word);
-//                runningx += current_word.width();
-//            }
-//        }
     }
 
     /**
@@ -557,6 +540,50 @@ export var sprMovingWindow = (function(jspsych) {
 
 })(jsPsychModule);
 
+// Consider this as an abstract class, use SprAmbigiousGrammar or SprNoParseResult instead
+class SprParseError extends Error {
+    constructor(message, stimulus, name) {
+        super(message);
+        this.name = name;
+    };
+};
+
+// This exception is raised when the stimulus provides multiple interpretations
+// and is likely the result in the grammar.
+class SprAmbigiousGrammar extends SprParseError {
+    constructor(message) {
+        super(messge, "SprAmbigiousGrammar");
+    }
+};
+
+// This exception is raised when nothing came out of the parser. It seems
+// like the client didn't provide something that finished. E.g. take the
+// following double quoted string '"oops' it missing a terminating '"'.
+// and no string was parsed.
+// It might be the case that there is unfinished content in the parser
+// The stimulus is a list of groups '{{group1}}{{groupn}}', but if you feed
+// the parser '{{group1}}{{groupn' it might be the case that group1 is parsed
+// and returned, but groupn is still waiting in the parser for the terminating '}}'.
+class SprNoParseResult extends SprParseError {
+    constructor(message) {
+        super(message, "SprNoParseResult");
+    }
+};
+
+/**
+ * Checks if there are errors that aren't strictly straightforward
+ * e.g. stimuli that contain syntax errors, will be caught by the parser itself
+ */
+function checkParseResult(tree, stimulus) {
+    if (tree.length > 1) {
+        throw new SprAmbigiousGrammar("The grammar is ambigious for this stimulus");
+    }
+    else if (tree.length == 0) {
+        throw new SprNoParseResult("stimulus: \"" + stimulus +
+            "\"seems incomplete, parsing didn't finish");
+    }
+}
+
 /**
  * Parses a stimulus and returns a GroupList that contains the
  * groups of words that should be presented simultaneously in the spr.
@@ -566,13 +593,7 @@ function parseSpr(stimulus) {
     const parser = new nearley.Parser(nearley.Grammar.fromCompiled(spr_grammar))
     parser.feed(stimulus)
     let tree = parser.results
-    if (tree.length > 1) {
-        console.error("The grammar is ambigious for this stimulus");
-    }
-    else if (tree.length == 0) {
-        console.log("stimulus: \"" + stimulus +
-            "\"seems incomplete, parsing didn't finish");
-    }
+    checkParseResult(tree);
     return tree[0];
 }
 
@@ -584,16 +605,5 @@ function parseSpr(stimulus) {
  */
 export function checkStimuliSyntax(list)
 {
-    list.forEach(trial => {
-        const parser = new nearley.Parser(nearley.Grammar.fromCompiled(spr_grammar))
-        parser.feed(trial.stimulus)
-        let tree = parser.results
-        if (tree.length > 1) {
-            console.error("Oops, grammar is ambiguous.");
-        }
-        else if (tree.length == 0) {
-            console.error("Oops parsing didn't complete: " + trial +
-                "did you feed an entire string?\n");
-        }
-    });
+    list.forEach(trial => {parseSpr(trial.stimulus)});
 }
