@@ -43,7 +43,7 @@ lists assigned randomly. You can add additional lists if your experiment
 requires this. For instance, to implement a Latin square design for four
 conditions, you'd need to create four lists.
 
-### Presenting multiple words as one group
+#### Presenting multiple words as one group
 
 Previously, when the spr was presenting multiple words as one group/simultaneous, you
 needed to separate them by inserting e.g. a `/`, as of now, you have to
@@ -107,6 +107,27 @@ If you want then to be partially overlapping you should open a new group
 ```
 {{<b>Bold <i> and italic</i></b> <i>, only italic</i>
 ```
+
+#### escaping
+
+Since the stimuli are a mini "programming" language or a Domain Specific Language (DSL)
+it also comes with problem related to programming and one is some characters need to
+be escaped. Take the phrase `{{<b>bold word</b>}}` The parser needs to know that
+`</b>` doesn't belong to word, and especially the `<` is not part of a word that needs
+to be presented. The same goes for all following characters:
+ - {
+ - }
+ - <
+ - >
+ - \
+So If you want to present one of those, and it isn't part of a group, bold or italic
+tag you'll need to escape it. You can escape such character by preceding it with an
+`\`, this way the parser.
+So I would like to have a group that literally, contains "{{word}}", You'd write
+`{{\{\{word\}\}}}` the outer {{ }} pairs make it a group inside the language and the
+inner most are escaped as with slashes to the participant reads {{word}} instead of
+word.
+
 
 ## Output
 
