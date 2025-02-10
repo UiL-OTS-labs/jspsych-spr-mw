@@ -62,7 +62,7 @@ be presented individually, you'll need to make three groups such as
 {{double}} {{curly}} {{braces}}
 ```
 
-#### White space issues
+#### Whitespace issues
 
 In the example with three groups above, the spaces are put outside of the group
 as that might be more readable than e.g. the example below where the spaces are
@@ -74,7 +74,7 @@ put inside the group.
 
 In the example above the spaces are embedded inside the groups, both methods are
 fine, but the author finds the first method better readable. If you put
-none white space characters outside of a group it will be considered a syntax error.
+none whitespace characters outside of a group it will be considered a syntax error.
 
 #### Presenting **bold** and *italic* words or ***both***
 

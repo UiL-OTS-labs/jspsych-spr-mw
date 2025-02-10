@@ -25,7 +25,7 @@
         escaped_char    : /[\{}<>]/         ,  // { } \ < > need to be escaped in a
                                                // word like \{, \} or \\
 
-        ws              : /[ \r\t]+/        , // none newline white space
+        ws              : /[ \r\t]+/        , // none newline whitespace
         newline         : {match : "\n"     , lineBreaks: true},
     })
 %}
@@ -35,7 +35,7 @@
 @lexer lexer
 
 # We parse a number of groups to present to the user.
-# We allow white space between the groups. The white space is
+# We allow whitespace between the groups. The whitespace is
 # now made significant. So you don't have to embed the whitespace inside
 # the groups in order to have them "rendered"/appear.
 group_list ->
@@ -47,7 +47,7 @@ group_list ->
                     return list;
                 }
             %}
-    | WS                    # white space is part of the group list.
+    | WS                    # whitespace is part of the group list.
                             # as this makes writing the stimuli easier.
             {%
                 function (data) {
@@ -62,7 +62,7 @@ group_list ->
                     return data[0];
                 }
             %}
-    | group_list WS         # allow white space between groups
+    | group_list WS         # allow whitespace between groups
             {%
                 function (data) {
                     data[0].push(data[1])
@@ -172,7 +172,7 @@ italic_sentence -> %italic_start sentence %italic_end {%
                                         }
                                     %}
 
-# A word is a sequence of non white space characters. Additionally characters such
+# A word is a sequence of non whitespace characters. Additionally characters such
 # as a part of the start and stop of a group need to be escaped with an \ also
 # < and > need to be escaped, because if the grammar doesn't do this, the {, }, <, >
 # \ Are parsed as being part of a word.

@@ -108,7 +108,7 @@ const LIST_GROUP1 = [
 ];
 
 /*
- * This list puts all the white space inside of a group, this is also possible
+ * This list puts all the whitespace inside of a group, this is also possible
  * but I find it less readable. You are allowed to mix it, where necessary. If
  * you want a group of words that spans multiple lines, it's fine to put a \n
  * inside the group.
