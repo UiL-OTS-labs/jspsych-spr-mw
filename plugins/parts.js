@@ -175,18 +175,6 @@ export class WhiteSpace extends SentencePart {
     }
 };
 
-export class NewLine extends SentencePart {
-    /**
-     * @constructor
-     * @param {PositionInfo} position
-     * @param {string} text
-     */
-    constructor (position, text) {
-        super("NewLine", position, text);
-    }
-};
-
-
 export class Group extends GrammarPart {
 
     /**
