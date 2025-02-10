@@ -85,30 +85,6 @@ export var sprMovingWindow = (function(jspsych) {
     const SPR_CANVAS = "SprCanvas";
 
     /**
-     * Creates a range between [start, end).
-     *
-     * @param start The value at which the range starts
-     * @param end   The value before which the range stops.
-     *
-     * @return an array with the range.
-     */
-    function range(start, end, step = 1) {
-        let a = []
-        if (step > 0) {
-            for (let i = start; i < end; i++)
-                a.push(i);
-        } else if(step < 0) {
-            for (let i =  start; i > end; i++)
-                a.push(i);
-        } else {
-            throw RangeError(
-                "Argument 3 (the step) must be larger or smaller than 0."
-            );
-        }
-        return a;
-    }
-
-    /**
      * Class to represent the position of a word on a 2d canvas
      */
     class Pos {
@@ -221,7 +197,7 @@ export var sprMovingWindow = (function(jspsych) {
     let gelement = null;        // the element we get from jsPsych.
     let reactiontimes = [];     // store for relevant reactiontimes.
     let groups = [];            // store groups of indices of words
-    // to be presented together.
+                                // to be presented together.
 
     /**
      * Setup the variables for use at the start of a new trial
