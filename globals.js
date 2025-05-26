@@ -42,12 +42,3 @@ const FIX_CHOICES = [' '];
 // is on screen.
 const FINISH_TEXT_DUR = 3000;
 
-// If no grouping character is selected or if it is null as in this example
-// every word is a group of its own: sentences are split on whitespace.
-// each word will be a one word group
-const GROUPING_STRING = null;
-// Or create word groups based on a splitting string
-// Create groups using a "/". Note that every occurrence
-// of a "/" will lead to presentation as a word group and the a "/" itself
-// will not be displayed in the stimulus
-//const GROUPING_STRING = "/";
