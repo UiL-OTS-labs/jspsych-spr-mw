@@ -43,61 +43,91 @@ lists assigned randomly. You can add additional lists if your experiment
 requires this. For instance, to implement a Latin square design for four
 conditions, you'd need to create four lists.
 
-### Presenting multiple words as one group
+#### Presenting multiple words as one group
 
-By defaut, the boilerplate experiment treats every word in the stimuli as a
-group of its own containing one word. Note, in some papers, the terminology for
-a group is a segment. Sometimes it is handy to group multiple words together,
-to shorten the time it takes to complete the experiment for example. This is
-possible, but must be enabled. The file `globals.js` contains another variable:
+Previously, when the spr was presenting multiple words as one group/simultaneous, you
+needed to separate them by inserting e.g. a `/`, as of now, you have to
+specifically create groups yourself and grouping of words is always turned on.
+There are two kinds of groups `{{A group of words that is NOT recorded}}`
+`{{#A group of words that IS recorded.}}`. Recorded means that the
+RT of this group is logged. Of course it is fine to have just one `{{word}}`
+in a {{#group}}. The curly braces and # are stripped from the rendered
+output. You should not put word letters etc outside of a group.
 
-```javascript
-const GROUPING_STRING = null;
+All the words of your spr need to be enclosed in **{{**double curly braces**}}**
+so the phrase "double curly braces" is presented together. If you want them to
+be presented individually, you'll need to make three groups such as
+
+```
+{{double}} {{curly}} {{braces}}
 ```
 
-To enable grouping you must define a useful delimiter between groups.
-A little bit further in the file there's a commented version of this:
+#### Whitespace issues
 
-```javascript
-const GROUPING_STRING = "/";
+In the example with three groups above, the spaces are put outside of the group
+as that might be more readable than e.g. the example below where the spaces are
+put inside the group.
+
+```
+{{double }}{{curly }}{{braces}}
 ```
 
-So in order to enable grouping, comment the first version and uncomment
-the latter. In theory you can fill out any string instead of the `"/"`
-(useful in case you need to use / in a stimulus).
-Notice the string is turned into a regular expression in order to split
-the stimulus into parts and to remove the `/` in the case described here.
+In the example above the spaces are embedded inside the groups, both methods are
+fine, but the author finds the first method better readable. If you put
+none whitespace characters outside of a group it will be considered a syntax error.
 
-```javascript
-re = RegExp(GROUPING_STRING,'gu');
+#### Presenting **bold** and *italic* words or ***both***
+
+Like HTML you can render words in bold or italic like this:
+
+```
+{{a word in <b>bold</b> or some words <i>in italic</i>}}
 ```
 
-So make sure if you are going to be creative, that the expression is valid.
+or even both.
 
-### Warning the grouping string is going to be removed as it shouldn't be displayed
-
-In the stimulus file you should take care that the grouping string is removed
-from the stimulus. So you should take in mind how the stimulus would appear
-after the grouping string is removed.
-
-#### Example
-
-```javascript
-{
-    stimulus : "This is/my fantasic stimlus./Don't you think!"
-}
+```
+{{<b><i>Bold and italic</i></b>}}
 ```
 
-The "/" will be removed, essentially gluing "is" and "my" together, just like
-"stimulus." and "Word".
+However, the syntax for this is more strict than HTML, forgetting to close a bold
+or italic tag will result in an error. You'll have to close the
+innermost group first and then the outermost group. So the following are errors:
 
-#### Example improved
+1.
 
-```javascript
-{
-    stimulus : "This is/ my fantasic stimlus./ Don't you think"
-}
+        {{<b><i>Oops close i first</b></i>}}
+
+2.
+
+        {{<b>Oops forgot to close b}}
+
+If you want then to be partially overlapping you should open a new group
+
 ```
+{{<b>Bold <i> and italic</i></b> <i>, only italic</i>
+```
+
+#### escaping
+
+Since the stimuli are a mini "programming" language or a Domain Specific Language (DSL)
+it also comes with problem related to programming and one is some characters need to
+be escaped. Take the phrase `{{<b>bold word</b>}}` The parser needs to know that
+`</b>` doesn't belong to word, and especially the `<` is not part of a word that needs
+to be presented. The same goes for all following characters:
+ - {
+ - }
+ - <
+ - >
+ - \
+So If you want to present one of those, and it isn't part of a group, bold or italic
+tag you'll need to escape it. You can escape such character by preceding it with an
+`\`, this way the parser.
+So I would like to have a group that literally, contains "{{word}}", You'd write
+`{{\{\{word\}\}}}` the outer {{ }} pairs make it a group inside the language and the
+inner most are escaped as with slashes to the participant reads {{word}} instead of
+word.
+
 
 ## Output
 
