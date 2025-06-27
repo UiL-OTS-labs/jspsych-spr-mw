@@ -1,9 +1,18 @@
+import {
+    sprMovingWindow,
+    checkStimuliSyntax
+} from 'https://web-experiments.lab.hum.uu.nl/jspsych/plugins/spr-mw/1.0/jspsych-spr-moving-window.js'
+
 let jsPsych = initJsPsych({
     exclusions: {
         min_width : MIN_WIDTH,
         min_height : MIN_HEIGHT
     }
 });
+
+// export jsPsych globally because this is a module now...
+// or export jsPsych and import it from the other files.
+window.jsPsych = jsPsych
 
  // I liked RandomError too :-)
 class SprRandomizationError extends Error {
@@ -38,7 +47,7 @@ let instruction_screen_practice = {
 
 let fixcross = {
     type : sprMovingWindow,
-    stimulus : '+',
+    stimulus : '{{+}}',
     choices : FIX_CHOICES,
     font_family : "Times New Roman",
     font_size : 36,
@@ -62,7 +71,6 @@ let present_text = {
     width : MIN_WIDTH,
     height : MIN_HEIGHT,
     post_trial_gap : ISI,
-    grouping_string : GROUPING_STRING,
     data : {
         id : jsPsych.timelineVariable('id'),
         item_type : jsPsych.timelineVariable('item_type'),
@@ -135,16 +143,16 @@ let end_experiment = {
 function randomizeStimuli(table) {
     let shuffled = uil.randomization.randomizeStimuli(
         table,
-        max_same_type=MAX_SUCCEEDING_ITEMS_OF_TYPE
+        MAX_SUCCEEDING_ITEMS_OF_TYPE
     );
 
     if (shuffled !== null)
         table = shuffled;
     else {
-            console.error('Unable to shuffle stimuli according constraints.');
-            let msg = "Unable to shuffle the stimuli, perhaps loosen the " +
-                      "constraints, or check the item_types on the stimuli.";
-            throw new SprRandomizationError(msg);
+        console.error('Unable to shuffle stimuli according to the set constraints.');
+        let msg = "Unable to shuffle the stimuli, perhaps loosen the " +
+                  "constraints, or check the item_types on the stimuli.";
+        throw new SprRandomizationError(msg);
     }
 
     return table; // shuffled table if possible original otherwise
@@ -209,6 +217,8 @@ function main() {
 
     // Option 1: client side randomization:
     let stimuli = pickRandomList();
+    checkStimuliSyntax(PRACTICE_ITEMS);
+    checkStimuliSyntax(stimuli.table);
     kickOffExperiment(getTimeline(stimuli.table), stimuli.list_name);
 
     // Option 2: server side balancing:
@@ -280,3 +290,6 @@ function findList(name) {
     }
     return list;
 }
+
+// start the experiment
+window.addEventListener('load', main);
