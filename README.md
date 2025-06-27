@@ -115,11 +115,13 @@ it also comes with problem related to programming and one is some characters nee
 be escaped. Take the phrase `{{<b>bold word</b>}}` The parser needs to know that
 `</b>` doesn't belong to word, and especially the `<` is not part of a word that needs
 to be presented. The same goes for all following characters:
+
  - {
  - }
- - <
- - >
+ - &lt;
+ - &gt;
  - \
+
 So If you want to present one of those, and it isn't part of a group, bold or italic
 tag you'll need to escape it. You can escape such character by preceding it with an
 `\`, this way the parser.
@@ -142,8 +144,22 @@ the SPR.
 
 The boilerplate has support for 15 groups of words. Remember that a group can
 consist of a single word. Groups starting with a `#` in the stimulus list are
-added to the output. Each reaction time is in ms. If less than 15 groups are
-marked with a `#`, the remaining reactiontimes are set to -1 as an indication
+added to the output.
+
+So:
+
+```text
+{{#This group its reaction time is recorded}}
+```
+
+But:
+
+```text
+{{None}} {{of these words are recorded}}
+```
+
+Each reaction time is in ms. If less than 15 groups are
+marked with a `#`, the remaining reaction times are set to -1 as an indication
 that no response has been given for that word; this marks it as
 invalid. The variables are listed as **rt1**, **rt2** **..** **rt15** in the output.
 The fixation cross that lures the eyes of the participant to the start of the
