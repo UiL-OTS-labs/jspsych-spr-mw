@@ -118,23 +118,42 @@ let end_practice_screen = {
 let feedback_screen = {
     type: jsPsychSurveyText,
     preamble: FEEDBACK_PREAMBLE,
+    promise_task_data: undefined,
+    promise_feedback_data: undefined,
     questions: [
-	{prompt: FEEDBACK_PROMPT, rows: 5},
-    ]
+        {prompt: FEEDBACK_PROMPT, rows: 5},
+    ],
+    on_load: function () {
+        if (consent_given) {
+            feedback_screen.promise_task_data = uil.saveJson(
+                jsPsych.data.get().json(), ACCESS_KEY
+            );
+        }
+        else {
+            document.body.innerHTML = FINISHED_NO_CONSENT;
+        }
+    },
+    on_finish: function(data) {
+        let payload = {
+            feedback: data.response,
+            ...jsPsych.data.dataProperties // adds subject id and list info
+        };
+        feedback_screen.promise_feedback_data = uil.saveJson(
+            JSON.stringify(payload), ACCESS_KEY
+        );
+        Promise.all([this.promise_task_data, this.promise_feedback_data])
+            .then(() => {
+                jsPsych.finishTrial();
+                console.log("finished")
+            }
+        );
+    }
 };
 
 let end_experiment = {
     type : jsPsychHtmlKeyboardResponse,
     stimulus : POST_TEST_INSTRUCTION,
     choices : [],
-    on_load: function() {
-        if (consent_given) {
-            uil.saveData();
-        }
-        else {
-            document.body.innerHTML = FINISHED_NO_CONSENT;
-        }
-    }
 }
 
 /**
