@@ -1,7 +1,7 @@
 import {
     sprMovingWindow,
     checkStimuliSyntax
-} from './dist/jspsych-spr-moving-window.js'
+} from 'https://web-experiments.lab.hum.uu.nl/jspsych/plugins/spr-mw/1.0/jspsych-spr-moving-window.js'
 
 let jsPsych = initJsPsych({
     exclusions: {
