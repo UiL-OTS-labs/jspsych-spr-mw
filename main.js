@@ -129,7 +129,8 @@ let end_experiment = {
     choices : [],
     on_load: function() {
         if (consent_given) {
-            uil.saveData();
+            uil.saveJson(jsPsych.data.get().json(), ACCESS_KEY)
+                .then(jsPsych.finishTrial());
         }
         else {
             document.body.innerHTML = FINISHED_NO_CONSENT;
