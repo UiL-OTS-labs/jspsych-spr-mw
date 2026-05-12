@@ -6,7 +6,7 @@
 // If you do not fill out a valid key, the participant's
 // browser will not be able to upload the data to the server.
 // Replace this by a PERFECT COPY of the key from the data server.
-const ACCESS_KEY = '00000000-0000-0000-0000-000000000000';
+const ACCESS_KEY = '8205f08e-e912-4f15-83ae-2a627dff016c';
 
 //RANDOMIZATION
 
